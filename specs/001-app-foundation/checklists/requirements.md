@@ -13,7 +13,7 @@
 
 ## Requirement Completeness
 
-- [ ] No [NEEDS CLARIFICATION] markers remain
+- [x] No [NEEDS CLARIFICATION] markers remain
 - [x] Requirements are testable and unambiguous
 - [x] Success criteria are measurable
 - [x] Success criteria are technology-agnostic (no implementation details)
@@ -32,9 +32,10 @@
 ## Notes
 
 - Items marked incomplete require spec updates before `/speckit-clarify` or `/speckit-plan`
-- **Deliberately open:** 2 markers, FR-001 (open question #10: stack and free hosting) and
-  FR-007 (open question #11: storage approach, iOS data loss, backup reminder timing). At
-  Britt's request they are not resolved here; `/speckit-clarify` must put them to her.
-- FR-007 is only testable once #11 is answered ("to the degree agreed").
+- The two markers (FR-001: open question #10, FR-007: open question #11) were resolved in
+  clarify on 2026-10-07/08 (wiki T7–T12).
+- The two "no implementation details" items are checked by Britt's decision (2026-10-08) for
+  this spec only: the spec names Cloudflare Pages and the stack because she chose them in
+  clarify.
 - "Add to Home Screen", "full screen" and "secure web address" describe what the owner sees on
   her iPhone (constitution III), not a technology choice.

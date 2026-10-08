@@ -1,14 +1,11 @@
 <!--
 Sync Impact Report
-- Version change: template (unversioned) → 1.0.0 (initial ratification)
-- Principles added: I. LinkedIn by the Rules; II. Zero Cost; III. Installable iPhone Web App;
-  IV. Online App, Local Data, Sync-Ready; V. LinkedIn-Only Identity; VI. Privacy of the People
-  You Meet; VII. Bilingual, Welcoming Guest Mode; VIII. Speed in the Moment; IX. No Lost
-  Contacts, No Silent Duplicates; X. Own Brand, Purposeful Delight, Only v1
-- Sections added: Purpose, Out of Scope (v1), Development Workflow, Governance, Open Questions
-- Sections removed: none
-- Templates: plan/spec/tasks templates read the constitution at runtime; not modified here
-- Deferred: see "Open Questions" (all mirror wiki/open-vragen.md; none invented)
+- Version change: 1.0.0 → 1.0.1 (PATCH: Open Questions list brought up to date)
+- Modified principles: none
+- Removed from Open Questions: #7 (decided: wiki B12) and #11 (decided: wiki T9–T11)
+- Added sections: none | Removed sections: none
+- Templates: not modified
+- Deferred: remaining Open Questions mirror wiki/open-vragen.md
 -->
 
 # De Sociale Vlinder (The Social Butterfly) Constitution
@@ -156,7 +153,7 @@ Each principle has a **Rule**, a **Rationale** and a **Verify** step for reviewe
 - **Compliance:** reviews of specs, plans and code check against the principles above.
 - Agents MUST NOT resolve open questions themselves; they stay open until the owner decides.
 
-**Version**: 1.0.0 | **Ratified**: 2026-10-07 | **Last Amended**: 2026-10-07
+**Version**: 1.0.1 | **Ratified**: 2026-10-07 | **Last Amended**: 2026-10-08
 
 ## Open Questions
 
@@ -169,7 +166,5 @@ Numbers refer to `wiki/open-vragen.md`. Specs MUST NOT assume an answer.
 - **#4 Company** (VIII): required? Stored for QR scans?
 - **#5 Note scope** (glossary): per Encounter (current model) or per Person?
 - **#6 CSV export** (VI): which columns? Also import as a restore?
-- **#7 No activeEvent** (VIII): default "No event"?
 - **#8 Default language** (VII): for the owner and for `guestMode`.
 - **#9 Ranking of quality values** (Purpose): stated in the prompt; to be confirmed in the wiki.
-- **#11 Device storage loss** (IV, IX): iOS may clear local data; when to remind about backups?

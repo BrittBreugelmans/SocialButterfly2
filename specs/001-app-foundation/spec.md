@@ -10,6 +10,24 @@
 
 Source: F0 in `specs/features.md`. Terms follow `wiki/begrippen.md`.
 
+## Clarifications
+
+### Session 2026-10-07
+
+- Q: Where should the app be hosted for free, and what kind of web address should it have? → A: Cloudflare Pages, on a free `*.pages.dev` address (no own domain).
+- Q: What should the app be built with? → A: TypeScript + Vite + React.
+- Q: How much protection against iOS deleting the app's data should F0 build in? → A: On-device database + ask iOS to keep the data permanently; clear warning if iOS refuses; CSV backup (F10) is the safety net.
+- Q: When should the app remind you to make a CSV backup? → A: After each event: the first time the app is opened on a day after the active Event's date, if Encounters were added since the last backup.
+
+### Session 2026-10-08
+
+- Q: Which label should the home-screen icon have, given iOS cuts off long names? → A: "SB".
+- Q: Which name should the app show inside the app itself? → A: Follow the language: "De Sociale Vlinder" (Dutch), "The Social Butterfly" (English).
+- Q: Can an Event last several days? → A: Yes. An Event has a name, a start date and an end date; the end date can be the same day as the start date but not before it.
+- Q: Can the owner network without an Event? → A: Yes, "casual networking": Encounters can be saved without an Event.
+- Q: When should the backup reminder appear after casual networking? → A: The first time the app is opened on a day after the date of the casual Encounter(s), if Encounters were added since the last backup.
+- Q: What is the app's address? → A: https://socialbutterfly2.pages.dev/
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Open and install the app (Priority: P1)
@@ -29,7 +47,7 @@ to the home screen, and start the app from the icon. Delivers a working app shel
 1. **Given** the owner's iPhone with internet, **When** she opens the app's web address in
    Safari, **Then** the app's start screen appears.
 2. **Given** the app is open in Safari, **When** she chooses "Add to Home Screen", **Then** an
-   icon named "De Sociale Vlinder" appears on the home screen.
+   icon labelled "SB" appears on the home screen.
 3. **Given** the app is on the home screen, **When** she taps the icon, **Then** the app opens
    full screen without Safari's address bar or toolbars.
 
@@ -85,7 +103,9 @@ every later feature. It is P2 because the app is usable in one language first.
 - **No internet at start**: the app shows a short, friendly message that it needs internet
   instead of a broken or blank screen. Working offline is not required (constitution IV).
 - **iOS clears website data** (for example after a long time without use or when storage is
-  low): what the app does is open; see FR-007 and open question #11.
+  low): the app asks iOS to keep its data permanently; if iOS refuses, the owner sees a clear
+  warning (FR-007). Removing the app from the home screen deletes its data; only a CSV backup
+  (F10) protects against that.
 - **Safari tab vs installed app**: on iOS, the home-screen app and a Safari tab can keep
   separate data. The owner must use the installed app; data entered in a Safari tab is not
   guaranteed to appear in the installed app.
@@ -102,27 +122,35 @@ every later feature. It is P2 because the app is usable in one language first.
 
 #### Availability and installation
 
-- **FR-001**: The app MUST be reachable at a stable, secure public web address
-  [NEEDS CLARIFICATION: open question #10 — which free hosting and which address (free
-  subdomain of a hosting service, or an own domain, which usually costs money), and which stack
-  goes with it?].
+- **FR-001**: The app MUST be reachable at a stable, secure public web address: a free
+  address on Cloudflare Pages, `https://socialbutterfly2.pages.dev/`, without an own domain. The app is built with TypeScript, Vite and React; Cloudflare Pages builds it on its
+  free tier.
 - **FR-002**: The owner MUST be able to install the app on the iPhone home screen through
   Safari's "Add to Home Screen".
-- **FR-003**: The installed app MUST open full screen with its own name ("De Sociale Vlinder")
-  and its own icon. The icon MUST NOT use LinkedIn's logo or trademarks (constitution X).
+- **FR-003**: The installed app MUST open full screen with its own icon, labelled "SB" on the
+  home screen. Inside the app, the name follows the app language: "De Sociale Vlinder" in Dutch,
+  "The Social Butterfly" in English. The icon MUST NOT use LinkedIn's logo or trademarks
+  (constitution X).
 - **FR-004**: The app MUST NOT depend on any paid service, paid hosting or paid account
   (constitution II).
-- **FR-005**: The app MAY assume an internet connection. Without one, it MUST show a clear,
-  friendly message instead of a broken screen.
+- **FR-005**: The app MAY assume an internet connection. When the app starts without a
+  connection, it MUST show a clear, friendly full-screen message instead of a broken screen. If
+  the connection drops while the app is open, it MUST show a non-blocking banner; the app and
+  stored data stay usable.
 
 #### Local data
 
 - **FR-006**: The app MUST store Persons, Encounters, Events and settings only on the owner's
   device. Stored data MUST survive closing the app, restarting the phone, and app updates.
-- **FR-007**: The app MUST protect the stored data against loss by the operating system to the
-  degree agreed [NEEDS CLARIFICATION: open question #11 — which storage approach, how much
-  protection against iOS clearing local data is needed in F0, and when should the owner be
-  reminded to make a backup? The reminder itself is part of F10.].
+- **FR-007**: The app MUST keep its data in an on-device database and MUST ask iOS to keep that
+  data permanently. If iOS refuses, the app MUST show the owner a clear warning that the data
+  may be deleted and that a CSV backup (F10) is advised. No other protection is required in F0.
+- **FR-017**: The app MUST record when the last CSV backup was made, so it can tell whether
+  Encounters were added since. F10 uses this to remind the owner the first time the app is
+  opened on a day after the active Event's **end date**, if Encounters were added since the
+  last backup. For casual networking, the reminder appears the first time the app is opened on
+  a day after the date of the casual Encounter(s), under the same condition. The reminder screen
+  itself is part of F10.
 - **FR-008**: The app MUST NOT send any personal data (names, companies, profile URLs, notes,
   events) to any server (constitution IV, VI).
 - **FR-009**: New app versions MUST reach the owner without reinstalling the app and without
@@ -132,11 +160,16 @@ every later feature. It is P2 because the app is usable in one language first.
 
 - **FR-010**: A Person MUST be able to have one or more Encounters; each Encounter MUST belong
   to exactly one Person.
-- **FR-011**: Each Encounter MUST belong to one Event and have a date.
+- **FR-011**: Each Encounter MUST have a date and MAY belong to one Event. An Encounter without an
+  Event is "casual networking".
+- **FR-018**: An Event MUST have a name, a start date and an end date. The end date MUST NOT be
+  before the start date; it MAY be the same day.
 - **FR-012**: A normalized `profileUrl` MUST be unique: no two Persons can share it. A Person
   MAY exist without a `profileUrl` (only a `searchUrl`) until the owner pastes it later.
-- **FR-013**: Every record MUST have a stable unique identifier and the time it was created and
-  last changed, so cloud sync can be added later without a rewrite (constitution IV).
+- **FR-013**: Every Person, Encounter and Event MUST have a stable unique identifier and the time
+  it was created and last changed, so cloud sync can be added later without a rewrite
+  (constitution IV). Settings is a single device-level record with a fixed key and only
+  `updatedAt`.
 - **FR-014**: The model MUST store only Persons with (or about to get) a LinkedIn profile; it
   has no fields for email or phone (constitution V).
 
@@ -151,10 +184,12 @@ every later feature. It is P2 because the app is usable in one language first.
 - **Person**: someone with a LinkedIn profile. Name, optional company, `profileUrl` (unique when
   known), `searchUrl` (used while the `profileUrl` is missing), `connectionStatus`. Has one or
   more Encounters.
-- **Encounter**: one time the owner met a Person. Belongs to one Person and one Event, has a
-  date and an optional `note`.
-- **Event**: a conference, fair or meetup. Name and date. Has many Encounters.
-- **Settings**: device-level choices: app language and the `activeEvent`.
+- **Encounter**: one time the owner met a Person. Belongs to one Person and to one Event or to
+  none (casual networking). Has a date and an optional `note`.
+- **Event**: a conference, fair or meetup. Name, start date and end date (end ≥ start). Has
+  many Encounters.
+- **Settings**: device-level choices: app language, the `activeEvent` (absent means casual
+  networking), and the time of the last CSV backup.
 
 `Action` (F8) is not stored as its own entity here; it follows from the state above. How
 dismissed Actions are stored is decided in F8 (open question #3).
@@ -180,7 +215,8 @@ dismissed Actions are stored is decided in F8 (open question #3).
 - **Note per Encounter** (as in `wiki/begrippen.md`); provisional until open question #5 is
   confirmed.
 - **Company is an optional field**; whether it becomes required is open question #4 (F2).
-- **Encounters without an active Event**: behaviour is decided in F1 (open question #7).
+- **Choosing an Event or casual networking** on entering the app is a screen in F1; F0 only
+  provides the data model for it.
 - **Default language is Dutch** until open question #8 is decided (F10); the owner can switch.
 - **Out of scope for F0**: screens to add contacts (F2, F3, F5), manage Events (F1), notes (F6),
   CSV export, delete-all and the backup reminder screen (F10), branding details (F11).

@@ -1,0 +1,179 @@
+/* Placeholder styling for F0. Final brand values come in F11 (LinkedIn-like blue, no LinkedIn logo). */
+:root {
+  --blue: #0a66c2;
+  --blue-dark: #004182;
+  --text: #1d2226;
+  --muted: #5e6b75;
+  --bg: #ffffff;
+  --surface: #f3f6f8;
+  --warning-bg: #fff4d6;
+  --error-bg: #fde8e8;
+  --radius: 14px;
+  color-scheme: light;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+}
+
+button {
+  font: inherit;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 2px solid var(--blue);
+  background: var(--blue);
+  color: #fff;
+  cursor: pointer;
+}
+
+button.secondary,
+.language-switch button[aria-pressed='false'] {
+  background: transparent;
+  color: var(--blue);
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+.banners {
+  display: grid;
+  gap: 8px;
+  padding: 12px 16px 0;
+}
+
+.banner {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.banner-info {
+  background: var(--surface);
+}
+
+.banner-warning {
+  background: var(--warning-bg);
+}
+
+.banner-error {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--error-bg);
+}
+
+.banner-error p {
+  margin: 0;
+}
+
+.banner-dismiss {
+  flex-shrink: 0;
+}
+
+.start-screen,
+.offline-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.offline-screen {
+  min-height: 100dvh;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.butterfly,
+.offline-butterfly {
+  margin: 0;
+  font-size: 3.5rem;
+}
+
+h1 {
+  margin: 0;
+  color: var(--blue);
+  font-size: 2rem;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--muted);
+}
+
+.language-switch {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.language-label {
+  color: var(--muted);
+}
+
+.version-label {
+  margin-top: 32px;
+  min-height: 44px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.85rem;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.diagnostics {
+  position: fixed;
+  inset: auto 0 0;
+  max-height: 90dvh;
+  overflow: auto;
+  padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--bg);
+  box-shadow: 0 -8px 30px rgb(0 0 0 / 0.15);
+  text-align: left;
+}
+
+.diagnostics h2 {
+  margin-top: 0;
+}
+
+.diagnostics dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 16px;
+}
+
+.diagnostics dt {
+  color: var(--muted);
+}
+
+.diagnostics dd {
+  margin: 0;
+}
+
+.diagnostics-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}

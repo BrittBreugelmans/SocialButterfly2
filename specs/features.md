@@ -8,19 +8,19 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 ---
 
 ## F0 — Fundament
-- [ ] Constitution gegenereerd met [constitution-prompt.md](constitution-prompt.md) en gereviewd
-- [ ] Stack en hosting gekozen (gratis) ⚠️ #10
+- [x] Constitution gegenereerd met [constitution-prompt.md](constitution-prompt.md) en gereviewd
+- [x] Stack en hosting gekozen (gratis): T7, T8, T12, T13
 - [ ] App online bereikbaar via een eigen URL
 - [ ] Installeerbaar op iPhone-beginscherm (PWA: icoon, schermvullend openen)
 - [ ] Datamodel: Person, Encounter, Event (Person ↔ meerdere Encounters)
-- [ ] Data blijft lokaal op het toestel en overleeft het sluiten van de app ⚠️ #11
+- [ ] Data blijft lokaal op het toestel en overleeft het sluiten van de app (T9)
 - [ ] Taalwissel NL/EN-basis aanwezig
 
 ## F1 — Evenementen
-- [ ] Evenement aanmaken (naam, datum)
+- [ ] Evenement aanmaken (naam, startdatum, einddatum; einddatum ≥ startdatum)
 - [ ] Actief evenement kiezen
 - [ ] Nieuwe ontmoetingen komen automatisch onder het actieve evenement
-- [ ] Gedrag zonder actief evenement ⚠️ #7
+- [ ] Bij openen: evenement kiezen/aanmaken of netwerken zonder evenement (B12)
 
 ## F2 — Toevoegen via naam (snelle modus)
 - [ ] Formulier: naam + bedrijf ⚠️ #4
@@ -79,7 +79,7 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [ ] Taal van de app kiezen ⚠️ #8
 - [ ] CSV-export ⚠️ #6
 - [ ] Alle data wissen (met bevestiging)
-- [ ] Herinnering om een back-up te maken ⚠️ #11
+- [ ] Herinnering om een back-up te maken (T10, T11)
 
 ## F11 — Merk & plezier
 - [ ] Logo: vlinder met netwerkknooppunten
@@ -95,6 +95,7 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [ ] Volledige flow A (naam) en B (QR) zonder haperen
 - [ ] Doorgeef-modus getest met iemand anders
 - [ ] Back-up (CSV) gemaakt vóór vertrek
+- [ ] Persoon verwijderen (F7) en CSV-export (F10) werken (constitution VI)
 - [ ] iOS Begeleide toegang ingesteld voor de doorgeef-modus
 
 ## Later (niet v1)

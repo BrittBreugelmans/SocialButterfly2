@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Placeholder butterfly (F11 makes the final logo). Wings hint at connected network nodes. No LinkedIn logo. -->
+  <rect width="512" height="512" fill="#ffffff"/>
+  <g fill="#0a66c2">
+    <ellipse cx="176" cy="196" rx="96" ry="76" transform="rotate(-30 176 196)"/>
+    <ellipse cx="336" cy="196" rx="96" ry="76" transform="rotate(30 336 196)"/>
+    <ellipse cx="196" cy="326" rx="62" ry="50" transform="rotate(30 196 326)" opacity="0.8"/>
+    <ellipse cx="316" cy="326" rx="62" ry="50" transform="rotate(-30 316 326)" opacity="0.8"/>
+    <rect x="244" y="150" width="24" height="230" rx="12" fill="#004182"/>
+  </g>
+  <g stroke="#004182" stroke-width="10" stroke-linecap="round" fill="none">
+    <path d="M250 150 L214 96"/>
+    <path d="M262 150 L298 96"/>
+  </g>
+  <g fill="#004182">
+    <circle cx="214" cy="96" r="16"/>
+    <circle cx="298" cy="96" r="16"/>
+  </g>
+</svg>
