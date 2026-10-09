@@ -41,7 +41,7 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 ## F4 — Profiel-link koppelen
 - [ ] Knop "Plak LinkedIn-link" leest het klembord (iOS-bevestiging)
 - [ ] URL wordt gevalideerd en genormaliseerd (`linkedin.com/in/<handle>`)
-- [ ] Bestaande persoon met dezelfde URL → samenvoegen, geen dubbel
+- [ ] Bestaande persoon met dezelfde URL → samenvoegen na bevestiging (B21), geen dubbel
 - [ ] Actie "profiel-link ontbreekt" verdwijnt na koppelen
 
 ## F5 — Toevoegen via QR

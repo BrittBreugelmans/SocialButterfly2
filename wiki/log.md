@@ -2,6 +2,10 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-09** — spec F4 (`/speckit-specify`, feedback Britt: link plakken op het notitiescherm) —
+  `specs/004-link-profile` aangemaakt. B21: bij een profiel-link die al bij een andere persoon hoort,
+  eerst vragen "Samenvoegen?". Flow D en features.md bijgewerkt. Spec klaar voor `/speckit-plan`.
+
 - **2026-10-09** — keuze Britt na de iPhone-controle F2 — B20: "Zoek op LinkedIn" opent LinkedIn
   met dezelfde tik en bewaart tegelijk; terug naar 2 tikken. De naamcontrole gebeurt nu tijdens
   het typen. Spec (FR-009), research R1, contracts, quickstart en taken bijgewerkt; 119 tests

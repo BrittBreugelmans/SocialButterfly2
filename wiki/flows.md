@@ -29,7 +29,8 @@
 4. Lege Acties-tab: "Alles gedaan, tijd om verder te fladderen."
 
 ## Flow D — Bestaande persoon herkennen
-- Match op **profiel-URL**: zelfde persoon → nieuwe ontmoeting aan de tijdlijn toevoegen.
+- Match op **profiel-URL**: zelfde persoon → nieuwe ontmoeting aan de tijdlijn toevoegen. Plakt Britt in Flow A een
+  link die al bij een andere persoon hoort, dan vraagt de app eerst "Samenvoegen?" ([B21](beslissingen.md)).
 - Zonder URL (Flow A, nog niet geplakt): match op **naam** (hoofdletters en extra spaties tellen niet). De app vraagt
   "Is dit dezelfde persoon?" met bedrijf en datum van de laatste ontmoeting. Ja → nieuwe ontmoeting bij die persoon;
   nee → nieuwe persoon ([B15](beslissingen.md)).
