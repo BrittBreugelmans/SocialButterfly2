@@ -27,7 +27,7 @@ export function App() {
   const [activeEvent, setActiveEvent] = useState<Event | undefined | 'loading'>('loading')
 
   // F2: the open note step, and whether an unfinished one was looked for on start (B18).
-  const [noteStep, setNoteStep] = useState<SavedByName>()
+  const [noteStep, setNoteStep] = useState<SavedByName & { message?: string }>()
   const [noteStepChecked, setNoteStepChecked] = useState(false)
 
   useEffect(() => {
@@ -111,12 +111,18 @@ export function App() {
         />
       ) : screen === 'noteStep' && noteStep ? (
         <NoteStep
-          key={noteStep.encounter.id}
-          {...noteStep}
+          // Remount after a merge (F4): another Person and maybe another Encounter.
+          key={`${noteStep.person.id}:${noteStep.encounter.id}`}
+          person={noteStep.person}
+          encounter={noteStep.encounter}
+          alreadyMetToday={noteStep.alreadyMetToday}
+          opened={noteStep.opened}
+          initialMessage={noteStep.message}
           onDone={() => {
             setNoteStep(undefined)
             setScreen('start')
           }}
+          onMerged={({ person, encounter, message }) => setNoteStep({ ...noteStep, person, encounter, message })}
         />
       ) : (
         <StartScreen

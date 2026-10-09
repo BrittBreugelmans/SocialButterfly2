@@ -2,6 +2,17 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-09** — implementatie F4 (`/speckit-implement`) — "Plak LinkedIn-link" op het
+  notitiescherm: link opkuisen tot `https://www.linkedin.com/in/<handle>`, opslaan, "Open LinkedIn"
+  opent daarna het profiel. Link van een andere persoon → vraag "Samenvoegen?" (B21); samenvoegen
+  houdt alle ontmoetingen en notities. 165 tests groen, build OK. 18 van 21 taken klaar; open:
+  push (T019), controle op de iPhone (T020, ook de iOS-"Plakken"-bubbel) en afvinken (T021).
+
+- **2026-10-09** — plan F4 (`/speckit-plan`) — Plan, research, datamodel, contracts en quickstart
+  voor F4. Geen nieuwe velden, geen schemawijziging. Klembord lezen direct bij de tik (lessen uit
+  F2); links worden genormaliseerd tot `https://www.linkedin.com/in/<handle>` (kleine letters);
+  samenvoegen in één transactie, met beide notities bewaard.
+
 - **2026-10-09** — spec F4 (`/speckit-specify`, feedback Britt: link plakken op het notitiescherm) —
   `specs/004-link-profile` aangemaakt. B21: bij een profiel-link die al bij een andere persoon hoort,
   eerst vragen "Samenvoegen?". Flow D en features.md bijgewerkt. Spec klaar voor `/speckit-plan`.

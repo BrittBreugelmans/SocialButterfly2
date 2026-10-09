@@ -417,3 +417,42 @@ a.event-option {
   border: 2px solid var(--surface);
   text-decoration: none;
 }
+
+/* ---------- F4: link the profile URL ---------- */
+
+.link-linked {
+  margin: 0;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.link-linked strong {
+  color: var(--text);
+}
+
+.link-message {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--warning-bg);
+}
+
+.link-message:empty {
+  display: none;
+}
+
+.merge-question {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.merge-question p {
+  margin: 0 0 4px;
+  font-weight: 600;
+}

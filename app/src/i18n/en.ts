@@ -76,4 +76,16 @@ export const en: Record<TextKey, string> = {
   'note.skip': 'Skip',
   'note.alreadyMet': 'You already met {name} today.',
   'note.openLinkedIn': 'Open LinkedIn',
+
+  'link.paste': 'Paste LinkedIn link',
+  'link.pasteAgain': 'Paste another link',
+  'link.linked': 'Profile linked:',
+  'link.invalid': "No LinkedIn profile link found. In LinkedIn, copy the profile's link (Share → Copy link).",
+  'link.shortLink': "Short lnkd.in links don't work. Copy the full profile link.",
+  'link.unsupported': "Pasting doesn't work here. Open the app from your home screen.",
+  'link.mergeQuestion': 'This profile belongs to {name} ({company}). Merge?',
+  'link.mergeQuestionNoCompany': 'This profile belongs to {name}. Merge?',
+  'link.merge': 'Merge',
+  'link.cancel': 'Cancel',
+  'link.merged': 'Merged with {name}.',
 }

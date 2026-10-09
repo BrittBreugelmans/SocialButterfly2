@@ -594,3 +594,105 @@ export async function finishNoteStep(encounterId: string, note: string | undefin
     }),
   )
 }
+
+// ---------------------------------------------------------------------------
+// Profile link (F4, specs/004-link-profile)
+// ---------------------------------------------------------------------------
+
+export type LinkProfileResult =
+  | { status: 'linked'; person: Person }
+  | { status: 'unchanged'; person: Person }
+  | { status: 'conflict'; other: Person }
+
+/**
+ * Stores a normalized profile link on the Person, replacing an earlier one (FR-003, FR-004).
+ * When another Person already has the link, nothing is written and that Person is returned, so
+ * the owner can be asked whether to merge (B21, research R3).
+ */
+export async function linkProfileUrl(personId: string, profileUrl: string): Promise<LinkProfileResult> {
+  if (!isNormalizedProfileUrl(profileUrl)) {
+    throw new ValidationError('profileUrl', 'profileUrl is not in normalized form')
+  }
+  return withStorageErrors(() =>
+    db.transaction('rw', db.persons, async (): Promise<LinkProfileResult> => {
+      const person = await db.persons.get(personId)
+      if (!person) throw new ValidationError('id', 'Unknown Person')
+      if (person.profileUrl === profileUrl) return { status: 'unchanged', person }
+
+      const other = await db.persons.where('profileUrl').equals(profileUrl).first()
+      if (other) return { status: 'conflict', other }
+
+      const linked: Person = { ...person, profileUrl, updatedAt: nowIso() }
+      await db.persons.put(linked)
+      return { status: 'linked', person: linked }
+    }),
+  )
+}
+
+/** Non-empty notes on separate lines, the first one first. */
+function joinNotes(...notes: (string | undefined)[]): string | undefined {
+  const kept = notes.map((note) => note?.trim() ?? '').filter((note) => note !== '')
+  return kept.length > 0 ? kept.join('\n') : undefined
+}
+
+/**
+ * Merges `from` into `into`, the Person that already has the profile link, in ONE transaction
+ * (B21, research R4, data-model.md "Merge rules"). Every Encounter and note is kept; an Encounter
+ * on the same day in the same context is folded into `into`'s (B19). `noteDraft` is the note
+ * typed on the open note step but not saved yet.
+ */
+export async function mergePersons(input: {
+  fromPersonId: string
+  intoPersonId: string
+  noteDraft?: string
+}): Promise<{ person: Person; noteStepEncounter?: Encounter }> {
+  if (input.fromPersonId === input.intoPersonId) {
+    throw new ValidationError('fromPersonId', 'Cannot merge a Person into itself')
+  }
+  return withStorageErrors(() =>
+    db.transaction('rw', db.persons, db.encounters, db.settings, async () => {
+      const from = await db.persons.get(input.fromPersonId)
+      const into = await db.persons.get(input.intoPersonId)
+      if (!from) throw new ValidationError('fromPersonId', 'Unknown Person')
+      if (!into) throw new ValidationError('intoPersonId', 'Unknown Person')
+
+      const now = nowIso()
+      const settings = await getSettings()
+      let noteStepId = settings.noteStepEncounterId
+
+      const intoEncounters = await db.encounters.where('personId').equals(into.id).toArray()
+      const fromEncounters = await db.encounters.where('personId').equals(from.id).toArray()
+      for (const encounter of fromEncounters) {
+        // The unsaved note on the open note step counts as this Encounter's note.
+        const note =
+          encounter.id === noteStepId && input.noteDraft !== undefined ? optionalText(input.noteDraft) : encounter.note
+        const clash = intoEncounters.find((e) => e.date === encounter.date && e.eventId === encounter.eventId)
+        if (clash) {
+          const folded = compact<Encounter>({ ...clash, note: joinNotes(clash.note, note), updatedAt: now })
+          await db.encounters.put(folded)
+          Object.assign(clash, folded)
+          await db.encounters.delete(encounter.id)
+          if (encounter.id === noteStepId) noteStepId = clash.id
+        } else {
+          await db.encounters.put(compact<Encounter>({ ...encounter, personId: into.id, note, updatedAt: now }))
+        }
+      }
+
+      const person = compact<Person>({
+        ...into,
+        company: into.company ?? from.company,
+        connectionStatus:
+          into.connectionStatus === 'connected' || from.connectionStatus === 'connected' ? 'connected' : 'notConnected',
+        updatedAt: now,
+      })
+      await db.persons.put(person)
+      await db.persons.delete(from.id)
+
+      if (noteStepId !== settings.noteStepEncounterId) {
+        await db.settings.put(compact<Settings>({ ...settings, key: 'settings', noteStepEncounterId: noteStepId, updatedAt: now }))
+      }
+      const noteStepEncounter = noteStepId === undefined ? undefined : await db.encounters.get(noteStepId)
+      return { person, noteStepEncounter: noteStepEncounter?.personId === into.id ? noteStepEncounter : undefined }
+    }),
+  )
+}

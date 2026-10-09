@@ -369,7 +369,7 @@ describe('Note step and "I connected" (User Story 3)', () => {
     const encounter = await createEncounter({ personId: jan.id, date: todayLocal() })
     render(
       <LanguageProvider>
-        <NoteStep person={jan} encounter={encounter} alreadyMetToday={false} opened={false} onDone={() => {}} />
+        <NoteStep person={jan} encounter={encounter} alreadyMetToday={false} opened={false} onDone={() => {}} onMerged={() => {}} />
       </LanguageProvider>,
     )
     const button = await screen.findByRole('link', { name: nl['note.openLinkedIn'] })

@@ -76,6 +76,19 @@ export const nl = {
   'note.skip': 'Overslaan',
   'note.alreadyMet': 'Je hebt {name} vandaag al ontmoet.',
   'note.openLinkedIn': 'Open LinkedIn',
+
+  'link.paste': 'Plak LinkedIn-link',
+  'link.pasteAgain': 'Andere link plakken',
+  'link.linked': 'Profiel gekoppeld:',
+  'link.invalid':
+    'Geen LinkedIn-profiel-link gevonden. Kopieer in LinkedIn de link van het profiel (Delen → Link kopiëren).',
+  'link.shortLink': 'Korte lnkd.in-links werken niet. Kopieer de volledige profiel-link.',
+  'link.unsupported': 'Plakken werkt hier niet. Open de app via je beginscherm.',
+  'link.mergeQuestion': 'Dit profiel hoort bij {name} ({company}). Samenvoegen?',
+  'link.mergeQuestionNoCompany': 'Dit profiel hoort bij {name}. Samenvoegen?',
+  'link.merge': 'Samenvoegen',
+  'link.cancel': 'Annuleren',
+  'link.merged': 'Samengevoegd met {name}.',
 } as const
 
 export type TextKey = keyof typeof nl
