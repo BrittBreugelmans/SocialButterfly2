@@ -1,6 +1,8 @@
 import { act, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { App } from '../src/App'
+import { todayLocal } from '../src/data/dates'
+import { updateSettings } from '../src/data/repository'
 import { LanguageProvider } from '../src/i18n/LanguageProvider'
 import { nl } from '../src/i18n/nl'
 import { isStandalone } from '../src/platform/standalone'
@@ -19,9 +21,11 @@ function renderApp() {
   )
 }
 
-beforeEach(() => {
+beforeEach(async () => {
   setOnline(true)
   vi.mocked(isStandalone).mockReturnValue(false)
+  // F1 (B13): the owner already chose today, so the App opens on the start screen.
+  await updateSettings({ contextChosenOn: todayLocal() })
 })
 
 afterEach(() => {
@@ -42,7 +46,7 @@ describe('install hint (research R3)', () => {
 })
 
 describe('no internet (FR-005)', () => {
-  it('shows a full-screen message when the app starts offline, until the connection returns', () => {
+  it('shows a full-screen message when the app starts offline, until the connection returns', async () => {
     setOnline(false)
     renderApp()
     expect(screen.getByText(nl['offline.message'])).toBeInTheDocument()
@@ -53,10 +57,10 @@ describe('no internet (FR-005)', () => {
       window.dispatchEvent(new Event('online'))
     })
     expect(screen.queryByText(nl['offline.message'])).not.toBeInTheDocument()
-    expect(screen.getByText(nl['app.title'])).toBeInTheDocument()
+    expect(await screen.findByText(nl['app.title'])).toBeInTheDocument()
   })
 
-  it('shows only a banner when the connection drops after start', () => {
+  it('shows only a banner when the connection drops after start', async () => {
     renderApp()
     act(() => {
       setOnline(false)
@@ -64,7 +68,7 @@ describe('no internet (FR-005)', () => {
     })
     expect(screen.getByText(nl['offline.banner'])).toBeInTheDocument()
     expect(screen.queryByText(nl['offline.message'])).not.toBeInTheDocument()
-    expect(screen.getByText(nl['app.title'])).toBeInTheDocument()
+    expect(await screen.findByText(nl['app.title'])).toBeInTheDocument()
   })
 })
 

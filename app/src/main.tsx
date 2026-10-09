@@ -8,9 +8,11 @@ import './styles.css'
 // New versions activate on the next launch without reinstalling (FR-009).
 registerSW({ immediate: true })
 
+
+//Start react en registreert service worker
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <LanguageProvider>
+    <LanguageProvider> {/*houdt taal bij*/}
       <App />
     </LanguageProvider>
   </StrictMode>,

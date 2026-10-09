@@ -94,8 +94,8 @@ plus the "No internet" and "Safari tab" rows in section 6.
   - In `app/vite.config.ts`, add `VitePWA` with `registerType: 'autoUpdate'`, `injectRegister: false`, `workbox: { globPatterns: ['**/*.{js,css,html,svg,png}'] }` (app shell only, never personal data). Set the manifest per [contracts/hosting.md](contracts/hosting.md): `name: 'De Sociale Vlinder'`, `short_name: 'SB'`, `display: 'standalone'`, `start_url: '/'`, `scope: '/'`, `lang: 'nl'`, `theme_color` LinkedIn-like blue, `background_color: '#ffffff'`, icons `pwa-192x192.png`, `pwa-512x512.png` and `maskable-icon-512x512.png` (purpose `maskable`).
 - [X] T020 [US1] In `app/index.html` add `<meta name="apple-mobile-web-app-title" content="SB">`, `<meta name="apple-mobile-web-app-capable" content="yes">`, `<meta name="mobile-web-app-capable" content="yes">`, `<meta name="theme-color" ...>`, `<link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">`, and `viewport-fit=cover` in the viewport meta. In `app/src/main.tsx` call `registerSW({ immediate: true })` from `virtual:pwa-register`, so updates apply on the next launch without reinstalling (FR-009).
 - [X] T021 [P] [US1] Create `app/public/_headers` with exactly the headers from [contracts/hosting.md](contracts/hosting.md): `Content-Security-Policy: default-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-ancestors 'none'`, `Referrer-Policy: no-referrer`, `X-Content-Type-Options: nosniff`. Run `npm run build && npm run preview` and confirm in the browser console that the app loads with no CSP errors. *(2026-10-08: checked in the build output only: `dist/index.html` loads one same-origin module script and no inline script; `vite preview` does not apply `_headers`. The browser check happens on the live site in T023.)*
-- [ ] T022 [US1] **Rollout** (plan.md "Rollout"; manual, Britt): run `npm run typecheck && npm test && npm run build` in `app/`. Then, right before the first push that contains `app/package.json`, set in Cloudflare Pages: root directory `app`, build command `npm run build`, output directory `dist`, environment variable `NODE_VERSION` = the value in `app/.nvmrc`; Web Analytics off. Push to `main` with nothing pushed in between. If the build fails, the placeholder stays online; fix and push again.
-- [ ] T023 [US1] Validate on the iPhone with [quickstart.md](quickstart.md) section 2 (install under 1 minute, label "SB", full screen, start screen within 3 s on mobile data) and the "No internet" and "Safari tab" rows of section 6.
+- [X] T022 [US1] **Rollout** (plan.md "Rollout"; manual, Britt): run `npm run typecheck && npm test && npm run build` in `app/`. Then, right before the first push that contains `app/package.json`, set in Cloudflare Pages: root directory `app`, build command `npm run build`, output directory `dist`, environment variable `NODE_VERSION` = the value in `app/.nvmrc`; Web Analytics off. Push to `main` with nothing pushed in between. If the build fails, the placeholder stays online; fix and push again.
+- [X] T023 [US1] Validate on the iPhone with [quickstart.md](quickstart.md) section 2 (install under 1 minute, label "SB", full screen, start screen within 3 s on mobile data) and the "No internet" and "Safari tab" rows of section 6.
 
 **Checkpoint**: User Story 1 works on the iPhone. This is the MVP.
 
@@ -132,7 +132,7 @@ via Diagnostics), plus `npm test`.
   - **Add test data**: 1 Person `[test] Vlinder` with a `searchUrl`, plus 3 Encounters: one at a one-day Event `[test] One-day` (start = end), one at a multi-day Event `[test] Multi-day` (end = start + 2 days), and one casual (no Event).
   - **Remove test data**: delete Persons named `[test] …` (Encounters cascade), then Events named `[test] …`.
   Show `storage.full` if a `StorageFullError` occurs. Add all labels as i18n keys (`diagnostics.*`) in both dictionaries.
-- [ ] T032 [US2] Validate on the iPhone with [quickstart.md](quickstart.md) section 3 (persistent status, add test data, close, restart, update via a pushed text change, remove test data) and section 4 (Safari Web Inspector: only requests to `socialbutterfly2.pages.dev`, no personal data). Write the observed `persisted()` result on the iPhone into [research.md](research.md) R2.
+- [X] T032 [US2] Validate on the iPhone with [quickstart.md](quickstart.md) section 3 (persistent status, add test data, close, restart, update via a pushed text change, remove test data) and section 4 (Safari Web Inspector: only requests to `socialbutterfly2.pages.dev`, no personal data). Write the observed `persisted()` result on the iPhone into [research.md](research.md) R2.
 
 **Checkpoint**: User Stories 1 and 2 both work; data survives close, restart and update.
 
@@ -154,7 +154,7 @@ the choice is remembered.
 - [X] T034 [US3] Extend `app/src/i18n/LanguageProvider.tsx`: on mount, load `language` from `getSettings()`; `setLanguage` updates state immediately and saves through `updateSettings({ language })` (FR-016). If saving fails with `StorageFullError`, keep the chosen language for this session; the banner from T030 appears. Until settings are loaded, use `nl`.
 - [X] T035 [US3] Add an NL/EN switch to `app/src/ui/StartScreen.tsx` (label from `app.languageSwitch`, two clear options "NL" and "EN", large enough to tap). Make T033 pass.
 - [X] T036 [US3] Check that every visible text in `app/src/ui/StartScreen.tsx`, `app/src/ui/Banners.tsx` and `app/src/ui/Diagnostics.tsx` comes from `t()`: search `app/src/ui/` for string literals inside JSX and move any you find into both dictionaries.
-- [ ] T037 [US3] Validate on the iPhone with [quickstart.md](quickstart.md) section 5.
+- [X] T037 [US3] Validate on the iPhone with [quickstart.md](quickstart.md) section 5.
 
 **Checkpoint**: All three user stories work independently.
 
@@ -163,9 +163,9 @@ the choice is remembered.
 ## Phase 6: Polish & Cross-Cutting Concerns
 
 - [X] T038 [P] Run `npm run typecheck`, `npm test` and `npm run build` in `app/`. Check the gzipped size of the main JS bundle in the build output and note it in `specs/001-app-foundation/research.md` R4 (supports SC-002, 3 s on mobile data).
-- [ ] T039 Run the full [quickstart.md](quickstart.md) once more on the iPhone, including all rows of section 6 (no internet, Safari tab, someone else, cost €0 in the Cloudflare dashboard).
+- [X] T039 Run the full [quickstart.md](quickstart.md) once more on the iPhone, including all rows of section 6 (no internet, Safari tab, someone else, cost €0 in the Cloudflare dashboard).
 - [X] T040 [P] Replace the one-line `README.md` at the repository root with: what the app is, the live address `https://socialbutterfly2.pages.dev/`, how to run it locally (`cd app`, `nvm use`, `npm install`, `npm run dev`), and links to `CLAUDE.md`, `wiki/` and `specs/`.
-- [ ] T041 Tick the finished F0 items in `specs/features.md` (online at own URL, installable on iPhone, data model, data stays local, NL/EN basis) and add a line to `wiki/log.md` (date, "F0 implemented", what changed), per CLAUDE.md.
+- [X] T041 Tick the finished F0 items in `specs/features.md` (online at own URL, installable on iPhone, data model, data stays local, NL/EN basis) and add a line to `wiki/log.md` (date, "F0 implemented", what changed), per CLAUDE.md.
 
 ---
 

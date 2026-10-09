@@ -1,9 +1,10 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { App } from '../src/App'
 import { db } from '../src/data/db'
-import { getSettings } from '../src/data/repository'
+import { todayLocal } from '../src/data/dates'
+import { getSettings, updateSettings } from '../src/data/repository'
 import { en } from '../src/i18n/en'
 import { LanguageProvider } from '../src/i18n/LanguageProvider'
 import { nl } from '../src/i18n/nl'
@@ -15,6 +16,11 @@ function renderApp() {
     </LanguageProvider>,
   )
 }
+
+// F1 (B13): the owner already chose today, so the App opens on the start screen.
+beforeEach(async () => {
+  await updateSettings({ contextChosenOn: todayLocal() })
+})
 
 describe('language switch (FR-015, FR-016)', () => {
   it('starts in Dutch', async () => {

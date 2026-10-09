@@ -31,4 +31,26 @@ export const en: Record<TextKey, string> = {
   'diagnostics.addTestData': 'Add test data',
   'diagnostics.removeTestData': 'Remove test data',
   'diagnostics.close': 'Close',
+
+  'choice.title': 'Where are you today?',
+  'choice.continue': 'Continue with {name}',
+  'choice.current': 'Happening now',
+  'choice.upcoming': 'Coming up',
+  'choice.past': 'Past',
+  'choice.newEvent': 'New event',
+  'choice.casual': 'Casual networking',
+
+  'event.title': 'New event',
+  'event.name': 'Name',
+  'event.namePlaceholder': 'e.g. Devoxx 2026',
+  'event.startDate': 'From',
+  'event.endDate': 'Until',
+  'event.save': 'Save and start',
+  'event.back': 'Back',
+  'event.errorName': 'Give the event a name.',
+  'event.errorDates': "The end date can't be before the start date.",
+
+  'context.at': "You're at",
+  'context.casual': 'Casual networking',
+  'context.change': 'Change event',
 }

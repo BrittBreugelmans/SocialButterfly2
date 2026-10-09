@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { addDaysLocal, todayLocal } from '../data/dates'
 import { EventInUseError, StorageFullError } from '../data/errors'
 import {
   countEncountersSince,
@@ -17,22 +18,13 @@ import type { StorageStatus } from '../platform/persistence'
 // Test records are recognisable by this prefix, so they can be removed again.
 const TEST_PREFIX = '[test] '
 
-/** Today's local date as YYYY-MM-DD, plus an optional number of days. */
-function localIsoDate(addDays = 0): string {
-  const date = new Date()
-  date.setDate(date.getDate() + addDays)
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  return `${date.getFullYear()}-${month}-${day}`
-}
-
 async function addTestData(): Promise<void> {
-  const today = localIsoDate()
+  const today = todayLocal()
   const oneDay = await createEvent({ name: `${TEST_PREFIX}One-day`, startDate: today, endDate: today })
   const multiDay = await createEvent({
     name: `${TEST_PREFIX}Multi-day`,
     startDate: today,
-    endDate: localIsoDate(2),
+    endDate: addDaysLocal(today, 2),
   })
   const person = await createPerson({
     name: `${TEST_PREFIX}Vlinder`,

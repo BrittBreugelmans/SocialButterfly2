@@ -1,15 +1,20 @@
 import { useRef, useState } from 'react'
+import type { Event } from '../data/types'
 import { useLanguage } from '../i18n/LanguageProvider'
 import type { StorageStatus } from '../platform/persistence'
+import { ContextBar } from './ContextBar'
 import { Diagnostics } from './Diagnostics'
 
 const LONG_PRESS_MS = 600
 
 interface StartScreenProps {
   storageStatus: StorageStatus | 'checking'
+  /** The active Event, undefined during casual networking, or 'loading' while it is read. */
+  activeEvent: Event | undefined | 'loading'
+  onChangeContext(): void
 }
 
-export function StartScreen({ storageStatus }: StartScreenProps) {
+export function StartScreen({ storageStatus, activeEvent, onChangeContext }: StartScreenProps) {
   const { language, setLanguage, t } = useLanguage()
   const [diagnosticsOpen, setDiagnosticsOpen] = useState(false)
   const pressTimer = useRef<number | undefined>(undefined)
@@ -25,6 +30,8 @@ export function StartScreen({ storageStatus }: StartScreenProps) {
 
   return (
     <main className="start-screen">
+      <ContextBar event={activeEvent} onChange={onChangeContext} />
+
       <p className="butterfly" aria-hidden="true">
         🦋
       </p>

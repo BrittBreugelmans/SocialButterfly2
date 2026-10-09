@@ -51,5 +51,7 @@ export interface Settings {
   activeEventId?: string
   /** ISO 8601 UTC. Set by the CSV export (F10). */
   lastBackupAt?: string
+  /** Local date (YYYY-MM-DD) on which the owner last chose an Event or casual networking (FR-005). */
+  contextChosenOn?: string
   updatedAt: string
 }

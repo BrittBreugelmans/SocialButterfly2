@@ -1,6 +1,7 @@
 // The storage API from specs/001-app-foundation/contracts/storage-api.md.
 // UI code reads and writes data only through this file. Nothing here uses the network (FR-008).
 
+import { todayLocal } from './dates'
 import { db } from './db'
 import {
   DuplicateProfileUrlError,
@@ -369,6 +370,83 @@ export async function updateSettings(
       const updated = compact<Settings>({ ...current, ...changes, key: 'settings', updatedAt: nowIso() })
       await db.settings.put(updated)
       return updated
+    }),
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Context: active Event or casual networking (F1, specs/002-events)
+// ---------------------------------------------------------------------------
+
+/**
+ * Makes an Event active, or switches to casual networking when eventId is undefined.
+ * Also records today as the day of the choice (FR-005, FR-007), in one write.
+ */
+export async function chooseContext(eventId: string | undefined): Promise<Settings> {
+  return withStorageErrors(() =>
+    db.transaction('rw', db.settings, db.events, async () => {
+      if (eventId !== undefined && !(await db.events.get(eventId))) {
+        throw new ValidationError('eventId', 'Unknown Event')
+      }
+      const current = await getSettings()
+      const updated = compact<Settings>({
+        ...current,
+        key: 'settings',
+        activeEventId: eventId,
+        contextChosenOn: todayLocal(),
+        updatedAt: nowIso(),
+      })
+      await db.settings.put(updated)
+      return updated
+    }),
+  )
+}
+
+/** Creates the Event and makes it active, in ONE transaction: nothing is saved on any error (FR-004). */
+export async function createAndActivateEvent(input: EventInput): Promise<Event> {
+  const now = nowIso()
+  const event: Event = { id: newId(), createdAt: now, updatedAt: now, ...validateEvent(input) }
+  await withStorageErrors(() =>
+    db.transaction('rw', db.events, db.settings, async () => {
+      await db.events.add(event)
+      const current = await getSettings()
+      await db.settings.put(
+        compact<Settings>({
+          ...current,
+          key: 'settings',
+          activeEventId: event.id,
+          contextChosenOn: todayLocal(),
+          updatedAt: now,
+        }),
+      )
+    }),
+  )
+  return event
+}
+
+/**
+ * Creates an Encounter for today in the current context: the active Event, or no Event during
+ * casual networking (FR-009). F2, F3 and F5 use this instead of createEncounter.
+ */
+export async function createEncounterInContext(input: { personId: string; note?: string }): Promise<Encounter> {
+  return withStorageErrors(() =>
+    db.transaction('rw', db.persons, db.events, db.encounters, db.settings, async () => {
+      if (!(await db.persons.get(input.personId))) {
+        throw new ValidationError('personId', 'Unknown Person')
+      }
+      const { activeEventId } = await getSettings()
+      const now = nowIso()
+      const encounter = compact<Encounter>({
+        id: newId(),
+        createdAt: now,
+        updatedAt: now,
+        personId: input.personId,
+        eventId: activeEventId,
+        date: todayLocal(),
+        note: optionalText(input.note),
+      })
+      await db.encounters.add(encounter)
+      return encounter
     }),
   )
 }

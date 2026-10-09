@@ -10,17 +10,17 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 ## F0 — Fundament
 - [x] Constitution gegenereerd met [constitution-prompt.md](constitution-prompt.md) en gereviewd
 - [x] Stack en hosting gekozen (gratis): T7, T8, T12, T13
-- [ ] App online bereikbaar via een eigen URL
-- [ ] Installeerbaar op iPhone-beginscherm (PWA: icoon, schermvullend openen)
-- [ ] Datamodel: Person, Encounter, Event (Person ↔ meerdere Encounters)
-- [ ] Data blijft lokaal op het toestel en overleeft het sluiten van de app (T9)
-- [ ] Taalwissel NL/EN-basis aanwezig
+- [x] App online bereikbaar via een eigen URL
+- [x] Installeerbaar op iPhone-beginscherm (PWA: icoon, schermvullend openen)
+- [x] Datamodel: Person, Encounter, Event (Person ↔ meerdere Encounters)
+- [x] Data blijft lokaal op het toestel en overleeft het sluiten van de app (T9)
+- [x] Taalwissel NL/EN-basis aanwezig
 
 ## F1 — Evenementen
 - [ ] Evenement aanmaken (naam, startdatum, einddatum; einddatum ≥ startdatum)
 - [ ] Actief evenement kiezen
 - [ ] Nieuwe ontmoetingen komen automatisch onder het actieve evenement
-- [ ] Bij openen: evenement kiezen/aanmaken of netwerken zonder evenement (B12)
+- [ ] Bij openen: evenement kiezen/aanmaken of netwerken zonder evenement (B12), eerste keer per dag (B13)
 
 ## F2 — Toevoegen via naam (snelle modus)
 - [ ] Formulier: naam + bedrijf ⚠️ #4

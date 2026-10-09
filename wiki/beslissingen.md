@@ -17,6 +17,8 @@ Formaat: **beslissing** — reden — verworpen alternatieven. Bindend tenzij Br
 | B10 | 2026-10-02 | Showcase: **mooie details** + **eigen QR tonen**. | Indruk maken als developer. | Puur functioneel |
 | B11 | 2026-10-08 | Een **evenement** heeft een naam, **startdatum en einddatum**. Einddatum niet vóór startdatum; dezelfde dag mag. | Conferenties duren soms meerdere dagen. | Eén datum per evenement |
 | B12 | 2026-10-08 | Bij het openen kiest Britt een evenement **of netwerkt zonder evenement** ("casual networking"). Ontmoetingen kunnen zonder evenement bestaan. | Ook buiten conferenties netwerken. | Altijd een evenement verplicht |
+| B13 | 2026-10-09 | De keuze (evenement / nieuw evenement / zonder evenement) verschijnt **bij de eerste keer openen op een nieuwe dag**; het evenement van gisteren staat bovenaan als het nog loopt. | Eén tik per dag voorkomt dat ontmoetingen onder het verkeerde evenement of zonder evenement belanden. | Telkens bij openen; alleen als niets gekozen is of het evenement voorbij is |
+| B14 | 2026-10-09 | Evenementen **aanpassen en verwijderen hoort bij F10** ("Evenementen beheren"); F1 maakt alleen aan en kiest. | F1 klein houden. | Naam/datums aanpassen in F1; aanpassen én verwijderen in F1 |
 
 ## LinkedIn
 | # | Datum | Beslissing | Reden | Verworpen |

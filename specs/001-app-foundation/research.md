@@ -33,6 +33,9 @@ MDN, Cloudflare, Dexie and vite-plugin-pwa documentation in October 2026.
     Apple).
 - **Alternatives considered**: no request (B in clarify) and an automatic second copy
   (C in clarify), both rejected by Britt.
+- **Observed on Britt's iPhone (2026-10-08)**: quickstart checks passed (install, data kept
+  after close/restart/update). The exact `persisted()` result shown in Diagnostics is not yet
+  noted here.
 
 ## R3. Safari tab vs installed app
 

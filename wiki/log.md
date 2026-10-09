@@ -2,6 +2,17 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-09** — implementatie F1 (`/speckit-implement`) — Keuzescherm, formulier nieuw evenement,
+  contextbalk en dagelijkse keuze gebouwd; 66 tests groen, build OK. 28 van 31 taken klaar; open:
+  push (T029), controle op de iPhone (T030) en afvinken in features.md (T031).
+
+- **2026-10-09** — spec F1 (`/speckit-specify`) met Britt — Spec `specs/002-events` aangemaakt.
+  Beslissingen B13 (keuze bij eerste keer openen per dag) en B14 (evenementen beheren in F10).
+
+- **2026-10-08** — rollout en iPhone-controle F0 door Britt — App live op
+  socialbutterfly2.pages.dev (build via Cloudflare, Node 24.13.0). Controles op de iPhone in orde.
+  Alle taken van F0 afgevinkt; F0 in features.md volledig afgevinkt.
+
 - **2026-10-08** — implementatie F0 (`/speckit-implement`) — App in `app/` gebouwd (TypeScript,
   Vite, React, Dexie, PWA); 33 tests groen, build OK. 35 van 41 taken klaar; open: rollout (T022),
   controles op de iPhone (T023, T032, T037, T039) en afvinken in features.md (T041). Nog niet gepusht.

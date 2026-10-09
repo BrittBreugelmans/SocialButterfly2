@@ -31,6 +31,28 @@ export const nl = {
   'diagnostics.addTestData': 'Testdata toevoegen',
   'diagnostics.removeTestData': 'Testdata verwijderen',
   'diagnostics.close': 'Sluiten',
+
+  'choice.title': 'Waar ben je vandaag?',
+  'choice.continue': 'Verder met {name}',
+  'choice.current': 'Nu bezig',
+  'choice.upcoming': 'Binnenkort',
+  'choice.past': 'Voorbij',
+  'choice.newEvent': 'Nieuw evenement',
+  'choice.casual': 'Netwerken zonder evenement',
+
+  'event.title': 'Nieuw evenement',
+  'event.name': 'Naam',
+  'event.namePlaceholder': 'bv. Devoxx 2026',
+  'event.startDate': 'Van',
+  'event.endDate': 'Tot en met',
+  'event.save': 'Opslaan en starten',
+  'event.back': 'Terug',
+  'event.errorName': 'Geef het evenement een naam.',
+  'event.errorDates': 'De einddatum kan niet vóór de startdatum liggen.',
+
+  'context.at': 'Je bent op',
+  'context.casual': 'Netwerken zonder evenement',
+  'context.change': 'Wijzig evenement',
 } as const
 
 export type TextKey = keyof typeof nl
