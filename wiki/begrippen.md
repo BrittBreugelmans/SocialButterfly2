@@ -14,7 +14,7 @@ Gebruik deze woorden consequent. De Engelse term is de naam in specs en code.
 | Zoek-link | `searchUrl` | LinkedIn-zoekpagina met naam + bedrijf, gebruikt zolang de profiel-URL ontbreekt. |
 | Actie | `Action` | Openstaande taak op de Acties-tab. Types: notitie ontbreekt, nog niet geconnecteerd, profiel-link ontbreekt. |
 | Afgewezen actie | `dismissed` | Actie die Britt bewust negeert (bv. geen notitie nodig). Verschijnt niet meer. |
-| Connectiestatus | `connectionStatus` | Of Britt al op "Connect" tikte in LinkedIn. |
+| Connectiestatus | `connectionStatus` | Of Britt al op "Connect" tikte in LinkedIn: "nog niet geconnecteerd" (`notConnected`) of "geconnecteerd" (`connected`). Britt zet het met "Ik heb geconnecteerd" (B16). |
 | Doorgeef-modus | `guestMode` | Scherm voor de gast: groot, vriendelijk, tweetalig, zonder Britts lijst of notities. |
 | Snelle modus | `quickMode` | Britt vult zelf in; compact en snel. |
 | Mijn QR | `myQr` | Scherm met Britts eigen LinkedIn-QR (met vlinder). |

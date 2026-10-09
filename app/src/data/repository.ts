@@ -9,6 +9,8 @@ import {
   StorageFullError,
   ValidationError,
 } from './errors'
+import { buildSearchUrl } from '../linkedin/links'
+import { normalizeName } from '../people/nameMatch'
 import type { ConnectionStatus, Encounter, Event, Language, Person, Settings } from './types'
 
 // ---------------------------------------------------------------------------
@@ -447,6 +449,142 @@ export async function createEncounterInContext(input: { personId: string; note?:
       })
       await db.encounters.add(encounter)
       return encounter
+    }),
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Add by name (F2, specs/003-add-by-name)
+// ---------------------------------------------------------------------------
+
+export interface AddByNameResult {
+  person: Person
+  encounter: Encounter
+  /** True when today's Encounter in the same context was reused (B19). */
+  alreadyMetToday: boolean
+}
+
+export interface SameNameMatch {
+  person: Person
+  /** Date of the Person's newest Encounter; absent when there is none. */
+  lastEncounterDate?: string
+}
+
+/**
+ * Stored Persons with the same name, ignoring case and extra spaces (FR-006, research R3).
+ * Newest last Encounter first; Persons without Encounters last.
+ */
+export async function findSameNamePersons(name: string): Promise<SameNameMatch[]> {
+  const wanted = normalizeName(name)
+  const persons = await db.persons.filter((person) => normalizeName(person.name) === wanted).toArray()
+  const matches = await Promise.all(
+    persons.map(async (person) => {
+      const dates = (await db.encounters.where('personId').equals(person.id).toArray()).map((e) => e.date)
+      const lastEncounterDate = dates.sort().at(-1)
+      return compact<SameNameMatch>({ person, lastEncounterDate })
+    }),
+  )
+  return matches.sort((a, b) => (b.lastEncounterDate ?? '').localeCompare(a.lastEncounterDate ?? ''))
+}
+
+/**
+ * Saves the Person (new, or the existing one the owner picked) and an Encounter for today in the
+ * current context, and opens the note step for it, in ONE transaction: nothing is saved on any
+ * error (FR-009, research R4). An existing Person already met today in the same context keeps
+ * that Encounter (B19).
+ */
+export async function addByName(input: {
+  name: string
+  company?: string
+  existingPersonId?: string
+}): Promise<AddByNameResult> {
+  const fields =
+    input.existingPersonId === undefined
+      ? validatePerson({
+          name: input.name,
+          company: input.company,
+          searchUrl: buildSearchUrl(input.name, input.company),
+        })
+      : undefined
+  return withStorageErrors(() =>
+    db.transaction('rw', db.persons, db.events, db.encounters, db.settings, async () => {
+      const now = nowIso()
+      const settings = await getSettings()
+      const today = todayLocal()
+
+      let person: Person
+      let encounter: Encounter | undefined
+      if (fields) {
+        person = compact<Person>({ id: newId(), createdAt: now, updatedAt: now, ...fields })
+        await db.persons.add(person)
+      } else {
+        const existing = await db.persons.get(input.existingPersonId!)
+        if (!existing) throw new ValidationError('existingPersonId', 'Unknown Person')
+        person = existing
+        // Same context: the same Event, or both casual networking (eventId absent).
+        encounter = await db.encounters
+          .where('personId')
+          .equals(person.id)
+          .filter((e) => e.date === today && e.eventId === settings.activeEventId)
+          .first()
+      }
+
+      const alreadyMetToday = encounter !== undefined
+      if (!encounter) {
+        encounter = compact<Encounter>({
+          id: newId(),
+          createdAt: now,
+          updatedAt: now,
+          personId: person.id,
+          eventId: settings.activeEventId,
+          date: today,
+        })
+        await db.encounters.add(encounter)
+      }
+
+      await db.settings.put(
+        compact<Settings>({ ...settings, key: 'settings', noteStepEncounterId: encounter.id, updatedAt: now }),
+      )
+      return { person, encounter, alreadyMetToday }
+    }),
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Note step (F2, B18)
+// ---------------------------------------------------------------------------
+
+/**
+ * The open note step: only when noteStepEncounterId points to an existing Encounter dated today.
+ * A stale id (deleted Encounter, another day) is ignored, not cleaned up (research R5).
+ */
+export async function getNoteStep(): Promise<{ person: Person; encounter: Encounter } | undefined> {
+  const { noteStepEncounterId } = await getSettings()
+  if (noteStepEncounterId === undefined) return undefined
+  const encounter = await db.encounters.get(noteStepEncounterId)
+  if (!encounter || encounter.date !== todayLocal()) return undefined
+  const person = await db.persons.get(encounter.personId)
+  return person ? { person, encounter } : undefined
+}
+
+/**
+ * Closes the note step in ONE transaction. A note that is not empty after trimming replaces the
+ * Encounter's note; an empty or missing note keeps the existing one (skip, FR-016, FR-007a).
+ */
+export async function finishNoteStep(encounterId: string, note: string | undefined): Promise<void> {
+  const text = optionalText(note)
+  await withStorageErrors(() =>
+    db.transaction('rw', db.encounters, db.settings, async () => {
+      const now = nowIso()
+      if (text !== undefined) {
+        const current = await db.encounters.get(encounterId)
+        if (!current) throw new ValidationError('id', 'Unknown Encounter')
+        await db.encounters.put({ ...current, note: text, updatedAt: now })
+      }
+      const settings = await getSettings()
+      await db.settings.put(
+        compact<Settings>({ ...settings, key: 'settings', noteStepEncounterId: undefined, updatedAt: now }),
+      )
     }),
   )
 }

@@ -12,9 +12,10 @@ interface StartScreenProps {
   /** The active Event, undefined during casual networking, or 'loading' while it is read. */
   activeEvent: Event | undefined | 'loading'
   onChangeContext(): void
+  onAddByName(): void
 }
 
-export function StartScreen({ storageStatus, activeEvent, onChangeContext }: StartScreenProps) {
+export function StartScreen({ storageStatus, activeEvent, onChangeContext, onAddByName }: StartScreenProps) {
   const { language, setLanguage, t } = useLanguage()
   const [diagnosticsOpen, setDiagnosticsOpen] = useState(false)
   const pressTimer = useRef<number | undefined>(undefined)
@@ -36,7 +37,10 @@ export function StartScreen({ storageStatus, activeEvent, onChangeContext }: Sta
         🦋
       </p>
       <h1>{t('app.title')}</h1>
-      <p className="subtitle">{t('app.comingSoon')}</p>
+
+      <button type="button" className="add-by-name" onClick={onAddByName}>
+        {t('start.addByName')}
+      </button>
 
       <div className="language-switch" role="group" aria-label={t('app.languageSwitch')}>
         <span className="language-label">{t('app.languageSwitch')}</span>

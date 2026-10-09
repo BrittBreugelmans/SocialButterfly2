@@ -3,7 +3,6 @@ import type { TextKey } from './nl'
 // Typed against nl.ts: a missing or extra key is a compile error (FR-015).
 export const en: Record<TextKey, string> = {
   'app.title': 'The Social Butterfly',
-  'app.comingSoon': 'Coming soon.',
   'app.languageSwitch': 'Language',
   'app.languageNl': 'NL',
   'app.languageEn': 'EN',
@@ -53,4 +52,29 @@ export const en: Record<TextKey, string> = {
   'context.at': "You're at",
   'context.casual': 'Casual networking',
   'context.change': 'Change event',
+
+  'start.addByName': 'Add by name',
+
+  'add.title': 'Who did you meet?',
+  'add.name': 'Name',
+  'add.namePlaceholder': 'e.g. Jan Peeters',
+  'add.company': 'Company (optional)',
+  'add.companyPlaceholder': 'e.g. Elmos',
+  'add.search': 'Search on LinkedIn',
+  'add.back': 'Back',
+
+  'same.title': 'Is this the same person?',
+  'same.lastMet': 'Last met: {date}',
+  'same.noCompany': 'No company',
+  'same.newPerson': 'No, new person',
+
+  'note.title': 'Note for {name}',
+  'note.label': 'Note',
+  'note.placeholder': 'What did you talk about?',
+  'note.connected': 'I connected',
+  'note.save': 'Save',
+  'note.skip': 'Skip',
+  'note.alreadyMet': 'You already met {name} today.',
+  'note.openLinkedIn': 'Open LinkedIn',
+  'note.openFailed': "LinkedIn didn't open. Tap here:",
 }

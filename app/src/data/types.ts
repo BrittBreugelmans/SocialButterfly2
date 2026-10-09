@@ -53,5 +53,7 @@ export interface Settings {
   lastBackupAt?: string
   /** Local date (YYYY-MM-DD) on which the owner last chose an Event or casual networking (FR-005). */
   contextChosenOn?: string
+  /** The Encounter whose note step is open (F2, B18). Ignored when the Encounter is gone or not dated today. */
+  noteStepEncounterId?: string
   updatedAt: string
 }

@@ -17,17 +17,19 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [x] Taalwissel NL/EN-basis aanwezig
 
 ## F1 — Evenementen
-- [ ] Evenement aanmaken (naam, startdatum, einddatum; einddatum ≥ startdatum)
-- [ ] Actief evenement kiezen
-- [ ] Nieuwe ontmoetingen komen automatisch onder het actieve evenement
-- [ ] Bij openen: evenement kiezen/aanmaken of netwerken zonder evenement (B12), eerste keer per dag (B13)
+- [x] Evenement aanmaken (naam, startdatum, einddatum; einddatum ≥ startdatum)
+- [x] Actief evenement kiezen
+- [x] Nieuwe ontmoetingen komen automatisch onder het actieve evenement
+- [x] Bij openen: evenement kiezen/aanmaken of netwerken zonder evenement (B12), eerste keer per dag (B13)
 
 ## F2 — Toevoegen via naam (snelle modus)
-- [ ] Formulier: naam + bedrijf ⚠️ #4
+- [ ] Formulier: naam + bedrijf (bedrijf optioneel, B17)
 - [ ] Knop "Zoek op LinkedIn" opent de zoek-link met naam + bedrijf
+- [ ] Zelfde naam → vraag "Is dit dezelfde persoon?" (B15)
 - [ ] Ontmoeting opgeslagen met zoek-link, datum en evenement
-- [ ] Status "nog niet geconnecteerd" bijhouden ⚠️ #2
+- [ ] Status "nog niet geconnecteerd" bijhouden
 - [ ] Na opslaan verschijnt het notitieveld (overslaan kan)
+- [ ] "Ik heb geconnecteerd" op het notitiescherm (B16)
 
 ## F3 — Doorgeef-modus (gast)
 - [ ] Groot, vriendelijk scherm; geen lijst of notities zichtbaar
@@ -39,7 +41,7 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 ## F4 — Profiel-link koppelen
 - [ ] Knop "Plak LinkedIn-link" leest het klembord (iOS-bevestiging)
 - [ ] URL wordt gevalideerd en genormaliseerd (`linkedin.com/in/<handle>`)
-- [ ] Bestaande persoon met dezelfde URL → samenvoegen, geen dubbel ⚠️ #1
+- [ ] Bestaande persoon met dezelfde URL → samenvoegen, geen dubbel
 - [ ] Actie "profiel-link ontbreekt" verdwijnt na koppelen
 
 ## F5 — Toevoegen via QR
@@ -59,7 +61,7 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [ ] Zoeken/filteren op naam
 - [ ] Persoon-detail met tijdlijn van ontmoetingen + notities
 - [ ] "Open in LinkedIn" (profiel-URL, anders zoek-link)
-- [ ] Connectiestatus aanpassen ⚠️ #2
+- [ ] Connectiestatus aanpassen
 - [ ] Persoon verwijderen
 
 ## F8 — Acties-tab

@@ -8,11 +8,12 @@
 
 ## Flow A — Toevoegen via naam
 1. Britt kiest **doorgeef-modus** (geeft gsm door) of **snelle modus** (tikt zelf).
-2. Naam + bedrijf ingeven. In doorgeef-modus: begroeting + privacygeruststelling, NL/EN-knop.
-3. "Zoek op LinkedIn" → zoek-link opent in LinkedIn.
-4. Gast wijst zichzelf aan; Britt tikt **Connect**.
-5. Optioneel: in LinkedIn "Delen → Link kopiëren", terug naar de app, **"Plak LinkedIn-link"**.
-6. Ontmoeting wordt opgeslagen onder het actieve evenement; notitieveld verschijnt (overslaan kan).
+2. Naam + bedrijf ingeven; bedrijf is optioneel (B17). In doorgeef-modus: begroeting + privacygeruststelling, NL/EN-knop.
+3. "Zoek op LinkedIn". Bestaat er al een persoon met dezelfde naam? → **"Is dit dezelfde persoon?"** (B15, zie Flow D).
+4. Ontmoeting wordt opgeslagen onder het actieve evenement; daarna opent de zoek-link in LinkedIn.
+5. Gast wijst zichzelf aan; Britt tikt **Connect**.
+6. Optioneel: in LinkedIn "Delen → Link kopiëren", terug naar de app, **"Plak LinkedIn-link"**.
+7. Terug in de app: notitieveld (overslaan kan) en **"Ik heb geconnecteerd"** (B16). Ook na sluiten door iOS, dezelfde dag (B18).
 
 ## Flow B — Toevoegen via QR
 1. "Scan QR" → camera.
@@ -29,7 +30,9 @@
 
 ## Flow D — Bestaande persoon herkennen
 - Match op **profiel-URL**: zelfde persoon → nieuwe ontmoeting aan de tijdlijn toevoegen.
-- Zonder URL (Flow A, nog niet geplakt): zie open vraag over matchen op naam in [open-vragen.md](open-vragen.md).
+- Zonder URL (Flow A, nog niet geplakt): match op **naam** (hoofdletters en extra spaties tellen niet). De app vraagt
+  "Is dit dezelfde persoon?" met bedrijf en datum van de laatste ontmoeting. Ja → nieuwe ontmoeting bij die persoon;
+  nee → nieuwe persoon ([B15](beslissingen.md)).
 
 ## Doorgeef-modus — eisen
 - Groot, vriendelijk formulier; geen lijst of notities zichtbaar.

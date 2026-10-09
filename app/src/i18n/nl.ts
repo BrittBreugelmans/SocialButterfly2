@@ -3,7 +3,6 @@
 
 export const nl = {
   'app.title': 'De Sociale Vlinder',
-  'app.comingSoon': 'Binnenkort beschikbaar.',
   'app.languageSwitch': 'Taal',
   'app.languageNl': 'NL',
   'app.languageEn': 'EN',
@@ -53,6 +52,31 @@ export const nl = {
   'context.at': 'Je bent op',
   'context.casual': 'Netwerken zonder evenement',
   'context.change': 'Wijzig evenement',
+
+  'start.addByName': 'Toevoegen via naam',
+
+  'add.title': 'Wie heb je ontmoet?',
+  'add.name': 'Naam',
+  'add.namePlaceholder': 'bv. Jan Peeters',
+  'add.company': 'Bedrijf (optioneel)',
+  'add.companyPlaceholder': 'bv. Elmos',
+  'add.search': 'Zoek op LinkedIn',
+  'add.back': 'Terug',
+
+  'same.title': 'Is dit dezelfde persoon?',
+  'same.lastMet': 'Laatst ontmoet: {date}',
+  'same.noCompany': 'Geen bedrijf',
+  'same.newPerson': 'Nee, nieuwe persoon',
+
+  'note.title': 'Notitie bij {name}',
+  'note.label': 'Notitie',
+  'note.placeholder': 'Waarover hebben jullie gepraat?',
+  'note.connected': 'Ik heb geconnecteerd',
+  'note.save': 'Opslaan',
+  'note.skip': 'Overslaan',
+  'note.alreadyMet': 'Je hebt {name} vandaag al ontmoet.',
+  'note.openLinkedIn': 'Open LinkedIn',
+  'note.openFailed': 'LinkedIn ging niet open. Tik hier:',
 } as const
 
 export type TextKey = keyof typeof nl

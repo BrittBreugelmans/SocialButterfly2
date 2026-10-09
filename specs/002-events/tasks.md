@@ -190,9 +190,9 @@ one tap opens the choice.
 ## Phase 6: Polish & Cross-Cutting Concerns
 
 - [X] T028 Run `npm run typecheck`, `npm test` and `npm run build` in `app/`; check that all texts on the new screens come from `t()` (search `app/src/ui/` for string literals in JSX).
-- [ ] T029 Commit and push to `main` (manual, Britt). Cloudflare deploys automatically; check that the deployment succeeds.
-- [ ] T030 Validate on the iPhone with [quickstart.md](quickstart.md) sections 2–5, including the date change in section 3 (manual, Britt).
-- [ ] T031 Tick the F1 items in `specs/features.md` and add a line to `wiki/log.md` (date, "F1 implemented", what changed), per CLAUDE.md.
+- [X] T029 Commit and push to `main` (manual, Britt). Cloudflare deploys automatically; check that the deployment succeeds. *(2026-10-09: pushed as `512a9ff`; the live bundle on socialbutterfly2.pages.dev matches the local build.)*
+- [X] T030 Validate on the iPhone with [quickstart.md](quickstart.md) sections 2–5, including the date change in section 3 (manual, Britt).
+- [X] T031 Tick the F1 items in `specs/features.md` and add a line to `wiki/log.md` (date, "F1 implemented", what changed), per CLAUDE.md.
 
 ---
 

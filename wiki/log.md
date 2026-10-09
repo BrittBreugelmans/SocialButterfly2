@@ -2,6 +2,31 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-09** — implementatie F2 (`/speckit-implement`) — Toevoegen via naam gebouwd: formulier,
+  "Is dit dezelfde persoon?", notitiescherm met "Ik heb geconnecteerd", terugkeer na sluiten door
+  iOS. 118 tests groen, build OK. 29 van 32 taken klaar; open: push (T030), controle op de iPhone
+  (T031, ook hoe LinkedIn opent) en afvinken in features.md (T032).
+
+- **2026-10-09** — plan F2 (`/speckit-plan`) — Plan, research, data model, contracts en quickstart
+  voor F2. Eén nieuw Settings-veld (`noteStepEncounterId`), geen schemawijziging. LinkedIn opent na
+  het opslaan; een link op het notitiescherm vangt een geblokkeerde opening op. Te controleren op de
+  iPhone: opent de zoek-link in de LinkedIn-app, Safari of een browservenster (quickstart 3).
+
+- **2026-10-09** — clarify F2 (`/speckit-clarify`) — B18 (notitiescherm komt terug na sluiten door
+  iOS, dezelfde dag) en B19 (zelfde persoon twee keer op één dag: geen tweede ontmoeting). F2-spec
+  en Flow A bijgewerkt.
+
+- **2026-10-09** — antwoorden Britt op de F2-vragen (`/speckit-specify`) — Open vragen #1, #2 en
+  (deels) #4 beslist: B15 (zelfde naam → "Is dit dezelfde persoon?"), B16 ("Ik heb geconnecteerd" op
+  het notitiescherm), B17 (bedrijf optioneel). F2-spec (`specs/003-add-by-name`) zonder open
+  markers. Flows A en D, begrippen, features.md en constitution (1.0.2) bijgewerkt. Nog open uit #4:
+  bedrijf bewaren bij een QR-scan (F5).
+
+- **2026-10-09** — rollout en iPhone-controle F1 door Britt — F1 geïmplementeerd. Gepusht als
+  `512a9ff`; live op socialbutterfly2.pages.dev. Controles op de iPhone in orde (quickstart 2–5).
+  Alle taken van F1 afgevinkt; F1 in features.md volledig afgevinkt. Ontmoetingen onder het actieve
+  evenement werken in de opslag; zichtbaar in de app vanaf F2.
+
 - **2026-10-09** — implementatie F1 (`/speckit-implement`) — Keuzescherm, formulier nieuw evenement,
   contextbalk en dagelijkse keuze gebouwd; 66 tests groen, build OK. 28 van 31 taken klaar; open:
   push (T029), controle op de iPhone (T030) en afvinken in features.md (T031).

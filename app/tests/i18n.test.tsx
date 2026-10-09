@@ -34,7 +34,7 @@ describe('language switch (FR-015, FR-016)', () => {
     const { unmount } = renderApp()
     await screen.findByText(nl['storage.notPersisted'])
 
-    await user.click(screen.getByRole('button', { name: nl['app.languageEn'] }))
+    await user.click(await screen.findByRole('button', { name: nl['app.languageEn'] }))
     expect(screen.getByText('The Social Butterfly')).toBeInTheDocument()
     expect(screen.getByText(en['storage.notPersisted'])).toBeInTheDocument()
     expect(screen.queryByText(nl['app.title'])).not.toBeInTheDocument()
@@ -52,7 +52,7 @@ describe('language switch (FR-015, FR-016)', () => {
     renderApp()
     await screen.findByText(nl['storage.notPersisted'])
 
-    await user.click(screen.getByRole('button', { name: nl['app.languageEn'] }))
+    await user.click(await screen.findByRole('button', { name: nl['app.languageEn'] }))
     expect(await screen.findByText(en['storage.full'])).toBeInTheDocument()
     expect(screen.getByText('The Social Butterfly')).toBeInTheDocument()
   })
