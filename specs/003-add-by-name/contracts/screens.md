@@ -22,7 +22,9 @@ Form ──back──▶ Start (nothing saved)
 Note step ──save / skip──▶ Start
 ```
 
-- "save" = one `addByName` call; LinkedIn opens only after it resolves (FR-009).
+- "save" = one `addByName` call, started by the same tap that opens LinkedIn through a real link
+  (B20). The same-name check runs while the owner types. Only a tap before that check finished
+  saves first and then tries `window.open` (research R1).
 - Banners (F0) stay visible above every screen.
 
 ## Start screen (changed)
@@ -40,7 +42,7 @@ Note step ──save / skip──▶ Start
 | Context (FR-002) | The F1 context bar, read-only (no `onChange`). |
 | Name (`add.name`) | Focused; `maxLength` 100; required. |
 | Company (`add.company`) | Optional; `maxLength` 100. |
-| "Search on LinkedIn" (`add.search`) | Disabled while the name is blank or while saving. |
+| "Search on LinkedIn" (`add.search`) | A link styled as a button, `href` = the search link for name and company, `target="_blank"`. `aria-disabled` while the name is blank or while saving; `aria-busy` while the same-name check runs. |
 | Back (`add.back`) | To Start, nothing saved. |
 
 ## Same-name question
@@ -48,8 +50,8 @@ Note step ──save / skip──▶ Start
 | Element | Rule |
 |---|---|
 | Title | `same.title` |
-| One button per match | Name, company (or `same.noCompany`), `same.lastMet` with the date of the last Encounter in the app language. Tap = "yes, this Person". |
-| "No, new person" (`same.newPerson`) | Saves a new Person. |
+| One choice per match | Name, company (or `same.noCompany`), `same.lastMet` with the date of the last Encounter in the app language. Tap = "yes, this Person". A link to the Person's LinkedIn URL; a plain button when met today (B19). |
+| "No, new person" (`same.newPerson`) | A link to the search link; saves a new Person. |
 | Back (`add.back`) | Back to the form, input kept. |
 
 ## Note step

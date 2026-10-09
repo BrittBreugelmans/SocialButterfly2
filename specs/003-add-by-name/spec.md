@@ -25,6 +25,8 @@ B15, B16, B17, L2, L3, T6. Terms follow `wiki/begrippen.md`. Builds on F0
   searched with the name only (wiki B17). Whether a QR scan stores a company stays open for F5.
 - Q: If iOS closes the app while the owner is in LinkedIn, does the note step come back on reopen?
   → A: Yes, as long as it is still the same day and she has not started adding another person.
+- Q: (after the iPhone check) iOS blocks opening LinkedIn after the save; accept 3 taps, or let the
+  tap open LinkedIn directly while saving at the same moment? → A: Open directly (wiki B20).
 - Q: She picks an existing Person who already has an Encounter today in the same context: new
   Encounter or reuse? → A: Rare. No new Encounter; the app says she already met this person today
   and shows the note step for today's Encounter.
@@ -34,8 +36,8 @@ B15, B16, B17, L2, L3, T6. Terms follow `wiki/begrippen.md`. Builds on F0
 ### User Story 1 - Add someone by name and find them on LinkedIn (Priority: P1)
 
 The owner is talking to someone at a fair. She opens quick mode, types their name and, if she
-knows it, their company, and taps "Search on LinkedIn". The app saves the Person and the Encounter
-at once, then opens the LinkedIn people search. The person points at their own profile; the owner
+knows it, their company, and taps "Search on LinkedIn". That tap opens the LinkedIn people search
+and saves the Person and the Encounter at the same moment (B20). The person points at their own profile; the owner
 taps Connect in LinkedIn herself.
 
 **Why this priority**: This is the core of the app (constitution Purpose, Flow A). Without it the
@@ -48,8 +50,8 @@ Peeters is stored, with an Encounter for today under the active Event.
 **Acceptance Scenarios**:
 
 1. **Given** an active Event, **When** the owner enters a name and company and taps "Search on
-   LinkedIn", **Then** a Person and an Encounter are saved before LinkedIn opens, and LinkedIn opens
-   a people search with the name and company.
+   LinkedIn", **Then** the same tap opens a LinkedIn people search with the name and company, and
+   a Person and an Encounter are saved (B20).
 2. **Given** casual networking, **When** she adds someone, **Then** the Encounter is saved without
    an Event.
 3. **Given** the form, **When** the name is empty or only spaces, **Then** "Search on LinkedIn"
@@ -193,9 +195,11 @@ save: the Encounter has that note and the Person is "connected". Add a second pe
 
 #### Saving and searching
 
-- **FR-009**: Tapping "Search on LinkedIn" (after the same-name question, if any) MUST first save
-  the Encounter, and the Person when new, and only then open LinkedIn (except FR-007a). Saving MUST be complete or
-  not happen at all: never a Person without its Encounter (constitution IX).
+- **FR-009**: Tapping "Search on LinkedIn" (or a choice in the same-name question) MUST open
+  LinkedIn on that tap itself and start saving the Encounter, and the Person when new, at the same
+  moment (B20; except FR-007a). The same-name check MUST be done before that tap, while the owner
+  types. Saving MUST be complete or not happen at all: never a Person without its Encounter
+  (constitution IX).
 - **FR-010**: A new Person MUST have the name, the company (if given) and the LinkedIn people-search
   link. The search keywords are the name, followed by the company when given; with no company the
   name alone. It has no profile URL yet (F4 adds it).

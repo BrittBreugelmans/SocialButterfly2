@@ -217,11 +217,12 @@ kill on the same day (B18), and offers a fallback "Open LinkedIn" link (research
 ## Phase 7: Follow-up after the iPhone check (2026-10-09)
 
 The automatic opening of LinkedIn is blocked on the iPhone, and the switch looked out of
-proportion.
+proportion. Britt chose to open LinkedIn directly on the tap (B20) instead of an extra tap.
 
 - [X] T033 Make "Open LinkedIn" in `app/src/ui/NoteStep.tsx` a full-width button (`<a class="button-link">`, still a real link so iOS treats the tap as direct) right under the title; filled when `!opened && !alreadyMetToday`, outlined (`secondary`) otherwise. Remove the `note.openFailed` hint and key from `nl.ts` and `en.ts`. Update the two tests in `app/tests/add-by-name-ui.test.tsx`.
 - [X] T034 Fix the switch in `app/src/styles.css`: the rule `.event-form input` (min-height 44px, padding, border) also hit the switch. Scope the switch rules as `.event-form .switch input` and reset `min-height`, `padding` and `border`, so the track is exactly 51 × 31 px with a 27 px knob.
-- [ ] T035 Push and check on the iPhone: the button opens LinkedIn, the switch has the right shape (manual, Britt).
+- [X] T035 Make "Search on LinkedIn" a real link that opens LinkedIn on the tap and starts `addByName` in the same handler (B20, research R1 revised). Run `findSameNamePersons` (now with `metToday`) while the owner types, so the tap knows whether to show the question; a tap before the check finished saves first and tries `window.open`. In `SameNameQuestion`, make picking a Person (unless met today) and "No, new person" links too. Update the tests in `app/tests/add-by-name-ui.test.tsx` and `app/tests/add-by-name.test.ts`, the spec (FR-009), the contracts and the quickstart.
+- [ ] T036 Push and check on the iPhone: one tap on "Zoek op LinkedIn" opens LinkedIn; the note step shows the outlined button; the switch has the right shape; the same-name choices open LinkedIn (manual, Britt).
 
 ---
 

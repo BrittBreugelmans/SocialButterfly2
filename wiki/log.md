@@ -2,11 +2,15 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-09** — keuze Britt na de iPhone-controle F2 — B20: "Zoek op LinkedIn" opent LinkedIn
+  met dezelfde tik en bewaart tegelijk; terug naar 2 tikken. De naamcontrole gebeurt nu tijdens
+  het typen. Spec (FR-009), research R1, contracts, quickstart en taken bijgewerkt; 119 tests
+  groen. Nog te controleren op de iPhone (T036).
+
 - **2026-10-09** — feedback Britt na de iPhone-controle F2 — LinkedIn opent op de iPhone **niet
   automatisch**; Britt tikt op de link. Die link is nu een knop bovenaan het notitiescherm (blauw
   als LinkedIn niet openging); de melding "LinkedIn ging niet open" is weg. De schakelaar
-  "Ik heb geconnecteerd" had een verkeerde vorm door de algemene invoerstijl; opgelost. Nog te
-  controleren op de iPhone (T035).
+  "Ik heb geconnecteerd" had een verkeerde vorm door de algemene invoerstijl; opgelost. Zie B20 hierboven.
 
 - **2026-10-09** — rollout en iPhone-controle F2 door Britt — F2 geïmplementeerd. Gepusht als
   `ce775f5`; live op socialbutterfly2.pages.dev. Controles op de iPhone in orde. Alle taken van F2

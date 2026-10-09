@@ -468,20 +468,26 @@ export interface SameNameMatch {
   person: Person
   /** Date of the Person's newest Encounter; absent when there is none. */
   lastEncounterDate?: string
+  /** Already has an Encounter today in the current context: picking it opens no LinkedIn (B19). */
+  metToday: boolean
 }
 
 /**
  * Stored Persons with the same name, ignoring case and extra spaces (FR-006, research R3).
- * Newest last Encounter first; Persons without Encounters last.
+ * Newest last Encounter first; Persons without Encounters last. The form looks this up while
+ * the owner types, so the tap on "Search on LinkedIn" can open LinkedIn directly (B20).
  */
 export async function findSameNamePersons(name: string): Promise<SameNameMatch[]> {
   const wanted = normalizeName(name)
+  const { activeEventId } = await getSettings()
+  const today = todayLocal()
   const persons = await db.persons.filter((person) => normalizeName(person.name) === wanted).toArray()
   const matches = await Promise.all(
     persons.map(async (person) => {
-      const dates = (await db.encounters.where('personId').equals(person.id).toArray()).map((e) => e.date)
-      const lastEncounterDate = dates.sort().at(-1)
-      return compact<SameNameMatch>({ person, lastEncounterDate })
+      const encounters = await db.encounters.where('personId').equals(person.id).toArray()
+      const lastEncounterDate = encounters.map((e) => e.date).sort().at(-1)
+      const metToday = encounters.some((e) => e.date === today && e.eventId === activeEventId)
+      return compact<SameNameMatch>({ person, lastEncounterDate, metToday })
     }),
   )
   return matches.sort((a, b) => (b.lastEncounterDate ?? '').localeCompare(a.lastEncounterDate ?? ''))

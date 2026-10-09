@@ -8,9 +8,12 @@ through the storage-full handling, nothing in the repository uses the network.
 ## Add by name
 
 ```ts
-findSameNamePersons(name: string): Promise<Array<{ person: Person; lastEncounterDate?: string }>>
+findSameNamePersons(name: string):
+  Promise<Array<{ person: Person; lastEncounterDate?: string; metToday: boolean }>>
 // Persons whose normalized name equals normalizeName(name) (research R3).
 // Sorted by lastEncounterDate, newest first. Empty array when there is no match.
+// metToday: an Encounter today in the current context (B19). The form calls this while the
+// owner types, so the tap can open LinkedIn directly (B20).
 
 addByName(input: { name: string; company?: string; existingPersonId?: string }):
   Promise<{ person: Person; encounter: Encounter; alreadyMetToday: boolean }>

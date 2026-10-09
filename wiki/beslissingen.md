@@ -24,6 +24,7 @@ Formaat: **beslissing** — reden — verworpen alternatieven. Bindend tenzij Br
 | B17 | 2026-10-09 | **Bedrijf is optioneel** bij toevoegen via naam; leeg = zoeken op LinkedIn met de naam alleen. Of een QR-scan een bedrijf bewaart, blijft open (#4, F5). | Snelheid; het bedrijf is niet altijd gekend. | Verplicht veld |
 | B18 | 2026-10-09 | Sluit iOS de app terwijl Britt in LinkedIn zit, dan **komt het notitiescherm terug** bij heropenen, zolang het dezelfde dag is en ze nog geen volgende persoon begon toe te voegen. | iOS sluit web-apps vaak op de achtergrond; anders valt "notitie meteen" (B6) en "Ik heb geconnecteerd" (B16) vaak weg. | Altijd terugkomen tot opgeslagen/overgeslagen; nooit terugkomen (alleen Acties-tab) |
 | B19 | 2026-10-09 | Dezelfde persoon **twee keer op één dag** in dezelfde context (zeldzaam): geen tweede ontmoeting; de app meldt "al ontmoet vandaag" en toont het notitiescherm van die ontmoeting, zonder LinkedIn te openen. | Geen dubbele ontmoetingen in de tijdlijn. | Altijd een nieuwe ontmoeting |
+| B20 | 2026-10-09 | **"Zoek op LinkedIn" opent LinkedIn met dezelfde tik** (een echte link); de app bewaart op hetzelfde moment. De naamcontrole (B15) gebeurt al tijdens het typen. | iOS blokkeert het openen ná het bewaren; zo blijft het 2 tikken (SC-001). Bewaren duurt milliseconden. | Eerst bewaren, dan een extra knop "Open LinkedIn" (3 tikken) |
 
 ## LinkedIn
 | # | Datum | Beslissing | Reden | Verworpen |

@@ -100,6 +100,22 @@ describe('findSameNamePersons (User Story 2, FR-006)', () => {
     expect(matches[1]?.lastEncounterDate).toBe('2026-09-15')
     expect(matches[2]?.lastEncounterDate).toBeUndefined()
   })
+
+  it('marks a match already met today in the current context (B19)', async () => {
+    await chooseContext(undefined)
+    const metToday = await storeJan('Elmos')
+    const metEarlier = await storeJan('Acme')
+    await createEncounterInContext({ personId: metToday.id })
+    await createEncounter({ personId: metEarlier.id, date: addDaysLocal(todayLocal(), -1) })
+
+    const matches = await findSameNamePersons('Jan Peeters')
+    expect(matches.find((m) => m.person.id === metToday.id)?.metToday).toBe(true)
+    expect(matches.find((m) => m.person.id === metEarlier.id)?.metToday).toBe(false)
+
+    const event = await devoxx()
+    await chooseContext(event.id) // another context now
+    expect((await findSameNamePersons('Jan Peeters')).every((m) => !m.metToday)).toBe(true)
+  })
 })
 
 describe('addByName with an existing Person (User Story 2)', () => {

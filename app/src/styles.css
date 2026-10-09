@@ -402,3 +402,18 @@ h1 {
   background: transparent;
   color: var(--blue);
 }
+
+.button-link[aria-disabled='true'],
+a.event-option[aria-disabled='true'] {
+  opacity: 0.5;
+}
+
+.search-link {
+  margin-top: 16px;
+}
+
+/* A same-name match that opens LinkedIn is a link; make it look like the button version. */
+a.event-option {
+  border: 2px solid var(--surface);
+  text-decoration: none;
+}

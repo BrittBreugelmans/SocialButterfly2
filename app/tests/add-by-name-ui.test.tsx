@@ -21,10 +21,22 @@ import { formatDateRange } from '../src/events/formatDateRange'
 import { LanguageProvider } from '../src/i18n/LanguageProvider'
 import { nl } from '../src/i18n/nl'
 import { buildSearchUrl } from '../src/linkedin/links'
+import { NoteStep } from '../src/ui/NoteStep'
+
+// jsdom cannot follow links; stop it after React has handled the tap. Links only, so
+// checkboxes and submit buttons keep working.
+const stopNavigation = (event: MouseEvent) => {
+  if (event.target instanceof Element && event.target.closest('a')) event.preventDefault()
+}
 
 beforeEach(async () => {
   // The daily choice (F1) was already made today, so the App opens on the start screen.
   await updateSettings({ contextChosenOn: todayLocal() })
+  window.addEventListener('click', stopNavigation)
+})
+
+afterEach(() => {
+  window.removeEventListener('click', stopNavigation)
 })
 
 function renderApp() {
@@ -48,6 +60,17 @@ function mockOpen(returns: Window | null = {} as Window) {
 async function openForm(user: ReturnType<typeof userEvent.setup>) {
   await user.click(await screen.findByRole('button', { name: nl['start.addByName'] }))
   return screen.getByLabelText(nl['add.name'])
+}
+
+/** "Search on LinkedIn", once the same-name check for the typed name is done. */
+async function searchLink() {
+  const link = screen.getByRole('link', { name: nl['add.search'] })
+  await vi.waitFor(() => expect(link).toHaveAttribute('aria-busy', 'false'))
+  return link
+}
+
+function noteTitle(name: string) {
+  return nl['note.title'].replace('{name}', name)
 }
 
 describe('Add by name (User Story 1)', () => {
@@ -79,46 +102,51 @@ describe('Add by name (User Story 1)', () => {
 
   it('keeps "Search on LinkedIn" disabled while the name is blank', async () => {
     const user = userEvent.setup()
+    const { open } = mockOpen()
     renderApp()
     const name = await openForm(user)
-    const search = screen.getByRole('button', { name: nl['add.search'] })
-    expect(search).toBeDisabled()
+    const search = screen.getByRole('link', { name: nl['add.search'] })
+    expect(search).toHaveAttribute('aria-disabled', 'true')
     await user.type(name, '   ')
-    expect(search).toBeDisabled()
+    expect(search).toHaveAttribute('aria-disabled', 'true')
+    await user.click(search)
+    expect(await db.persons.count()).toBe(0)
+    expect(open).not.toHaveBeenCalled()
   })
 
-  it('saves first, then opens the LinkedIn search for name and company', async () => {
+  it('opens the LinkedIn search on the tap itself and saves at the same moment (B20)', async () => {
     const user = userEvent.setup()
-    const { open, storedWhenOpened } = mockOpen()
+    const { open } = mockOpen()
     renderApp()
     await user.type(await openForm(user), 'Jan Peeters')
     await user.type(screen.getByLabelText(nl['add.company']), 'Elmos')
-    await user.click(screen.getByRole('button', { name: nl['add.search'] }))
+    const search = await searchLink()
+    expect(search).toHaveAttribute('href', buildSearchUrl('Jan Peeters', 'Elmos'))
+    expect(search).toHaveAttribute('target', '_blank')
+    expect(search).toHaveAttribute('aria-disabled', 'false')
 
-    await vi.waitFor(() => expect(open).toHaveBeenCalledTimes(1))
-    expect(open).toHaveBeenCalledWith(buildSearchUrl('Jan Peeters', 'Elmos'), '_blank')
-    expect(await storedWhenOpened[0]).toHaveLength(1)
+    await user.click(search)
+    await screen.findByRole('heading', { name: noteTitle('Jan Peeters') })
+    expect(await db.persons.count()).toBe(1)
     expect(await db.encounters.count()).toBe(1)
+    expect(open).not.toHaveBeenCalled() // the link opened LinkedIn, not a script
   })
 
   it('searches on the name only without a company', async () => {
     const user = userEvent.setup()
-    const { open } = mockOpen()
     renderApp()
     await user.type(await openForm(user), 'Jan Peeters')
-    await user.click(screen.getByRole('button', { name: nl['add.search'] }))
-    await vi.waitFor(() => expect(open).toHaveBeenCalledWith(buildSearchUrl('Jan Peeters'), '_blank'))
+    expect(await searchLink()).toHaveAttribute('href', buildSearchUrl('Jan Peeters'))
   })
 
   it('saves once when "Search on LinkedIn" is tapped twice quickly', async () => {
     const user = userEvent.setup()
-    const { open } = mockOpen()
     renderApp()
     await user.type(await openForm(user), 'Jan Peeters')
-    const search = screen.getByRole('button', { name: nl['add.search'] })
+    const search = await searchLink()
     fireEvent.click(search)
     fireEvent.click(search)
-    await vi.waitFor(() => expect(open).toHaveBeenCalledTimes(1))
+    await screen.findByRole('heading', { name: noteTitle('Jan Peeters') })
     expect(await db.persons.count()).toBe(1)
     expect(await db.encounters.count()).toBe(1)
   })
@@ -144,7 +172,7 @@ describe('Same name (User Story 2)', () => {
 
   async function searchFor(user: ReturnType<typeof userEvent.setup>, name: string) {
     await user.type(await openForm(user), name)
-    await user.click(screen.getByRole('button', { name: nl['add.search'] }))
+    await user.click(await searchLink())
   }
 
   it('asks "Is this the same person?" before saving or opening anything', async () => {
@@ -155,7 +183,7 @@ describe('Same name (User Story 2)', () => {
     await searchFor(user, 'jan  peeters')
 
     expect(await screen.findByRole('heading', { name: nl['same.title'] })).toBeInTheDocument()
-    const match = screen.getByRole('button', { name: /Jan Peeters/ })
+    const match = screen.getByRole('link', { name: /Jan Peeters/ })
     expect(match).toHaveTextContent('Elmos')
     expect(match).toHaveTextContent(nl['same.lastMet'].replace('{date}', formatDateRange(LAST_MET, LAST_MET, 'nl')))
     expect(open).not.toHaveBeenCalled()
@@ -167,7 +195,7 @@ describe('Same name (User Story 2)', () => {
     await storeJan({})
     renderApp()
     await searchFor(user, 'Jan Peeters')
-    expect(await screen.findByRole('button', { name: /Jan Peeters/ })).toHaveTextContent(nl['same.noCompany'])
+    expect(await screen.findByRole('link', { name: /Jan Peeters/ })).toHaveTextContent(nl['same.noCompany'])
   })
 
   it('goes back to the form with the input kept and nothing saved', async () => {
@@ -182,39 +210,43 @@ describe('Same name (User Story 2)', () => {
     expect(await db.encounters.count()).toBe(1)
   })
 
-  it('adds an Encounter to the chosen Person and opens their profile', async () => {
+  it('adds an Encounter to the chosen Person; the tap opens their profile', async () => {
     const user = userEvent.setup()
-    const { open } = mockOpen()
     const profileUrl = 'https://www.linkedin.com/in/jan-peeters'
     await storeJan({ company: 'Elmos', profileUrl })
     renderApp()
     await searchFor(user, 'Jan Peeters')
-    await user.click(await screen.findByRole('button', { name: /Jan Peeters/ }))
+    const match = await screen.findByRole('link', { name: /Jan Peeters/ })
+    expect(match).toHaveAttribute('href', profileUrl)
+    expect(match).toHaveAttribute('target', '_blank')
+    await user.click(match)
 
-    await vi.waitFor(() => expect(open).toHaveBeenCalledWith(profileUrl, '_blank'))
+    await screen.findByRole('heading', { name: noteTitle('Jan Peeters') })
     expect(await db.persons.count()).toBe(1)
     expect(await db.encounters.count()).toBe(2)
   })
 
-  it('opens the search link of a chosen Person without a profile URL', async () => {
+  it('links a chosen Person without a profile URL to their search link', async () => {
     const user = userEvent.setup()
-    const { open } = mockOpen()
     await storeJan()
     renderApp()
     await searchFor(user, 'Jan Peeters')
-    await user.click(await screen.findByRole('button', { name: /Jan Peeters/ }))
-    await vi.waitFor(() => expect(open).toHaveBeenCalledWith(buildSearchUrl('Jan Peeters'), '_blank'))
+    expect(await screen.findByRole('link', { name: /Jan Peeters/ })).toHaveAttribute(
+      'href',
+      buildSearchUrl('Jan Peeters'),
+    )
   })
 
-  it('saves a second Jan Peeters on "No, new person"', async () => {
+  it('saves a second Jan Peeters on "No, new person"; the tap opens the search', async () => {
     const user = userEvent.setup()
-    const { open } = mockOpen()
     await storeJan()
     renderApp()
     await searchFor(user, 'Jan Peeters')
-    await user.click(await screen.findByRole('button', { name: nl['same.newPerson'] }))
+    const newPerson = await screen.findByRole('link', { name: nl['same.newPerson'] })
+    expect(newPerson).toHaveAttribute('href', buildSearchUrl('Jan Peeters'))
+    await user.click(newPerson)
 
-    await vi.waitFor(() => expect(open).toHaveBeenCalledTimes(1))
+    await screen.findByRole('heading', { name: noteTitle('Jan Peeters') })
     expect((await listPersons()).filter((p) => p.name === 'Jan Peeters')).toHaveLength(2)
   })
 
@@ -226,9 +258,11 @@ describe('Same name (User Story 2)', () => {
     await createEncounterInContext({ personId: jan.id })
     renderApp()
     await searchFor(user, 'Jan Peeters')
+    // Met today: a plain button, not a link to LinkedIn.
+    expect(screen.queryByRole('link', { name: /Jan Peeters/ })).not.toBeInTheDocument()
     await user.click(await screen.findByRole('button', { name: /Jan Peeters/ }))
 
-    await screen.findByRole('heading', { name: nl['note.title'].replace('{name}', 'Jan Peeters') })
+    await screen.findByRole('heading', { name: noteTitle('Jan Peeters') })
     expect(open).not.toHaveBeenCalled()
     expect(await db.encounters.count()).toBe(2)
   })
@@ -241,8 +275,8 @@ describe('Note step and "I connected" (User Story 3)', () => {
 
   async function addJan(user: ReturnType<typeof userEvent.setup>) {
     await user.type(await openForm(user), 'Jan Peeters')
-    await user.click(screen.getByRole('button', { name: nl['add.search'] }))
-    await screen.findByRole('heading', { name: nl['note.title'].replace('{name}', 'Jan Peeters') })
+    await user.click(await searchLink())
+    await screen.findByRole('heading', { name: noteTitle('Jan Peeters') })
     const [person] = await listPersons()
     return person!
   }
@@ -304,7 +338,7 @@ describe('Note step and "I connected" (User Story 3)', () => {
     unmount()
 
     const second = renderApp()
-    expect(await screen.findByRole('heading', { name: nl['note.title'].replace('{name}', 'Jan Peeters') })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: noteTitle('Jan Peeters') })).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: nl['note.skip'] }))
     await screen.findByRole('button', { name: nl['start.addByName'] })
     second.unmount()
@@ -330,21 +364,23 @@ describe('Note step and "I connected" (User Story 3)', () => {
     expect(screen.queryByLabelText(nl['note.label'])).not.toBeInTheDocument()
   })
 
-  it('shows a filled "Open LinkedIn" button when the opening was blocked (research R1)', async () => {
-    const user = userEvent.setup()
-    mockOpen(null)
-    renderApp()
-    await addJan(user)
-    const button = screen.getByRole('link', { name: nl['note.openLinkedIn'] })
+  it('shows a filled "Open LinkedIn" button when LinkedIn did not open (research R1)', async () => {
+    const jan = await createPerson({ name: 'Jan Peeters', searchUrl: buildSearchUrl('Jan Peeters') })
+    const encounter = await createEncounter({ personId: jan.id, date: todayLocal() })
+    render(
+      <LanguageProvider>
+        <NoteStep person={jan} encounter={encounter} alreadyMetToday={false} opened={false} onDone={() => {}} />
+      </LanguageProvider>,
+    )
+    const button = await screen.findByRole('link', { name: nl['note.openLinkedIn'] })
     expect(button).toHaveAttribute('href', buildSearchUrl('Jan Peeters'))
     expect(button).toHaveAttribute('target', '_blank')
     expect(button).toHaveClass('button-link')
     expect(button).not.toHaveClass('secondary')
   })
 
-  it('shows an outlined "Open LinkedIn" button when LinkedIn opened', async () => {
+  it('shows an outlined "Open LinkedIn" button after the search opened LinkedIn', async () => {
     const user = userEvent.setup()
-    mockOpen()
     renderApp()
     await addJan(user)
     expect(screen.getByRole('link', { name: nl['note.openLinkedIn'] })).toHaveClass('button-link', 'secondary')
@@ -360,7 +396,7 @@ describe('Note step and "I connected" (User Story 3)', () => {
     renderApp()
 
     await user.type(await openForm(user), 'Jan Peeters')
-    await user.click(screen.getByRole('button', { name: nl['add.search'] }))
+    await user.click(await searchLink())
     await user.click(await screen.findByRole('button', { name: /Jan Peeters/ }))
 
     expect(await screen.findByText(nl['note.alreadyMet'].replace('{name}', 'Jan Peeters'))).toBeInTheDocument()

@@ -28,6 +28,15 @@ F2 builds on the F0 and F1 stack (TypeScript, React, Dexie; see
 - **Result on the iPhone (2026-10-09)**: the automatic opening is **blocked**; the owner opens
   LinkedIn with the link on the note step. So that link became a full-width button right under
   the title (filled when LinkedIn did not open), and the `note.openFailed` hint was dropped.
+- **Revised decision (2026-10-09, B20)**: "Search on LinkedIn" is itself a real link
+  (`<a target="_blank">`). The tap opens LinkedIn directly, like the note-step link that works on
+  the iPhone, and starts `addByName` in the same handler. To know before the tap whether the
+  same-name question is needed, the form runs `findSameNamePersons` while the owner types. In the
+  question, picking a Person (unless met today) and "No, new person" are links too. Only when the
+  tap comes before the check finished does the app save first and try `window.open` (the old
+  path; the note-step button covers a block).
+- **Trade-off accepted by the owner**: LinkedIn may open a few milliseconds before the save has
+  finished. If the save fails (storage full), the form keeps the input and the F0 banner shows.
 - **Rationale**: saving first meets FR-009 and constitution IX. The fallback link removes the
   risk that the opening is blocked, and also helps when LinkedIn found nobody or did not load
   (spec edge case).

@@ -38,8 +38,9 @@ During section 2, write down which of these happened. All three are fine:
 - **Safari** opened;
 - a **browser view** slid over the app (with "Done" / "Gereed").
 
-If **nothing** opened (the result on 2026-10-09): the note step shows a filled "Open LinkedIn"
-button under the title; tap it and LinkedIn opens. Note the result in `wiki/log.md`.
+Since B20 the tap on "Zoek op LinkedIn" itself opens LinkedIn. Check: one tap opens LinkedIn and,
+back in the app, the note step shows an outlined "Open LinkedIn" button. Also check "Nee, nieuwe
+persoon" and picking a stored person in section 6: both open LinkedIn on the tap. Note the result in `wiki/log.md`.
 
 ## 4. Note step and "I connected" (User Story 3)
 
