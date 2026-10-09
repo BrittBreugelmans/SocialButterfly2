@@ -25,6 +25,9 @@ F2 builds on the F0 and F1 stack (TypeScript, React, Dexie; see
   3. The note step **always** has an "Open LinkedIn" link (a plain `<a target="_blank">`, so a
      direct tap that is never blocked). If `window.open` was blocked, the note step shows the
      hint `note.openFailed` above it. Cost: 1 extra tap only when blocked.
+- **Result on the iPhone (2026-10-09)**: the automatic opening is **blocked**; the owner opens
+  LinkedIn with the link on the note step. So that link became a full-width button right under
+  the title (filled when LinkedIn did not open), and the `note.openFailed` hint was dropped.
 - **Rationale**: saving first meets FR-009 and constitution IX. The fallback link removes the
   risk that the opening is blocked, and also helps when LinkedIn found nobody or did not load
   (spec edge case).

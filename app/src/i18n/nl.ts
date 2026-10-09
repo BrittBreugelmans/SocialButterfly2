@@ -76,7 +76,6 @@ export const nl = {
   'note.skip': 'Overslaan',
   'note.alreadyMet': 'Je hebt {name} vandaag al ontmoet.',
   'note.openLinkedIn': 'Open LinkedIn',
-  'note.openFailed': 'LinkedIn ging niet open. Tik hier:',
 } as const
 
 export type TextKey = keyof typeof nl

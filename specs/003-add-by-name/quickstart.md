@@ -38,8 +38,8 @@ During section 2, write down which of these happened. All three are fine:
 - **Safari** opened;
 - a **browser view** slid over the app (with "Done" / "Gereed").
 
-If **nothing** opened: the note step shows "LinkedIn ging niet open" with an "Open LinkedIn"
-link; tap it and LinkedIn opens. Note the result in `wiki/log.md`.
+If **nothing** opened (the result on 2026-10-09): the note step shows a filled "Open LinkedIn"
+button under the title; tap it and LinkedIn opens. Note the result in `wiki/log.md`.
 
 ## 4. Note step and "I connected" (User Story 3)
 

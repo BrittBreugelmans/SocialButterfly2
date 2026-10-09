@@ -2,6 +2,17 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-09** — feedback Britt na de iPhone-controle F2 — LinkedIn opent op de iPhone **niet
+  automatisch**; Britt tikt op de link. Die link is nu een knop bovenaan het notitiescherm (blauw
+  als LinkedIn niet openging); de melding "LinkedIn ging niet open" is weg. De schakelaar
+  "Ik heb geconnecteerd" had een verkeerde vorm door de algemene invoerstijl; opgelost. Nog te
+  controleren op de iPhone (T035).
+
+- **2026-10-09** — rollout en iPhone-controle F2 door Britt — F2 geïmplementeerd. Gepusht als
+  `ce775f5`; live op socialbutterfly2.pages.dev. Controles op de iPhone in orde. Alle taken van F2
+  afgevinkt; F2 in features.md volledig afgevinkt. De zoek-link opent niet automatisch (zie
+  hierboven).
+
 - **2026-10-09** — implementatie F2 (`/speckit-implement`) — Toevoegen via naam gebouwd: formulier,
   "Is dit dezelfde persoon?", notitiescherm met "Ik heb geconnecteerd", terugkeer na sluiten door
   iOS. 118 tests groen, build OK. 29 van 32 taken klaar; open: push (T030), controle op de iPhone

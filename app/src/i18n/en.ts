@@ -76,5 +76,4 @@ export const en: Record<TextKey, string> = {
   'note.skip': 'Skip',
   'note.alreadyMet': 'You already met {name} today.',
   'note.openLinkedIn': 'Open LinkedIn',
-  'note.openFailed': "LinkedIn didn't open. Tap here:",
 }

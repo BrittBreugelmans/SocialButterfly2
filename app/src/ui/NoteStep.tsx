@@ -55,6 +55,19 @@ export function NoteStep({ person, encounter, alreadyMetToday, opened, onDone }:
       <h1>{t('note.title', { name: person.name })}</h1>
       {alreadyMetToday && <p className="note-info">{t('note.alreadyMet', { name: person.name })}</p>}
 
+      {/* On the iPhone the automatic opening is blocked, so this button is the main way to
+          LinkedIn: filled when LinkedIn did not open, outlined when it did or was not needed. */}
+      {url && (
+        <a
+          className={`button-link${opened || alreadyMetToday ? ' secondary' : ''}`}
+          href={url}
+          target="_blank"
+          rel="noopener"
+        >
+          {t('note.openLinkedIn')}
+        </a>
+      )}
+
       <form className="event-form" onSubmit={save}>
         <label htmlFor={`${id}-note`}>{t('note.label')}</label>
         <textarea
@@ -82,15 +95,6 @@ export function NoteStep({ person, encounter, alreadyMetToday, opened, onDone }:
           {t('note.skip')}
         </button>
       </form>
-
-      {url && (
-        <p className="note-linkedin">
-          {!opened && !alreadyMetToday && <span className="note-warning">{t('note.openFailed')} </span>}
-          <a href={url} target="_blank" rel="noopener">
-            {t('note.openLinkedIn')}
-          </a>
-        </p>
-      )}
     </main>
   )
 }

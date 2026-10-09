@@ -55,7 +55,7 @@ Technical approach:
 | IV | Local Data, Sync-Ready | ✅ Pass | Persons, Encounters and the note step are stored on the device; records keep UUIDs and timestamps. |
 | V | LinkedIn-Only Identity | ✅ Pass | Every new Person gets a `searchUrl`; no email or phone fields. |
 | VI | Privacy | ✅ Pass | The form, the same-name question and the note step are owner screens; guest mode (F3) will not show the question or notes. |
-| VII | Bilingual | ✅ Pass | 21 new keys in NL and EN (contracts/screens.md); last-meeting dates in the app language. |
+| VII | Bilingual | ✅ Pass | 20 new keys in NL and EN (contracts/screens.md); last-meeting dates in the app language. |
 | VIII | Speed in the Moment | ✅ Pass | One button saves and searches; company optional (B17); the question only appears on a name match; note and switch are optional. |
 | IX | No Lost Contacts, No Silent Duplicates | ✅ Pass | `addByName` saves Person + Encounter + note step atomically before LinkedIn opens; same-name question (B15); note step returns after an iOS kill (B18); no duplicate Encounter on one day (B19). |
 | X | Only v1 | ✅ Pass | No fuzzy matching, no editing of Persons, no router library. |

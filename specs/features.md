@@ -23,13 +23,13 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [x] Bij openen: evenement kiezen/aanmaken of netwerken zonder evenement (B12), eerste keer per dag (B13)
 
 ## F2 — Toevoegen via naam (snelle modus)
-- [ ] Formulier: naam + bedrijf (bedrijf optioneel, B17)
-- [ ] Knop "Zoek op LinkedIn" opent de zoek-link met naam + bedrijf
-- [ ] Zelfde naam → vraag "Is dit dezelfde persoon?" (B15)
-- [ ] Ontmoeting opgeslagen met zoek-link, datum en evenement
-- [ ] Status "nog niet geconnecteerd" bijhouden
-- [ ] Na opslaan verschijnt het notitieveld (overslaan kan)
-- [ ] "Ik heb geconnecteerd" op het notitiescherm (B16)
+- [x] Formulier: naam + bedrijf (bedrijf optioneel, B17)
+- [x] Knop "Zoek op LinkedIn" opent de zoek-link met naam + bedrijf
+- [x] Zelfde naam → vraag "Is dit dezelfde persoon?" (B15)
+- [x] Ontmoeting opgeslagen met zoek-link, datum en evenement
+- [x] Status "nog niet geconnecteerd" bijhouden
+- [x] Na opslaan verschijnt het notitieveld (overslaan kan)
+- [x] "Ik heb geconnecteerd" op het notitiescherm (B16)
 
 ## F3 — Doorgeef-modus (gast)
 - [ ] Groot, vriendelijk scherm; geen lijst of notities zichtbaar

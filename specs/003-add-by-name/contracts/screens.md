@@ -62,8 +62,7 @@ Note step ──save / skip──▶ Start
 | "I connected" (`note.connected`) | Switch; starts at the Person's status; each change is stored at once (FR-018). |
 | Save (`note.save`) | `finishNoteStep` with the note → Start. |
 | Skip (`note.skip`) | `finishNoteStep` without a note → Start; an existing note stays. |
-| "Open LinkedIn" (`note.openLinkedIn`) | Small link to `linkedInUrlFor(person)`, always present (research R1). |
-| Opening failed | When `openLinkedIn` returned false: `note.openFailed` next to the link. |
+| "Open LinkedIn" (`note.openLinkedIn`) | A link styled as a button, right under the title, to `linkedInUrlFor(person)`; always present (research R1). Filled when LinkedIn did not open, outlined when it did or when already met today. |
 
 Notes are only ever shown on this owner screen, never in guest mode (FR-017).
 
@@ -91,7 +90,6 @@ Notes are only ever shown on this owner screen, never in guest mode (FR-017).
 | `note.skip` | Overslaan | Skip |
 | `note.alreadyMet` | Je hebt {name} vandaag al ontmoet. | You already met {name} today. |
 | `note.openLinkedIn` | Open LinkedIn | Open LinkedIn |
-| `note.openFailed` | LinkedIn ging niet open. Tik hier: | LinkedIn didn't open. Tap here: |
 
-Removed: `app.comingSoon` (replaced by the button). Tone per `wiki/merk-en-stijl.md`: friendly,
+Removed: `app.comingSoon` (replaced by the button). `note.openFailed` was dropped after the iPhone check on 2026-10-09: the filled button replaces it. Tone per `wiki/merk-en-stijl.md`: friendly,
 short. Final wording can be tuned in F11.

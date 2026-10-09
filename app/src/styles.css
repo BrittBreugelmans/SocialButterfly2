@@ -326,29 +326,36 @@ h1 {
   resize: vertical;
 }
 
-.switch {
+/* Scoped under .event-form so these rules beat ".event-form label" and ".event-form input". */
+.event-form .switch {
   display: flex;
   align-items: center;
   gap: 12px;
   min-height: 44px;
   margin-top: 8px;
-  color: var(--text) !important;
-  font-size: 1rem !important;
+  color: var(--text);
+  font-size: 1rem;
 }
 
-.switch input {
+/* An iOS-style switch: 51 × 31 px track, 27 px knob. */
+.event-form .switch input {
+  -webkit-appearance: none;
   appearance: none;
   position: relative;
-  flex-shrink: 0;
+  display: inline-block;
+  flex: 0 0 51px;
   width: 51px;
   height: 31px;
+  min-height: 0;
   margin: 0;
+  padding: 0;
+  border: none;
   border-radius: 999px;
   background: #c9d1d8;
   transition: background 0.15s;
 }
 
-.switch input::after {
+.event-form .switch input::after {
   content: '';
   position: absolute;
   top: 2px;
@@ -361,34 +368,37 @@ h1 {
   transition: transform 0.15s;
 }
 
-.switch input:checked {
+.event-form .switch input:checked {
   background: var(--blue);
 }
 
-.switch input:checked::after {
+.event-form .switch input:checked::after {
   transform: translateX(20px);
 }
 
-.note-info,
-.note-warning {
+.note-info {
   margin: 0;
   padding: 10px 14px;
   border-radius: var(--radius);
   background: var(--warning-bg);
 }
 
-.note-warning {
-  display: inline;
-  padding: 2px 6px;
+/* A link that looks like a button: a real <a> keeps the tap direct, so iOS never blocks it. */
+.button-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 18px;
+  border: 2px solid var(--blue);
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
 }
 
-.note-linkedin {
-  margin: 8px 0 0;
-  color: var(--muted);
-  font-size: 0.9rem;
-  text-align: center;
-}
-
-.note-linkedin a {
-  color: var(--muted);
+.button-link.secondary {
+  background: transparent;
+  color: var(--blue);
 }

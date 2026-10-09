@@ -330,24 +330,24 @@ describe('Note step and "I connected" (User Story 3)', () => {
     expect(screen.queryByLabelText(nl['note.label'])).not.toBeInTheDocument()
   })
 
-  it('offers "Open LinkedIn" with a hint when the opening was blocked (research R1)', async () => {
+  it('shows a filled "Open LinkedIn" button when the opening was blocked (research R1)', async () => {
     const user = userEvent.setup()
     mockOpen(null)
     renderApp()
     await addJan(user)
-    expect(screen.getByText(nl['note.openFailed'])).toBeInTheDocument()
-    const link = screen.getByRole('link', { name: nl['note.openLinkedIn'] })
-    expect(link).toHaveAttribute('href', buildSearchUrl('Jan Peeters'))
-    expect(link).toHaveAttribute('target', '_blank')
+    const button = screen.getByRole('link', { name: nl['note.openLinkedIn'] })
+    expect(button).toHaveAttribute('href', buildSearchUrl('Jan Peeters'))
+    expect(button).toHaveAttribute('target', '_blank')
+    expect(button).toHaveClass('button-link')
+    expect(button).not.toHaveClass('secondary')
   })
 
-  it('offers "Open LinkedIn" without the hint when it opened', async () => {
+  it('shows an outlined "Open LinkedIn" button when LinkedIn opened', async () => {
     const user = userEvent.setup()
     mockOpen()
     renderApp()
     await addJan(user)
-    expect(screen.getByRole('link', { name: nl['note.openLinkedIn'] })).toBeInTheDocument()
-    expect(screen.queryByText(nl['note.openFailed'])).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: nl['note.openLinkedIn'] })).toHaveClass('button-link', 'secondary')
   })
 
   it('says "already met today" and shows the existing note and status (B19)', async () => {
@@ -366,7 +366,7 @@ describe('Note step and "I connected" (User Story 3)', () => {
     expect(await screen.findByText(nl['note.alreadyMet'].replace('{name}', 'Jan Peeters'))).toBeInTheDocument()
     expect(screen.getByLabelText(nl['note.label'])).toHaveValue('Payments')
     expect(screen.getByRole('switch', { name: nl['note.connected'] })).toBeChecked()
-    expect(screen.queryByText(nl['note.openFailed'])).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: nl['note.openLinkedIn'] })).toHaveClass('secondary')
     expect(open).not.toHaveBeenCalled()
   })
 })

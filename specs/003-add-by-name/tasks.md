@@ -208,9 +208,20 @@ kill on the same day (B18), and offers a fallback "Open LinkedIn" link (research
 ## Phase 6: Polish & Cross-Cutting Concerns
 
 - [X] T029 Run `npm run typecheck`, `npm test` and `npm run build` in `app/`; check that all texts on the new screens come from `t()` (search `app/src/ui/` for string literals in JSX) and that `app.comingSoon` is gone everywhere.
-- [ ] T030 Commit and push to `main` (manual, Britt). Cloudflare deploys automatically; check that the deployment succeeds.
-- [ ] T031 Validate on the iPhone with [quickstart.md](quickstart.md) sections 2–8 (manual, Britt). Write down in section 3 how LinkedIn opened (LinkedIn app, Safari or browser view).
-- [ ] T032 Tick the F2 items in `specs/features.md` and add a line to `wiki/log.md` (date, "F2 implemented", how LinkedIn opened on the iPhone), per CLAUDE.md.
+- [X] T030 Commit and push to `main` (manual, Britt). Cloudflare deploys automatically; check that the deployment succeeds. *(2026-10-09: pushed as `ce775f5`.)*
+- [X] T031 Validate on the iPhone with [quickstart.md](quickstart.md) sections 2–8 (manual, Britt). Write down in section 3 how LinkedIn opened (LinkedIn app, Safari or browser view).
+- [X] T032 Tick the F2 items in `specs/features.md` and add a line to `wiki/log.md` (date, "F2 implemented", how LinkedIn opened on the iPhone), per CLAUDE.md.
+
+---
+
+## Phase 7: Follow-up after the iPhone check (2026-10-09)
+
+The automatic opening of LinkedIn is blocked on the iPhone, and the switch looked out of
+proportion.
+
+- [X] T033 Make "Open LinkedIn" in `app/src/ui/NoteStep.tsx` a full-width button (`<a class="button-link">`, still a real link so iOS treats the tap as direct) right under the title; filled when `!opened && !alreadyMetToday`, outlined (`secondary`) otherwise. Remove the `note.openFailed` hint and key from `nl.ts` and `en.ts`. Update the two tests in `app/tests/add-by-name-ui.test.tsx`.
+- [X] T034 Fix the switch in `app/src/styles.css`: the rule `.event-form input` (min-height 44px, padding, border) also hit the switch. Scope the switch rules as `.event-form .switch input` and reset `min-height`, `padding` and `border`, so the track is exactly 51 × 31 px with a 27 px knob.
+- [ ] T035 Push and check on the iPhone: the button opens LinkedIn, the switch has the right shape (manual, Britt).
 
 ---
 
