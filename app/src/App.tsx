@@ -12,6 +12,9 @@ import { ContextChoice } from './ui/ContextChoice'
 import { NewEventForm } from './ui/NewEventForm'
 import { NoteStep } from './ui/NoteStep'
 import { StartScreen } from './ui/StartScreen'
+import { ComingSoon } from './ui/ComingSoon'
+import { ContactsTab } from './ui/ContactsTab'
+import { TabBar, type Tab } from './ui/TabBar'
 
 type Screen = 'choice' | 'newEvent' | 'start' | 'addByName' | 'addByQr' | 'noteStep'
 
@@ -25,6 +28,8 @@ export function App() {
   // F1: which screen is shown, and the active Event for the context bar.
   const { status, recheck } = useDailyChoice()
   const [screen, setScreen] = useState<Screen>('start')
+  // F7 (B26): the chosen tab while the 'start' screen (the tabs) is shown. The app opens on Add.
+  const [tab, setTab] = useState<Tab>('add')
   const [activeEvent, setActiveEvent] = useState<Event | undefined | 'loading'>('loading')
 
   // F2: the open note step, and whether an unfinished one was looked for on start (B18).
@@ -85,11 +90,17 @@ export function App() {
     }
   }, [screen, status])
 
+  // Back to the tabs after a flow: always on the Add tab, where the flows start (F7 FR-001b).
+  const toStart = useCallback(() => {
+    setTab('add')
+    setScreen('start')
+  }, [])
+
   // After a choice: back to the start screen, and re-read Settings so the daily check is current.
   const contextChosen = useCallback(() => {
     recheck()
-    setScreen('start')
-  }, [recheck])
+    toStart()
+  }, [recheck, toStart])
 
   if (offlineAtStart) return <OfflineScreen />
 
@@ -128,7 +139,7 @@ export function App() {
             setScreen('noteStep')
           }}
           onAddByName={() => setScreen('addByName')}
-          onBack={() => setScreen('start')}
+          onBack={toStart}
         />
       ) : screen === 'addByName' ? (
         <AddByNameForm
@@ -137,7 +148,7 @@ export function App() {
             setNoteStep(result)
             setScreen('noteStep')
           }}
-          onBack={() => setScreen('start')}
+          onBack={toStart}
         />
       ) : screen === 'noteStep' && noteStep ? (
         <NoteStep
@@ -150,18 +161,32 @@ export function App() {
           initialMessage={noteStep.message}
           onDone={() => {
             setNoteStep(undefined)
-            setScreen('start')
+            toStart()
           }}
           onMerged={({ person, encounter, message }) => setNoteStep({ ...noteStep, person, encounter, message })}
         />
       ) : (
-        <StartScreen
-          storageStatus={storageStatus}
-          activeEvent={activeEvent}
-          onChangeContext={() => setScreen('choice')}
-          onAddByName={() => setScreen('addByName')}
-          onScanQr={() => setScreen('addByQr')}
-        />
+        // F7: the tabs. Only here is the tab bar shown, never in a flow (FR-001c).
+        <div className="has-tab-bar">
+          {tab === 'add' ? (
+            <StartScreen
+              storageStatus={storageStatus}
+              activeEvent={activeEvent}
+              onChangeContext={() => setScreen('choice')}
+              onAddByName={() => setScreen('addByName')}
+              onScanQr={() => setScreen('addByQr')}
+            />
+          ) : tab === 'contacts' ? (
+            <ContactsTab onAddSomeone={() => setTab('add')} />
+          ) : tab === 'actions' ? (
+            <ComingSoon textKey="soon.actions" />
+          ) : tab === 'myQr' ? (
+            <ComingSoon textKey="soon.myQr" />
+          ) : (
+            <ComingSoon textKey="soon.settings" />
+          )}
+          <TabBar tab={tab} onChange={setTab} />
+        </div>
       )}
     </>
   )

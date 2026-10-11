@@ -45,11 +45,11 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [x] Actie "profiel-link ontbreekt" verdwijnt na koppelen
 
 ## F5 — Toevoegen via QR
-- [x] Camera opent en leest een LinkedIn-QR
-- [x] URL genormaliseerd (extra parameters weg)
-- [x] Naam afgeleid uit de URL en aanpasbaar
-- [x] Bestaande persoon herkend → nieuwe ontmoeting toegevoegd
-- [x] Niet-LinkedIn-QR → duidelijke melding, niets opgeslagen
+- [X] Camera opent en leest een LinkedIn-QR
+- [X] URL genormaliseerd (extra parameters weg)
+- [X] Naam afgeleid uit de URL en aanpasbaar
+- [X] Bestaande persoon herkend → nieuwe ontmoeting toegevoegd
+- [X] Niet-LinkedIn-QR → duidelijke melding, niets opgeslagen
 
 ## F6 — Notities
 - [ ] Notitie toevoegen meteen na opslaan of later ⚠️ #5
@@ -57,12 +57,15 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [ ] Notities nooit zichtbaar in doorgeef-modus
 
 ## F7 — Contacten
+- [ ] Tabbalk: Toevoegen, Contacten, Acties, Mijn QR, Instellingen; nog niet gebouwd = "binnenkort" (B26)
 - [ ] Lijst per evenement (en alle contacten)
 - [ ] Zoeken/filteren op naam
 - [ ] Persoon-detail met tijdlijn van ontmoetingen + notities
 - [ ] "Open in LinkedIn" (profiel-URL, anders zoek-link)
 - [ ] Connectiestatus aanpassen
+- [ ] Naam en bedrijf aanpassen (B27)
 - [ ] Persoon verwijderen
+- [ ] Eén ontmoeting verwijderen; laatste ontmoeting = persoon verwijderen (B25)
 
 ## F8 — Acties-tab
 - [ ] Toont: notitie ontbreekt, nog niet geconnecteerd, profiel-link ontbreekt

@@ -7,11 +7,13 @@ import {
   createEvent,
   createPerson,
   deleteEvent,
+  updatePerson,
   deletePerson,
   listEvents,
   listPersons,
 } from '../data/repository'
 import { useLanguage } from '../i18n/LanguageProvider'
+import { buildSearchUrl } from '../linkedin/links'
 import type { TextKey } from '../i18n/nl'
 import type { StorageStatus } from '../platform/persistence'
 
@@ -33,6 +35,28 @@ async function addTestData(): Promise<void> {
   await createEncounter({ personId: person.id, eventId: oneDay.id, date: today })
   await createEncounter({ personId: person.id, eventId: multiDay.id, date: today })
   await createEncounter({ personId: person.id, date: today }) // casual networking
+}
+
+/**
+ * 500 test contacts for the speed check of the contact list (F7 SC-002, research R12): 1–3
+ * Encounters each, over the test Events and casual networking, on recent days.
+ */
+async function addManyTestData(): Promise<void> {
+  const today = todayLocal()
+  const events = (await listEvents()).filter((event) => event.name.startsWith(TEST_PREFIX))
+  if (events.length === 0) {
+    events.push(await createEvent({ name: `${TEST_PREFIX}One-day`, startDate: today, endDate: today }))
+  }
+  for (let i = 1; i <= 500; i++) {
+    const name = `${TEST_PREFIX}Contact ${String(i).padStart(3, '0')}`
+    const company = i % 3 === 0 ? 'Test BV' : undefined
+    let person = await createPerson({ name, company, searchUrl: buildSearchUrl(name, company) })
+    if (i % 5 === 0) person = await updatePerson(person.id, { connectionStatus: 'connected' })
+    for (let j = 0; j <= i % 3; j++) {
+      const eventId = (i + j) % 4 === 0 ? undefined : events[(i + j) % events.length]?.id // some casual
+      await createEncounter({ personId: person.id, eventId, date: addDaysLocal(today, -((i + j) % 30)) })
+    }
+  }
 }
 
 async function removeTestData(): Promise<void> {
@@ -119,6 +143,9 @@ export function Diagnostics({ storageStatus, onClose }: DiagnosticsProps) {
       <div className="diagnostics-actions">
         <button type="button" disabled={busy} onClick={() => run(addTestData)}>
           {t('diagnostics.addTestData')}
+        </button>
+        <button type="button" disabled={busy} onClick={() => run(addManyTestData)}>
+          {t('diagnostics.addManyTestData')}
         </button>
         <button type="button" disabled={busy} onClick={() => run(removeTestData)}>
           {t('diagnostics.removeTestData')}

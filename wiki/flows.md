@@ -1,10 +1,15 @@
 # Flows en schermen (v1)
 
 ## Tabs
-1. **Contacten**: personen per evenement; één tik opent het profiel in LinkedIn.
-2. **Acties**: openstaande [acties](begrippen.md), elk afwijsbaar.
-3. **Mijn QR**: Britts LinkedIn-QR, groot, met vlinder.
-4. **Instellingen**: evenementen beheren, taal, CSV-export.
+Tabbalk vanaf F7 ([B26](beslissingen.md)). Nog niet gebouwde tabs tonen "binnenkort". Geen tabbalk
+tijdens de dagkeuze, het toevoegen, het notitiescherm en de doorgeef-modus.
+1. **Toevoegen**: het startscherm ("Voeg toe via naam", "Scan QR"). De app opent hier.
+2. **Contacten**: personen per evenement, zonder evenement of allemaal; zoeken op naam. Detail met
+   tijdlijn, "Open in LinkedIn", connectiestatus, naam/bedrijf aanpassen ([B27](beslissingen.md)),
+   ontmoeting of persoon verwijderen ([B25](beslissingen.md)).
+3. **Acties**: openstaande [acties](begrippen.md), elk afwijsbaar.
+4. **Mijn QR**: Britts LinkedIn-QR, groot, met vlinder.
+5. **Instellingen**: evenementen beheren, taal, CSV-export.
 
 ## Flow A — Toevoegen via naam
 1. Britt kiest **doorgeef-modus** (geeft gsm door) of **snelle modus** (tikt zelf).

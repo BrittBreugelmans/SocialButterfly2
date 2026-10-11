@@ -2,6 +2,33 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-11** — implementatie F7 (`/speckit-implement`) — Tabbalk (Toevoegen, Contacten, Acties,
+  Mijn QR, Instellingen; de laatste drie "Binnenkort"). Contacten: lijst per evenement / zonder
+  evenement / alle, zoeken op naam (accenten tellen niet), detail met tijdlijn en notities, "Open in
+  LinkedIn" of zoeklink, "Plak LinkedIn-link", connectiestatus, naam/bedrijf aanpassen, ontmoeting
+  of persoon verwijderen met bevestiging. "Plak LinkedIn-link" is nu één gedeeld onderdeel van
+  notitiescherm en detail. Diagnose: "500 testcontacten toevoegen". 248 tests groen (was 200),
+  build OK, geen nieuwe bibliotheken. 38 van 41 taken klaar; open: push (T039), controle op de
+  iPhone (T040) en afvinken in features.md (T041).
+
+- **2026-10-11** — taken F7 (`/speckit-tasks`) ([tasks](../specs/006-contacts/tasks.md)) — 41 taken
+  in 10 fases: fundament (tabbalk, teksten, lijsthulpen), dan per user story (lijst, zoeken,
+  detail, status, persoon verwijderen, ontmoeting verwijderen, naam/bedrijf aanpassen), daarna
+  afwerking. MVP = lijst + zoeken + detail.
+
+- **2026-10-11** — plan F7 (`/speckit-plan`) ([plan](../specs/006-contacts/plan.md)) — Tabbalk
+  zonder router; lijst en zoeken in het geheugen (hoofdletters, spaties en accenten tellen niet);
+  nieuwe opslagfuncties voor naam/bedrijf aanpassen en één ontmoeting verwijderen; "Plak
+  LinkedIn-link" wordt een gedeeld onderdeel van notitiescherm en detailscherm. Geen nieuwe
+  bibliotheken, geen schemawijziging. Diagnostics krijgt "500 testcontacten toevoegen" voor de
+  snelheidstest. Geen nieuwe beslissingen of open vragen.
+
+- **2026-10-11** — spec F7 (`/speckit-specify`) met Britt
+  ([spec](../specs/006-contacts/spec.md)) — B25: één ontmoeting verwijderen, de laatste = hele
+  persoon. B26: volledige tabbalk met tab "Toevoegen"; nog niet gebouwde tabs tonen "binnenkort".
+  B27: naam en bedrijf aanpassen op het detailscherm. flows.md (tabs) en features.md (F7)
+  bijgewerkt.
+
 - **2026-10-11** — bugfix F1 na melding Britt — B23: een evenement dat vandaag niet loopt, kan je
   kiezen na een waarschuwing. B24: een nieuw evenement dat later begint, wordt bewaard maar niet
   actief. F1-spec (FR-004, FR-007), contract en taken bijgewerkt; 200 tests groen. Ontmoetingen die

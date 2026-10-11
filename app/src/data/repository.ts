@@ -6,6 +6,7 @@ import { db } from './db'
 import {
   DuplicateProfileUrlError,
   EventInUseError,
+  LastEncounterError,
   StorageFullError,
   ValidationError,
 } from './errors'
@@ -177,6 +178,30 @@ export async function updatePerson(
   )
 }
 
+/**
+ * Edits name and company (F7, B27) in ONE transaction. The search link follows them; the profile
+ * link, the identity of the Person, never changes here (constitution V).
+ */
+export async function updatePersonDetails(id: string, changes: { name: string; company?: string }): Promise<Person> {
+  const name = requiredText(changes.name, 'name')
+  const company = optionalText(changes.company)
+  return withStorageErrors(() =>
+    db.transaction('rw', db.persons, async () => {
+      const current = await db.persons.get(id)
+      if (!current) throw new ValidationError('id', 'Unknown Person')
+      const updated = compact<Person>({
+        ...current,
+        name,
+        company,
+        searchUrl: buildSearchUrl(name, company),
+        updatedAt: nowIso(),
+      })
+      await db.persons.put(updated)
+      return updated
+    }),
+  )
+}
+
 export async function getPerson(id: string): Promise<Person | undefined> {
   return db.persons.get(id)
 }
@@ -257,6 +282,11 @@ export async function updateEncounter(
   )
 }
 
+/** Every Encounter, in no particular order (F7: the contact list is built in memory). */
+export async function listEncounters(): Promise<Encounter[]> {
+  return db.encounters.toArray()
+}
+
 /** Newest first. */
 export async function listEncountersByPerson(personId: string): Promise<Encounter[]> {
   const encounters = await db.encounters.where('personId').equals(personId).toArray()
@@ -280,6 +310,22 @@ export async function countEncountersSince(isoTime: string | undefined): Promise
 
 export async function deleteEncounter(id: string): Promise<void> {
   await withStorageErrors(() => db.encounters.delete(id))
+}
+
+/**
+ * Deletes one Encounter from a Person's timeline (F7, B25), in ONE transaction. The Person's only
+ * Encounter is refused with LastEncounterError: the owner deletes the Person instead.
+ */
+export async function deleteEncounterFromTimeline(id: string): Promise<void> {
+  await withStorageErrors(() =>
+    db.transaction('rw', db.encounters, async () => {
+      const encounter = await db.encounters.get(id)
+      if (!encounter) throw new ValidationError('id', 'Unknown Encounter')
+      const count = await db.encounters.where('personId').equals(encounter.personId).count()
+      if (count <= 1) throw new LastEncounterError()
+      await db.encounters.delete(id)
+    }),
+  )
 }
 
 // ---------------------------------------------------------------------------

@@ -36,3 +36,11 @@ export class StorageFullError extends Error {
     this.name = 'StorageFullError'
   }
 }
+
+/** The Encounter is the Person's only one: delete the Person instead (B25). */
+export class LastEncounterError extends Error {
+  constructor() {
+    super("This is the Person's only Encounter")
+    this.name = 'LastEncounterError'
+  }
+}

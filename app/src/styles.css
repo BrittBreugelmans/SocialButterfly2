@@ -8,6 +8,7 @@
   --surface: #f3f6f8;
   --warning-bg: #fff4d6;
   --error-bg: #fde8e8;
+  --danger: #c62828;
   --radius: 14px;
   color-scheme: light;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -327,7 +328,7 @@ h1 {
 }
 
 /* Scoped under .event-form so these rules beat ".event-form label" and ".event-form input". */
-.event-form .switch {
+:is(.event-form, .person-detail) .switch {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -338,7 +339,7 @@ h1 {
 }
 
 /* An iOS-style switch: 51 × 31 px track, 27 px knob. */
-.event-form .switch input {
+:is(.event-form, .person-detail) .switch input {
   -webkit-appearance: none;
   appearance: none;
   position: relative;
@@ -355,7 +356,7 @@ h1 {
   transition: background 0.15s;
 }
 
-.event-form .switch input::after {
+:is(.event-form, .person-detail) .switch input::after {
   content: '';
   position: absolute;
   top: 2px;
@@ -368,11 +369,11 @@ h1 {
   transition: transform 0.15s;
 }
 
-.event-form .switch input:checked {
+:is(.event-form, .person-detail) .switch input:checked {
   background: var(--blue);
 }
 
-.event-form .switch input:checked::after {
+:is(.event-form, .person-detail) .switch input:checked::after {
   transform: translateX(20px);
 }
 
@@ -511,4 +512,297 @@ a.event-option {
 
 .qr-camera-error p {
   margin: 0;
+}
+
+/* ---------- F7: tabs and contacts ---------- */
+
+/* Room for the fixed tab bar: its height plus the iPhone home indicator. */
+.has-tab-bar {
+  padding-bottom: calc(64px + env(safe-area-inset-bottom));
+}
+
+.tab-bar {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 4px env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  border-top: 1px solid #dfe4e8;
+  background: var(--bg);
+}
+
+.tab-bar button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 56px;
+  padding: 4px 2px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.tab-bar button[aria-current='page'] {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.diagnostics {
+  z-index: 20;
+}
+
+.coming-soon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.contacts,
+.person-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px 16px 24px;
+}
+
+.contacts h1 {
+  margin-bottom: 4px;
+  font-size: 1.6rem;
+}
+
+.contacts-label {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.contacts-view,
+.contacts-search {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #c9d1d8;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 16px; /* 16px or more: iOS does not zoom in on focus */
+  background: var(--bg);
+  color: var(--text);
+}
+
+.contacts-message {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.contacts-message:empty {
+  display: none;
+}
+
+.contacts-empty {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  padding: 32px 0;
+  color: var(--muted);
+  text-align: center;
+}
+
+.contacts-empty p {
+  margin: 0;
+}
+
+.contact-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 10px 4px;
+  border: none;
+  border-bottom: 1px solid #e6eaee;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+}
+
+.contact-main,
+.contact-side {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.contact-side {
+  flex-shrink: 0;
+  align-items: flex-end;
+}
+
+.contact-name,
+.contact-company {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contact-name {
+  font-weight: 600;
+}
+
+.contact-company,
+.contact-date {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.status-chip {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.status-chip.connected {
+  background: #e3effb;
+  color: var(--blue-dark);
+}
+
+.back-button {
+  align-self: flex-start;
+}
+
+.person-header h1 {
+  font-size: 1.6rem;
+  overflow-wrap: anywhere;
+}
+
+.person-company {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.person-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.timeline-title {
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.timeline {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0 0 0 14px;
+  border-left: 2px solid #dfe4e8;
+  list-style: none;
+}
+
+.timeline-item {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.timeline-when {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin: 0;
+}
+
+.timeline-date {
+  font-weight: 600;
+}
+
+.timeline-event {
+  color: var(--muted);
+}
+
+.timeline-note {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.timeline-note.empty {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.confirm-panel {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 2px solid var(--error-bg);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+
+.confirm-panel:focus {
+  outline: none;
+}
+
+.confirm-panel p {
+  margin: 0 0 4px;
+  font-weight: 600;
+}
+
+.confirm-panel .confirm-detail {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+button.danger {
+  border-color: var(--danger);
+  background: var(--danger);
+}
+
+button.text-button {
+  border: none;
+  background: transparent;
+  color: var(--blue);
+}
+
+button.text-button.danger {
+  align-self: center;
+  margin-top: 16px;
+  color: var(--danger);
+}
+
+button.text-button.small {
+  justify-self: start;
+  min-height: 36px;
+  padding: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
 }
