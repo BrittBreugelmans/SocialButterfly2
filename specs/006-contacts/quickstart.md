@@ -55,8 +55,10 @@ button moved into a shared component).
 
 1. Flip "Ik heb geconnecteerd"; go back: the row shows the new status. Close the app completely
    and reopen: still changed (SC-005).
-2. "Aanpassen": change name and company, Bewaar. Search for the new name: found. For a person
-   without profile link, "Zoek op LinkedIn" now searches the new name.
+2. "Aanpassen": change name and company, type a note in an encounter without a note, change
+   another note, Bewaar. The timeline shows the notes; search for the new name: found. For a
+   person without profile link, "Zoek op LinkedIn" now searches the new name. Close and reopen
+   the app: the notes are still there (SC-009).
 3. Add a `[test]` person twice in two contexts (two encounters). Delete one encounter: one
    remains. Delete the last one: the app asks to delete the whole person; Annuleren keeps it.
 4. "Verwijder persoon" on the test person: the confirmation names the person and the number of

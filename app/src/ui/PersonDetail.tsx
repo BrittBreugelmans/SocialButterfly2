@@ -46,8 +46,13 @@ export function PersonDetail({
     { kind: 'person' } | { kind: 'lastEncounter' } | { kind: 'encounter'; encounter: Encounter }
   >()
   const [deleting, setDeleting] = useState(false)
-  // The edit form for name and company (B27); undefined while not editing.
-  const [draft, setDraft] = useState<{ name: string; company: string; error: boolean }>()
+  // The edit mode: name, company and the note per Encounter id (B27, B29); undefined while not editing.
+  const [draft, setDraft] = useState<{
+    name: string
+    company: string
+    notes: Record<string, string>
+    error: boolean
+  }>()
   const [savingDraft, setSavingDraft] = useState(false)
   const id = useId()
   // Kept in a ref, so a new onBack from the parent does not reload the Person.
@@ -88,6 +93,16 @@ export function PersonDetail({
       })
   }
 
+  function startEditing(current: Person) {
+    setConfirming(undefined)
+    setDraft({
+      name: current.name,
+      company: current.company ?? '',
+      notes: Object.fromEntries(encounters.map((encounter) => [encounter.id, encounter.note ?? ''])),
+      error: false,
+    })
+  }
+
   /** No same-name question: the profile link is the identity, names may repeat (spec Assumptions). */
   async function saveDraft(event: FormEvent) {
     event.preventDefault()
@@ -96,9 +111,14 @@ export function PersonDetail({
       setDraft({ ...draft, error: true })
       return
     }
+    // Only the notes that really changed; empty means "remove the note".
+    const notes = encounters
+      .filter((encounter) => (draft.notes[encounter.id] ?? '').trim() !== (encounter.note ?? ''))
+      .map((encounter) => ({ encounterId: encounter.id, note: draft.notes[encounter.id] ?? '' }))
     setSavingDraft(true)
     try {
-      setPerson(await updatePersonDetails(person.id, { name: draft.name, company: draft.company }))
+      await updatePersonDetails(person.id, { name: draft.name, company: draft.company, notes })
+      await load()
       setDraft(undefined)
       onChanged()
     } catch (err) {
@@ -146,13 +166,12 @@ export function PersonDetail({
     onPersonReplaced(into.id)
   }
 
-  return (
-    <main className="person-detail">
-      <button type="button" className="secondary back-button" onClick={onBack}>
-        {t('add.back')}
-      </button>
+  const dateOf = (encounter: Encounter) => formatDateRange(encounter.date, encounter.date, language)
 
-      {draft ? (
+  // The edit mode shows only the form, so there is one thing to finish (research R8, B29).
+  if (draft) {
+    return (
+      <main className="person-detail">
         <form className="event-form" onSubmit={(e) => void saveDraft(e)} noValidate>
           <label htmlFor={`${id}-name`}>{t('add.name')}</label>
           <input
@@ -177,6 +196,26 @@ export function PersonDetail({
               {t('person.errorName')}
             </p>
           )}
+
+          <h2 className="timeline-title">{t('person.timeline')}</h2>
+          <ol className="timeline">
+            {encounters.map((encounter) => (
+              <li key={encounter.id} className="timeline-item">
+                <p className="timeline-when">
+                  <span className="timeline-date">{dateOf(encounter)}</span>
+                  <span className="timeline-event">{eventName(encounter)}</span>
+                </p>
+                <textarea
+                  aria-label={t('person.noteFor', { date: dateOf(encounter), event: eventName(encounter) })}
+                  value={draft.notes[encounter.id] ?? ''}
+                  rows={3}
+                  placeholder={t('note.placeholder')}
+                  onChange={(e) => setDraft({ ...draft, notes: { ...draft.notes, [encounter.id]: e.target.value } })}
+                />
+              </li>
+            ))}
+          </ol>
+
           <button type="submit" disabled={savingDraft}>
             {t('person.save')}
           </button>
@@ -184,19 +223,23 @@ export function PersonDetail({
             {t('link.cancel')}
           </button>
         </form>
-      ) : (
-        <header className="person-header">
+      </main>
+    )
+  }
+
+  return (
+    <main className="person-detail">
+      <button type="button" className="secondary back-button" onClick={onBack}>
+        {t('add.back')}
+      </button>
+
+      <header className="person-header">
           <h1>{person.name}</h1>
           {person.company && <p className="person-company">{person.company}</p>}
-          <button
-            type="button"
-            className="text-button"
-            onClick={() => setDraft({ name: person.name, company: person.company ?? '', error: false })}
-          >
+          <button type="button" className="text-button" onClick={() => startEditing(person)}>
             {t('person.edit')}
           </button>
         </header>
-      )}
 
       {/* A real link: the tap opens LinkedIn directly (FR-011, research R6). */}
       {url && (
@@ -231,7 +274,7 @@ export function PersonDetail({
         {encounters.map((encounter) => (
           <li key={encounter.id} className="timeline-item">
             <p className="timeline-when">
-              <span className="timeline-date">{formatDateRange(encounter.date, encounter.date, language)}</span>
+              <span className="timeline-date">{dateOf(encounter)}</span>
               <span className="timeline-event">{eventName(encounter)}</span>
             </p>
             {encounter.note ? (
@@ -242,7 +285,7 @@ export function PersonDetail({
             {confirming?.kind === 'encounter' && confirming.encounter.id === encounter.id ? (
               <ConfirmPanel
                 text={t('encounter.deleteQuestion', {
-                  date: formatDateRange(encounter.date, encounter.date, language),
+                  date: dateOf(encounter),
                   event: eventName(encounter),
                 })}
                 detail={encounter.note ? t('encounter.deleteNote') : undefined}

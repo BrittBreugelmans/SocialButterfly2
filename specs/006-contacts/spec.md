@@ -26,6 +26,10 @@ F4 (`specs/004-link-profile`: "Paste LinkedIn link", merge question) and F5
   "coming soon" screen (wiki B26).
 - Q: Can the owner edit name and company on the detail screen (constitution V)? → A: Yes, both
   (wiki B27).
+- Q (change request): Can the owner add and edit notes on the detail screen, per Encounter or per
+  Person (open question #5)? → A: Per Encounter (wiki B28). The edit mode of the detail screen
+  edits name, company and the note of every Encounter, saved together. F6 is merged into F7
+  (wiki B29).
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -192,17 +196,22 @@ delete on it: the app asks to delete the whole Person.
 
 ---
 
-### User Story 7 - Correct a name or company (Priority: P3)
+### User Story 7 - Edit name, company and notes (Priority: P2)
 
-A name derived from a QR link was wrong ("Jan Peeters" should be "Jan Peeters-Maes"), or the
-person changed jobs. On the detail screen the owner edits the name and the company (B27,
-constitution V).
+A name derived from a QR link was wrong ("Jan Peeters" should be "Jan Peeters-Maes"), the person
+changed jobs, or the owner skipped the note at the fair and now remembers what they talked about.
+"Edit" on the detail screen opens the edit mode: name, company and a note field for every
+Encounter in the timeline. She adds, changes or clears notes and saves everything at once (B27,
+B28, B29, constitution V).
 
-**Why this priority**: The constitution (V) says a QR-derived name must remain editable. P3
-because the add flows already let her correct the name before saving.
+**Why this priority**: A skipped note must be addable later (B6); without it, a note can only be
+written right after saving. The constitution (V) also says a QR-derived name must remain
+editable. P2 because writing notes later is part of following up after the event (Flow C).
 
-**Independent Test**: Open Jan Peeters; change the name to "Jan Peeters-Maes" and the company to
-"Elmos"; save. The list shows the new name and company, and searching for "maes" finds him.
+**Independent Test**: Open Jan Peeters; tap "Edit"; change the name to "Jan Peeters-Maes", the
+company to "Elmos", and type "Talked about Kotlin" in the empty note of his Devoxx Encounter; save.
+The detail shows the note in the timeline, the list shows the new name and company, and searching
+for "maes" finds him.
 
 **Acceptance Scenarios**:
 
@@ -213,6 +222,14 @@ because the add flows already let her correct the name before saving.
 4. **Given** a Person without a profile link, **When** the name or company changes, **Then**
    "Open in LinkedIn" searches for the new name and company.
 5. **Given** she cancels the edit, **Then** nothing changes.
+6. **Given** the edit mode, **Then** every Encounter in the timeline shows its date, Event (or
+   "Without event") and a note field with the stored note, or empty.
+7. **Given** an Encounter without a note, **When** she types a note and saves, **Then** the
+   timeline shows that note.
+8. **Given** an Encounter with a note, **When** she changes or clears it and saves, **Then** the
+   new note is shown, or "No note" when cleared.
+9. **Given** she changed name, company and two notes, **When** saving fails (for example storage
+   full), **Then** nothing is changed at all.
 
 ---
 
@@ -280,7 +297,8 @@ because the add flows already let her correct the name before saving.
 - **FR-009**: The detail screen MUST show name, company, connection status, whether a profile
   link is known, and all of the Person's Encounters (date, Event or "Without Event", note),
   newest first.
-- **FR-010**: Notes MUST be shown read-only in F7. Adding and editing notes is F6.
+- **FR-010**: Outside the edit mode notes are shown read-only. In the edit mode every Encounter's
+  note MUST be editable (FR-014b).
 - **FR-011**: "Open in LinkedIn" MUST open the profile link on that tap, or the search link when
   there is no profile link (constitution I: only opening LinkedIn links). The label or a short
   line MUST say which one opens.
@@ -300,7 +318,9 @@ because the add flows already let her correct the name before saving.
 - **FR-014b**: The owner MUST be able to edit a Person's name and company on the detail screen
   (B27, constitution V). The name MUST NOT be empty; an empty company removes it. The profile link
   and the Person's identity MUST NOT change. When there is no profile link, the search link MUST
-  follow the new name and company.
+  follow the new name and company. The edit mode MUST also show a note field for every Encounter
+  of the Person (B28, B29): a note that is empty after trimming is removed. Name, company and all
+  notes MUST be saved together in one step, or not at all (constitution IX).
 - **FR-015**: Nothing in F7 MUST change or delete data without an explicit tap by the owner.
 
 #### General
@@ -316,8 +336,8 @@ No new entities or fields. F7 reads and changes what F0, F2, F4 and F5 defined:
 - **Person**: `name` and optional `company` (editable in F7), `profileUrl` (optional, unique,
   not changed by editing), `searchUrl` (follows name and company while there is no profile
   link), `connectionStatus` (changed in F7).
-- **Encounter**: `date`, optional Event (none = casual networking), optional `note`. Shown in the
-  timeline; deleted on its own (B25) or together with the Person.
+- **Encounter**: `date`, optional Event (none = casual networking), optional `note` (editable in
+  F7, B29). Shown in the timeline; deleted on its own (B25) or together with the Person.
 - **Event**: `name`, `startDate`; used for the views and the timeline.
 
 ## Success Criteria *(mandatory)*
@@ -338,12 +358,15 @@ No new entities or fields. F7 reads and changes what F0, F2, F4 and F5 defined:
   (SC-001 of F2 and F5 still hold).
 - **SC-008**: After deleting one Encounter, 100% of the Person's other Encounters and notes
   remain.
+- **SC-009**: A note added or changed in the edit mode is shown in the timeline and survives
+  closing and reopening the app in 100% of cases.
 
 ## Assumptions
 
-- **Notes are read-only here.** Writing a note later and editing it is F6, which waits for open
-  question #5 (note per Encounter or per Person). F7 shows notes per Encounter, as the current
-  model stores them.
+- **Notes are per Encounter** (B28). Writing a note later and editing it happen in F7's edit mode
+  (B29); F6 is no longer a separate feature. The note step (F2) stays the place to write a note
+  right after saving.
+- **No length limit on notes**, as in the note step (F2).
 - **Editing a name to one that another Person already has** is allowed without a question:
   identity is the profile link (constitution V), and two people can share a name.
 - **Tab order**: "Add" first, then Contacts, Actions, My QR, Settings, as listed in

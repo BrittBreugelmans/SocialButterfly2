@@ -152,6 +152,7 @@ export const nl = {
   'encounter.deleteLast':
     'Dit is de enige ontmoeting met {name}. De hele persoon verwijderen? Dit kan niet ongedaan gemaakt worden.',
   'diagnostics.addManyTestData': '500 testcontacten toevoegen',
+  'person.noteFor': 'Notitie bij {date} ({event})',
 } as const
 
 export type TextKey = keyof typeof nl

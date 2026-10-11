@@ -1,8 +1,9 @@
 <!--
 Sync Impact Report
-- Version change: 1.0.2 → 1.0.3 (PATCH: Open Questions list brought up to date)
+- Version change: 1.0.3 → 1.0.4 (PATCH: Open Questions list brought up to date)
 - Modified principles: none
-- Removed from Open Questions: #4 (decided: wiki B17, B22)
+- Removed from Open Questions: #5 (decided: wiki B28, note per Encounter)
+- Earlier (1.0.3): removed #4 (wiki B17, B22)
 - Earlier (1.0.2): removed #1 (wiki B15) and #2 (wiki B16); narrowed #4
 - Earlier (1.0.1): removed #7 (wiki B12) and #11 (wiki T9–T11)
 - Added sections: none | Removed sections: none
@@ -155,14 +156,13 @@ Each principle has a **Rule**, a **Rationale** and a **Verify** step for reviewe
 - **Compliance:** reviews of specs, plans and code check against the principles above.
 - Agents MUST NOT resolve open questions themselves; they stay open until the owner decides.
 
-**Version**: 1.0.3 | **Ratified**: 2026-10-07 | **Last Amended**: 2026-10-11
+**Version**: 1.0.4 | **Ratified**: 2026-10-07 | **Last Amended**: 2026-10-11
 
 ## Open Questions
 
 Numbers refer to `wiki/open-vragen.md`. Specs MUST NOT assume an answer.
 
 - **#3 dismissed Actions** (IX): permanent, or can they return on a new Encounter?
-- **#5 Note scope** (glossary): per Encounter (current model) or per Person?
 - **#6 CSV export** (VI): which columns? Also import as a restore?
 - **#8 Default language** (VII): for the owner and for `guestMode`.
 - **#9 Ranking of quality values** (Purpose): stated in the prompt; to be confirmed in the wiki.

@@ -367,3 +367,69 @@ describe('Correct a name or company (F7 User Story 7)', () => {
     expect(screen.getByLabelText(nl['add.name'])).toHaveValue('Jan Peeters')
   })
 })
+
+describe('Notes in the edit mode (F7, B28, B29)', () => {
+  const noteField = (date: string, event: string) =>
+    screen.getByRole('textbox', {
+      name: nl['person.noteFor'].replace('{date}', formatDateRange(date, date, 'nl')).replace('{event}', event),
+    })
+
+  it('shows a note field per Encounter and hides the other actions', async () => {
+    const user = userEvent.setup()
+    await seedJan()
+    renderApp()
+    await openContacts(user)
+    await openPerson(user, 'Jan Peeters')
+    await user.click(screen.getByRole('button', { name: nl['person.edit'] }))
+
+    expect(noteField(today, 'Devoxx 2026')).toHaveValue('Talked about Kotlin')
+    expect(noteField(daysAgo(10), nl['contacts.casual'])).toHaveValue('')
+    expect(screen.queryByRole('link', { name: nl['person.openProfile'] })).not.toBeInTheDocument()
+    expect(screen.queryByRole('switch')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: nl['encounter.delete'] })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: nl['person.delete'] })).not.toBeInTheDocument()
+  })
+
+  it('adds, changes and clears notes, saved together', async () => {
+    const user = userEvent.setup()
+    const { jan } = await seedJan()
+    renderApp()
+    await openContacts(user)
+    await openPerson(user, 'Jan Peeters')
+
+    await user.click(screen.getByRole('button', { name: nl['person.edit'] }))
+    await user.type(noteField(daysAgo(10), nl['contacts.casual']), 'Met at the train station')
+    await user.clear(noteField(today, 'Devoxx 2026'))
+    await user.type(noteField(today, 'Devoxx 2026'), 'Kotlin and coffee')
+    await user.click(screen.getByRole('button', { name: nl['person.save'] }))
+
+    // Only the timeline paragraphs: a controlled textarea also carries its value as text.
+    expect(await screen.findByText('Kotlin and coffee', { selector: 'p' })).toBeInTheDocument()
+    expect(screen.getByText('Met at the train station', { selector: 'p' })).toBeInTheDocument()
+    const notes = (await listEncountersByPerson(jan.id)).map((e) => e.note)
+    expect(notes).toEqual(['Kotlin and coffee', 'Met at the train station'])
+
+    await user.click(screen.getByRole('button', { name: nl['person.edit'] }))
+    await user.clear(noteField(today, 'Devoxx 2026'))
+    await user.click(screen.getByRole('button', { name: nl['person.save'] }))
+    await vi.waitFor(() => expect(timelineItems()[0]).toHaveTextContent(nl['person.noNote']))
+    expect((await listEncountersByPerson(jan.id))[0]?.note).toBeUndefined()
+  })
+
+  it('cancel restores the stored notes', async () => {
+    const user = userEvent.setup()
+    const { jan } = await seedJan()
+    renderApp()
+    await openContacts(user)
+    await openPerson(user, 'Jan Peeters')
+
+    await user.click(screen.getByRole('button', { name: nl['person.edit'] }))
+    await user.type(noteField(today, 'Devoxx 2026'), ' and more')
+    await user.click(screen.getByRole('button', { name: nl['link.cancel'] }))
+    expect(screen.getByText('Talked about Kotlin', { selector: 'p' })).toBeInTheDocument()
+    expect((await listEncountersByPerson(jan.id))[0]?.note).toBe('Talked about Kotlin')
+
+    await user.click(screen.getByRole('button', { name: nl['person.edit'] }))
+    expect(noteField(today, 'Devoxx 2026')).toHaveValue('Talked about Kotlin')
+  })
+})

@@ -102,3 +102,57 @@ describe('updatePersonDetails (F7, B27)', () => {
     await expect(updatePersonDetails('nope', { name: 'X' })).rejects.toBeInstanceOf(ValidationError)
   })
 })
+
+describe('updatePersonDetails with notes (F7, B28, B29)', () => {
+  async function janWithTwoEncounters() {
+    const jan = await createPerson({ name: 'Jan Peeters', searchUrl: SEARCH })
+    const withNote = await createEncounter({ personId: jan.id, date: todayLocal(), note: 'Kotlin' })
+    const without = await createEncounter({ personId: jan.id, date: todayLocal() })
+    return { jan, withNote, without }
+  }
+
+  it('adds, changes and removes notes together with the name', async () => {
+    const { jan, withNote, without } = await janWithTwoEncounters()
+    await updatePersonDetails(jan.id, {
+      name: 'Jan P',
+      notes: [
+        { encounterId: without.id, note: '  Talked about Rust ' },
+        { encounterId: withNote.id, note: 'Kotlin and coffee' },
+      ],
+    })
+    const byId = Object.fromEntries((await listEncountersByPerson(jan.id)).map((e) => [e.id, e]))
+    expect(byId[without.id]?.note).toBe('Talked about Rust')
+    expect(byId[withNote.id]?.note).toBe('Kotlin and coffee')
+    expect((await getPerson(jan.id))?.name).toBe('Jan P')
+
+    await updatePersonDetails(jan.id, { name: 'Jan P', notes: [{ encounterId: withNote.id, note: '   ' }] })
+    const cleared = (await listEncountersByPerson(jan.id)).find((e) => e.id === withNote.id)
+    expect(cleared && 'note' in cleared).toBe(false)
+  })
+
+  it('leaves Encounters whose note did not change untouched', async () => {
+    const { jan, withNote, without } = await janWithTwoEncounters()
+    await updatePersonDetails(jan.id, { name: 'Jan Peeters', notes: [{ encounterId: without.id, note: 'New' }] })
+    const after = (await listEncountersByPerson(jan.id)).find((e) => e.id === withNote.id)
+    expect(after?.updatedAt).toBe(withNote.updatedAt)
+  })
+
+  it("refuses another Person's Encounter and changes nothing", async () => {
+    const { jan, without } = await janWithTwoEncounters()
+    const zoe = await createPerson({ name: 'Zoë Maes', searchUrl: SEARCH })
+    const zoes = await createEncounter({ personId: zoe.id, date: todayLocal() })
+
+    await expect(
+      updatePersonDetails(jan.id, {
+        name: 'Changed',
+        notes: [
+          { encounterId: without.id, note: 'Should not stay' },
+          { encounterId: zoes.id, note: 'Wrong person' },
+        ],
+      }),
+    ).rejects.toBeInstanceOf(ValidationError)
+    expect((await getPerson(jan.id))?.name).toBe('Jan Peeters')
+    expect((await listEncountersByPerson(jan.id)).find((e) => e.id === without.id)?.note).toBeUndefined()
+    expect((await listEncountersByPerson(zoe.id))[0]?.note).toBeUndefined()
+  })
+})

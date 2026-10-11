@@ -5,7 +5,8 @@ Tabbalk vanaf F7 ([B26](beslissingen.md)). Nog niet gebouwde tabs tonen "binnenk
 tijdens de dagkeuze, het toevoegen, het notitiescherm en de doorgeef-modus.
 1. **Toevoegen**: het startscherm ("Voeg toe via naam", "Scan QR"). De app opent hier.
 2. **Contacten**: personen per evenement, zonder evenement of allemaal; zoeken op naam. Detail met
-   tijdlijn, "Open in LinkedIn", connectiestatus, naam/bedrijf aanpassen ([B27](beslissingen.md)),
+   tijdlijn, "Open in LinkedIn", connectiestatus, aanpasmodus voor naam, bedrijf en notities
+   ([B27, B29](beslissingen.md)),
    ontmoeting of persoon verwijderen ([B25](beslissingen.md)).
 3. **Acties**: openstaande [acties](begrippen.md), elk afwijsbaar.
 4. **Mijn QR**: Britts LinkedIn-QR, groot, met vlinder.

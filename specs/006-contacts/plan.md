@@ -11,8 +11,8 @@ Contacts tab. The list shows the people of the active Event, without an Event, o
 searchable by name (ignoring case, spaces and accents). A Person's detail screen shows the
 timeline of Encounters and notes and a real link to the profile, or to the search when the
 profile link is missing. From there the owner can paste a profile link (F4), switch the
-connection status (B16), edit name and company (B27), delete one Encounter (B25) or delete the
-Person.
+connection status (B16), edit name, company and the note of every Encounter in an edit mode
+(B27, B28, B29; F6 merged into F7), delete one Encounter (B25) or delete the Person.
 
 Technical approach:
 
@@ -22,7 +22,7 @@ Technical approach:
   `buildContactRows` plus `searchKey` (R3, R4). The list state and scroll position are kept while
   a detail is open (R5).
 - **Data:** no schema change. New repository functions `updatePersonDetails` (name, company,
-  search link) and `deleteEncounterFromTimeline` (refuses the last Encounter), plus
+  search link and Encounter notes in one transaction) and `deleteEncounterFromTimeline` (refuses the last Encounter), plus
   `listEncounters` (R8, R9).
 - **Reuse:** F4's paste-and-merge code moves out of `NoteStep` into a shared `ProfileLinkControl`
   (R10).
@@ -43,7 +43,7 @@ Technical approach:
 
 **Performance Goals**: list and search update without a noticeable wait at 500 Persons (SC-002, under 0.5 s on the iPhone); no extra taps in the add flows (SC-007)
 
-**Constraints**: €0; no network use for contacts (FR-017); notes read-only (FR-010); tab bar never reachable from guest mode (FR-001c, FR-002)
+**Constraints**: €0; no network use for contacts (FR-017); notes editable only in the edit mode (FR-010); tab bar never reachable from guest mode (FR-001c, FR-002)
 
 **Scale/Scope**: about 6 new UI components, 1 refactored (NoteStep), 3 repository functions, 1 error, about 40 text keys; a few hundred Persons per year
 

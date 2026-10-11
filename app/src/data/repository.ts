@@ -179,16 +179,32 @@ export async function updatePerson(
 }
 
 /**
- * Edits name and company (F7, B27) in ONE transaction. The search link follows them; the profile
- * link, the identity of the Person, never changes here (constitution V).
+ * Edits name, company and Encounter notes (F7, B27, B29) in ONE transaction: everything is saved,
+ * or nothing. The search link follows name and company; the profile link, the identity of the
+ * Person, never changes here (constitution V). Only Encounters whose note changed are written.
  */
-export async function updatePersonDetails(id: string, changes: { name: string; company?: string }): Promise<Person> {
+export async function updatePersonDetails(
+  id: string,
+  changes: { name: string; company?: string; notes?: { encounterId: string; note: string }[] },
+): Promise<Person> {
   const name = requiredText(changes.name, 'name')
   const company = optionalText(changes.company)
   return withStorageErrors(() =>
-    db.transaction('rw', db.persons, async () => {
+    db.transaction('rw', db.persons, db.encounters, async () => {
       const current = await db.persons.get(id)
       if (!current) throw new ValidationError('id', 'Unknown Person')
+
+      // Check every Encounter before writing anything.
+      const edits: Encounter[] = []
+      for (const { encounterId, note } of changes.notes ?? []) {
+        const encounter = await db.encounters.get(encounterId)
+        if (!encounter || encounter.personId !== id) {
+          throw new ValidationError('notes', 'Encounter does not belong to this Person')
+        }
+        const text = optionalText(note)
+        if (text !== encounter.note) edits.push(compact<Encounter>({ ...encounter, note: text, updatedAt: nowIso() }))
+      }
+
       const updated = compact<Person>({
         ...current,
         name,
@@ -197,6 +213,7 @@ export async function updatePersonDetails(id: string, changes: { name: string; c
         updatedAt: nowIso(),
       })
       await db.persons.put(updated)
+      await db.encounters.bulkPut(edits)
       return updated
     }),
   )

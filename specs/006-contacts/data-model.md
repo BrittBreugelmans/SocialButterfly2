@@ -20,8 +20,10 @@ Events, and changes or deletes Persons and Encounters.
 | Person | `updatedAt` | Every change | Set by the repository (F0 FR-013). |
 | Person + Encounters | — | Delete Person | One transaction (F0 `deletePerson`). |
 | Encounter | — | Delete one (B25) | Refused when it is the Person's only Encounter (`LastEncounterError`). |
+| Encounter | `note` | Edit mode (B28, B29) | Trimmed; empty → absent. Saved in the same transaction as name and company. |
+| Encounter | `updatedAt` | Only when its note changed | Set by the repository. |
 
-Encounter `note` is **read-only** in F7 (FR-010); changing it is F6.
+Notes belong to an **Encounter**, not to a Person (B28, open question #5 closed).
 
 ## Delete rules
 

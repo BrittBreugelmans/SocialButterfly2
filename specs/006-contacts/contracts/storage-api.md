@@ -10,12 +10,17 @@ Additions to [F0](../../001-app-foundation/contracts/storage-api.md),
 ### Edit name and company (NEW)
 
 ```ts
-updatePersonDetails(id: string, changes: { name: string; company?: string }): Promise<Person>
-// ONE transaction (research R8, B27):
+updatePersonDetails(
+  id: string,
+  changes: { name: string; company?: string; notes?: { encounterId: string; note: string }[] },
+): Promise<Person>
+// ONE transaction on persons + encounters (research R8, B27, B29):
 // - name: trimmed, required → ValidationError('name') when empty.
 // - company: trimmed; empty or missing → removed.
 // - searchUrl = buildSearchUrl(name, company).
 // - profileUrl, connectionStatus, id, createdAt: unchanged. updatedAt: now.
+// - notes: each Encounter must belong to this Person (else ValidationError('notes'));
+//   note trimmed, empty → removed; updatedAt only on Encounters whose note changed.
 // Unknown id → ValidationError('id'). Storage full → StorageFullError, nothing changed.
 ```
 

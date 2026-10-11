@@ -28,7 +28,7 @@ restore and the 500-contact speed are checked on the iPhone with [quickstart.md]
   rules"): terms from `wiki/begrippen.md`, every text via `t()`, UI only through
   `app/src/data/repository.ts`, every write in one transaction inside `withStorageErrors()`.
 - No new fields, no Dexie schema version, no new dependencies (plan).
-- Notes are **read-only** in F7 (FR-010): no note input on the detail screen.
+- Notes are read-only outside the edit mode (FR-010); the edit mode edits them (B29, Phase 11).
 - Nothing changes or is deleted without an explicit tap; deletes always go through a confirmation
   (FR-014, FR-014a, FR-015).
 - A `StorageFullError` is caught and left to the F0 banner (as in `NoteStep.tsx`); any other error
@@ -240,11 +240,35 @@ link" when the link is missing, and Back that keeps the list state.
 
 ## Phase 10: Polish & Cross-Cutting Concerns
 
+*(2026-10-11: T039–T041 come after Phase 11.)*
+
 - [X] T037 Add a button `diagnostics.addManyTestData` to `app/src/ui/Diagnostics.tsx` per research R12: it creates the `[test]` Events if missing and 500 Persons named `[test] Contact 001`…`500` (every third with a company, every fifth `connected`), each with 1–3 Encounters spread over the `[test]` Events and casual networking on recent days; it refreshes the counts. The existing "Remove test data" removes them.
 - [X] T038 Run `npm run typecheck`, `npm test` and `npm run build` in `app/`; check that all texts on the new screens come from `t()`, that no screen besides the five tabs shows the tab bar, and that no new dependency was added to `app/package.json`. *(2026-10-11: 248 tests green (was 200), build OK, `package.json` unchanged.)*
 - [ ] T039 Commit and push to `main` (manual, Britt). Cloudflare deploys automatically.
 - [ ] T040 Validate on the iPhone with [quickstart.md](quickstart.md) sections 2–6, including the 500-contact check and the tab bar above the home indicator (manual, Britt).
 - [ ] T041 Tick the F7 items in `specs/features.md` (and "Persoon verwijderen (F7)" under "Klaar voor de eerste beurs" once F10's CSV export also works) and add a line to `wiki/log.md`, per CLAUDE.md.
+
+---
+
+## Phase 11: Change request — notes in the edit mode (B28, B29) (Priority: P2)
+
+**Goal**: The edit mode of the detail screen also edits the note of every Encounter; name, company
+and notes are saved together. F6 is merged into F7.
+
+**Independent Test**: `npm test` and [quickstart.md](quickstart.md) section 5 step 2.
+
+### Tests
+
+- [X] T042 [P] [US7] Extend `app/tests/contacts-repository.test.ts` for `updatePersonDetails` with `notes`: a note on an Encounter without one is stored (trimmed); a changed note replaces the old one; an empty note removes the `note` field; an Encounter whose note did not change keeps its `updatedAt`; an Encounter of another Person → `ValidationError` and neither the name nor any note changed.
+- [X] T043 [P] [US7] Extend `app/tests/person-detail-ui.test.tsx`: in the edit mode every timeline item has a textarea labelled `person.noteFor` (date, Event) with the stored note or empty; the LinkedIn link, `link.paste`, the status switch and `encounter.delete`/`person.delete` are not shown; typing a note in the empty casual Encounter and changing the Devoxx note, then `person.save`, shows both notes in the timeline and stores them; clearing a note shows `person.noNote`; `link.cancel` restores the stored notes.
+
+### Implementation
+
+- [X] T044 [US7] Add the key `person.noteFor` from [contracts/screens.md](contracts/screens.md) to `app/src/i18n/nl.ts` and `app/src/i18n/en.ts`, word for word.
+- [X] T045 [US7] Extend `updatePersonDetails` in `app/src/data/repository.ts` per [contracts/storage-api.md](contracts/storage-api.md) and research R8: optional `notes: { encounterId, note }[]`; one `rw` transaction on `persons` and `encounters`; each Encounter must exist and have `personId === id` (else `ValidationError('notes')`, before anything is written); note "Trimmed; empty → absent"; `put` an Encounter (with `compact` and a new `updatedAt`) only when its note changed. Make the T042 tests pass.
+- [X] T046 [US7] Update `app/src/ui/PersonDetail.tsx` per [contracts/screens.md](contracts/screens.md) "Person detail": the draft holds `notes: Record<encounterId, string>` filled from the timeline; in the edit mode render one form with name, company, the timeline with a `<textarea>` per Encounter (`aria-label` = `person.noteFor`, placeholder `note.placeholder`, `rows={3}`), then `person.save` and `link.cancel`; hide the LinkedIn link, `ProfileLinkControl`, the status switch and the delete buttons while editing; saving passes only the notes that differ from the stored ones, then reloads the timeline. Make the T043 tests pass.
+
+**Checkpoint**: notes can be added and edited after the event (B6, B29).
 
 ---
 
@@ -260,7 +284,8 @@ link" when the link is missing, and Back that keeps the list state.
 - **US5 (Phase 7)**: depends on US3.
 - **US6 (Phase 8)**: depends on US5 (`ConfirmPanel`, Person delete for the last Encounter).
 - **US7 (Phase 9)**: depends on US3; independent of US4–US6.
-- **Polish (Phase 10)**: after all stories.
+- **Phase 11** (notes in the edit mode): depends on US7 (T035, T036).
+- **Polish (Phase 10)**: T037–T038 after all stories; T039–T041 after Phase 11.
 
 ### Within Each Story
 

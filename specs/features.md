@@ -51,10 +51,10 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [X] Bestaande persoon herkend → nieuwe ontmoeting toegevoegd
 - [X] Niet-LinkedIn-QR → duidelijke melding, niets opgeslagen
 
-## F6 — Notities
-- [ ] Notitie toevoegen meteen na opslaan of later ⚠️ #5
-- [ ] Notitie bewerken
-- [ ] Notities nooit zichtbaar in doorgeef-modus
+## F6 — Notities → opgegaan in F7 (B29)
+- [x] Notitie per ontmoeting (B28)
+- Notitie meteen na opslaan: notitiescherm (F2). Later toevoegen en bewerken: F7.
+- Notities nooit zichtbaar in doorgeef-modus: geldt voor F3 en F7.
 
 ## F7 — Contacten
 - [ ] Tabbalk: Toevoegen, Contacten, Acties, Mijn QR, Instellingen; nog niet gebouwd = "binnenkort" (B26)
@@ -63,7 +63,7 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [ ] Persoon-detail met tijdlijn van ontmoetingen + notities
 - [ ] "Open in LinkedIn" (profiel-URL, anders zoek-link)
 - [ ] Connectiestatus aanpassen
-- [ ] Naam en bedrijf aanpassen (B27)
+- [ ] Aanpasmodus: naam, bedrijf en notitie per ontmoeting aanpassen (B27, B29)
 - [ ] Persoon verwijderen
 - [ ] Eén ontmoeting verwijderen; laatste ontmoeting = persoon verwijderen (B25)
 

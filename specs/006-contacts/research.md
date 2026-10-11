@@ -118,8 +118,17 @@ F7 builds on F0–F5. No new library, no new browser API, no schema change.
     exists, because the search link is kept as a fallback (F5 data model);
   - `profileUrl`, `connectionStatus`, `id` and `createdAt` never change; `updatedAt` does.
   - No same-name question on edit (spec Assumptions): identity is the profile link.
-- **UI**: an "Edit" button on the detail screen turns name and company into a small form with
-  Save and Cancel. Cancel restores the stored values (US7 scenario 5).
+- **Notes (change request, B28, B29)**: the same function takes an optional
+  `notes: { encounterId, note }[]` and writes them in the **same** transaction (tables `persons`
+  and `encounters`), so name, company and notes are saved together or not at all (US7 scenario 9):
+  - each Encounter must belong to this Person, otherwise `ValidationError('notes')` and nothing is
+    saved;
+  - a note is trimmed; empty → the `note` field is removed;
+  - only Encounters whose note really changed get a new `updatedAt` (sync-ready, constitution IV).
+- **UI**: an "Edit" button on the detail screen opens the edit mode: one form with name, company
+  and, in the timeline, a textarea per Encounter (labelled with its date and Event), then Save and
+  Cancel. The LinkedIn link, paste, status switch and delete buttons are hidden while editing, so
+  the form is the only thing to finish. Cancel restores the stored values (US7 scenario 5).
 - **Alternatives considered**: calling `updatePerson` with a `searchUrl` from the UI (the rule
   "search link follows name and company" would then live in a screen instead of in the
   repository).

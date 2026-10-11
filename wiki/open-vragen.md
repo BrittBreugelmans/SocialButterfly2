@@ -9,7 +9,7 @@ Nog niet beslist. Een agent vult deze **nooit** zelf in. Na een beslissing: verp
 2. ~~**Connectiestatus.** Hoe zet Britt "geconnecteerd"? Een knop na terugkeer uit LinkedIn? Automatisch aannemen na "Zoek op LinkedIn"?~~ → beslist: B16.
 3. **Afgewezen acties.** Definitief, of kunnen ze terugkomen (bv. bij een nieuwe ontmoeting)?
 4. ~~**Bedrijf.** Verplicht veld? Ook bewaren bij een QR-scan?~~ → beslist: B17 (optioneel) en B22 (optioneel veld bij QR).
-5. **Notitie per ontmoeting of per persoon?** (Model zegt per ontmoeting; bevestigen.)
+5. ~~**Notitie per ontmoeting of per persoon?** (Model zegt per ontmoeting; bevestigen.)~~ → beslist: B28.
 6. **CSV-export.** Welke kolommen? Ook importeren (herstellen van back-up)?
 7. ~~**Evenementen.** Wat als er geen actief evenement is? Standaard "Zonder evenement"?~~ → beslist: B12.
 

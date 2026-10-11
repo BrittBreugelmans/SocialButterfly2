@@ -64,7 +64,7 @@ version label (long press → Diagnostics).
 |---|---|
 | Back (`add.back`) | To the list, same view, search and scroll position. |
 | Name, company | Full text. |
-| Edit (`person.edit`) | Turns name and company into inputs (`add.name`, required; `add.company`; `maxLength` 100) with `person.save` and `link.cancel`. Empty name: `person.errorName`, not saved. |
+| Edit (`person.edit`) | Opens the edit mode: inputs `add.name` (required) and `add.company` (`maxLength` 100), and in the timeline a textarea per Encounter (label `person.noteFor` with date and Event, placeholder `note.placeholder`, stored note or empty), then `person.save` and `link.cancel`. Empty name: `person.errorName`, nothing saved. While editing, the LinkedIn link, paste, status switch and delete buttons are hidden (B29). |
 | LinkedIn link | Profile known: link `person.openProfile` + `link.linked` *linkedin.com/in/…*. Not known: link `person.searchLinkedIn` + line `person.noProfile`. Always `target="_blank" rel="noopener"`. |
 | Paste LinkedIn link | Only without a profile link: F4's `link.paste` button, messages and merge question (`ProfileLinkControl`). After a merge the detail shows the remaining Person. |
 | Status switch | `note.connected`, `role="switch"`, saved at once. |
@@ -126,6 +126,7 @@ While a delete runs, both buttons are disabled.
 | `encounter.deleteNote` | De notitie wordt ook verwijderd. | The note will be deleted too. |
 | `encounter.deleteLast` | Dit is de enige ontmoeting met {name}. De hele persoon verwijderen? Dit kan niet ongedaan gemaakt worden. | This is the only encounter with {name}. Delete the whole person? This can't be undone. |
 | `diagnostics.addManyTestData` | 500 testcontacten toevoegen | Add 500 test contacts |
+| `person.noteFor` | Notitie bij {date} ({event}) | Note for {date} ({event}) |
 
-Reused: `add.back`, `add.name`, `add.company`, `link.*`, `note.connected`.
+Reused: `add.back`, `add.name`, `add.company`, `link.*`, `note.connected`, `note.placeholder`.
 Tone per `wiki/merk-en-stijl.md`: friendly, short.

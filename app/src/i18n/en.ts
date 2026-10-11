@@ -150,4 +150,5 @@ export const en: Record<TextKey, string> = {
   'encounter.deleteNote': 'The note will be deleted too.',
   'encounter.deleteLast': "This is the only encounter with {name}. Delete the whole person? This can't be undone.",
   'diagnostics.addManyTestData': 'Add 500 test contacts',
+  'person.noteFor': 'Note for {date} ({event})',
 }

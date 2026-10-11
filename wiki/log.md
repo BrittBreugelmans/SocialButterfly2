@@ -2,6 +2,12 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-11** — wijziging F7 op vraag van Britt — B28: notitie hoort bij een ontmoeting (open
+  vraag #5 gesloten; constitution 1.0.4). B29: F6 gaat op in F7; de aanpasmodus van het
+  detailscherm past naam, bedrijf en de notitie van elke ontmoeting aan, alles in één keer bewaard.
+  Spec (US7, FR-010, FR-014b, SC-009), plan, research, datamodel, contracten, quickstart en taken
+  (T042–T046) bijgewerkt; features.md: F6 verwijst naar F7. 254 tests groen, build OK.
+
 - **2026-10-11** — implementatie F7 (`/speckit-implement`) — Tabbalk (Toevoegen, Contacten, Acties,
   Mijn QR, Instellingen; de laatste drie "Binnenkort"). Contacten: lijst per evenement / zonder
   evenement / alle, zoeken op naam (accenten tellen niet), detail met tijdlijn en notities, "Open in
