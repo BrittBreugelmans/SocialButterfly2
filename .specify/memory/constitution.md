@@ -1,9 +1,9 @@
 <!--
 Sync Impact Report
-- Version change: 1.0.1 → 1.0.2 (PATCH: Open Questions list brought up to date)
+- Version change: 1.0.2 → 1.0.3 (PATCH: Open Questions list brought up to date)
 - Modified principles: none
-- Removed from Open Questions: #1 (decided: wiki B15) and #2 (decided: wiki B16)
-- Narrowed: #4 (company optional when adding by name: wiki B17; QR scans still open)
+- Removed from Open Questions: #4 (decided: wiki B17, B22)
+- Earlier (1.0.2): removed #1 (wiki B15) and #2 (wiki B16); narrowed #4
 - Earlier (1.0.1): removed #7 (wiki B12) and #11 (wiki T9–T11)
 - Added sections: none | Removed sections: none
 - Templates: not modified
@@ -155,14 +155,13 @@ Each principle has a **Rule**, a **Rationale** and a **Verify** step for reviewe
 - **Compliance:** reviews of specs, plans and code check against the principles above.
 - Agents MUST NOT resolve open questions themselves; they stay open until the owner decides.
 
-**Version**: 1.0.2 | **Ratified**: 2026-10-07 | **Last Amended**: 2026-10-09
+**Version**: 1.0.3 | **Ratified**: 2026-10-07 | **Last Amended**: 2026-10-11
 
 ## Open Questions
 
 Numbers refer to `wiki/open-vragen.md`. Specs MUST NOT assume an answer.
 
 - **#3 dismissed Actions** (IX): permanent, or can they return on a new Encounter?
-- **#4 Company** (VIII): stored for QR scans? (Optional when adding by name: wiki B17.)
 - **#5 Note scope** (glossary): per Encounter (current model) or per Person?
 - **#6 CSV export** (VI): which columns? Also import as a restore?
 - **#8 Default language** (VII): for the owner and for `guestMode`.

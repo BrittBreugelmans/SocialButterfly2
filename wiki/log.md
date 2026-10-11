@@ -2,6 +2,27 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-11** — implementatie F5 (`/speckit-implement`) — "Scan QR" op het startscherm: camera,
+  bevestigingsscherm met afgeleide naam en optioneel bedrijf, één tik opent het profiel en bewaart.
+  Bekende persoon via link → nieuwe ontmoeting; zelfde naam zonder link → "Is dit dezelfde
+  persoon?". jsQR zit in een apart stuk van de app (47 kB gecomprimeerd). 194 tests groen, build
+  OK. 21 van 24 taken klaar; open: push (T022), controle op de iPhone met een tweede telefoon
+  (T023) en afvinken (T024).
+
+- **2026-10-11** — plan F5 (`/speckit-plan`) — Plan, research, datamodel, contracts en quickstart
+  voor F5. Eerste extra bibliotheek: **jsQR 1.4.0** (gratis, open source) om QR-codes te lezen,
+  want Safari kan dat zelf niet; alleen geladen op het scanscherm. Geen nieuwe velden; bewaren via
+  dezelfde functie als F2 (`addByName`, nu met profiel-link).
+
+- **2026-10-11** — spec F5 (`/speckit-specify`) — `specs/005-add-by-qr` aangemaakt. B22: optioneel
+  bedrijfsveld bij een QR-scan; open vraag #4 daarmee volledig beslist. Flow B, open-vragen en
+  constitution (1.0.3) bijgewerkt. Spec klaar voor `/speckit-plan`.
+
+- **2026-10-09** — rollout en iPhone-controle F4 door Britt — F4 geïmplementeerd. Gepusht als
+  `7719aa4`; live op socialbutterfly2.pages.dev. Controles op de iPhone in orde, ook de
+  iOS-"Plakken"-bubbel. Alle taken van F4 afgevinkt; F4 in features.md volledig afgevinkt. Ook de
+  laatste F2-controle (T036: één tik opent LinkedIn, schakelaar) afgevinkt.
+
 - **2026-10-09** — implementatie F4 (`/speckit-implement`) — "Plak LinkedIn-link" op het
   notitiescherm: link opkuisen tot `https://www.linkedin.com/in/<handle>`, opslaan, "Open LinkedIn"
   opent daarna het profiel. Link van een andere persoon → vraag "Samenvoegen?" (B21); samenvoegen

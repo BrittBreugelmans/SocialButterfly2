@@ -26,6 +26,7 @@ Formaat: **beslissing** — reden — verworpen alternatieven. Bindend tenzij Br
 | B19 | 2026-10-09 | Dezelfde persoon **twee keer op één dag** in dezelfde context (zeldzaam): geen tweede ontmoeting; de app meldt "al ontmoet vandaag" en toont het notitiescherm van die ontmoeting, zonder LinkedIn te openen. | Geen dubbele ontmoetingen in de tijdlijn. | Altijd een nieuwe ontmoeting |
 | B20 | 2026-10-09 | **"Zoek op LinkedIn" opent LinkedIn met dezelfde tik** (een echte link); de app bewaart op hetzelfde moment. De naamcontrole (B15) gebeurt al tijdens het typen. | iOS blokkeert het openen ná het bewaren; zo blijft het 2 tikken (SC-001). Bewaren duurt milliseconden. | Eerst bewaren, dan een extra knop "Open LinkedIn" (3 tikken) |
 | B21 | 2026-10-09 | Hoort een geplakte profiel-link al bij een andere persoon, dan vraagt de app eerst **"Dit profiel hoort bij Jan Peeters (Elmos). Samenvoegen?"** (Samenvoegen / Annuleren). Samenvoegen = één persoon met alle ontmoetingen en notities. | Een verkeerde plak zou anders twee verschillende mensen samenvoegen, en dat kan niet ongedaan gemaakt worden (constitution IX). | Meteen samenvoegen met een melding |
+| B22 | 2026-10-11 | Bij een **QR-scan** heeft het bevestigingsscherm een **optioneel, leeg veld "Bedrijf"**, zoals bij toevoegen via naam (B17). | Kost geen tik als het leeg blijft; het bedrijf helpt bij "Is dit dezelfde persoon?" en in de CSV-export. | Geen bedrijfsveld bij een QR-scan |
 
 ## LinkedIn
 | # | Datum | Beslissing | Reden | Verworpen |

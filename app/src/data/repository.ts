@@ -498,20 +498,28 @@ export async function findSameNamePersons(name: string): Promise<SameNameMatch[]
  * current context, and opens the note step for it, in ONE transaction: nothing is saved on any
  * error (FR-009, research R4). An existing Person already met today in the same context keeps
  * that Encounter (B19).
+ *
+ * F5: `profileUrl` is the normalized link from a QR scan. A new Person gets it; an existing
+ * Person without a link gets it too; one with this link stays unchanged (research R5).
  */
 export async function addByName(input: {
   name: string
   company?: string
   existingPersonId?: string
+  profileUrl?: string
 }): Promise<AddByNameResult> {
   const fields =
     input.existingPersonId === undefined
       ? validatePerson({
           name: input.name,
           company: input.company,
+          profileUrl: input.profileUrl,
           searchUrl: buildSearchUrl(input.name, input.company),
         })
       : undefined
+  if (input.profileUrl !== undefined && !isNormalizedProfileUrl(input.profileUrl)) {
+    throw new ValidationError('profileUrl', 'profileUrl is not in normalized form')
+  }
   return withStorageErrors(() =>
     db.transaction('rw', db.persons, db.events, db.encounters, db.settings, async () => {
       const now = nowIso()
@@ -522,11 +530,19 @@ export async function addByName(input: {
       let encounter: Encounter | undefined
       if (fields) {
         person = compact<Person>({ id: newId(), createdAt: now, updatedAt: now, ...fields })
+        await assertProfileUrlFree(person.profileUrl)
         await db.persons.add(person)
       } else {
         const existing = await db.persons.get(input.existingPersonId!)
         if (!existing) throw new ValidationError('existingPersonId', 'Unknown Person')
         person = existing
+        if (input.profileUrl !== undefined && person.profileUrl !== input.profileUrl) {
+          // The links prove these are different people (F5 US2 scenario 4).
+          if (person.profileUrl !== undefined) throw new ValidationError('profileUrl', 'Person has another profileUrl')
+          await assertProfileUrlFree(input.profileUrl, person.id)
+          person = { ...person, profileUrl: input.profileUrl, updatedAt: now }
+          await db.persons.put(person)
+        }
         // Same context: the same Event, or both casual networking (eventId absent).
         encounter = await db.encounters
           .where('personId')

@@ -6,8 +6,10 @@ import { linkedInUrlFor } from '../linkedin/links'
 
 interface SameNameQuestionProps {
   matches: SameNameMatch[]
-  /** The search link for a new Person with the typed name and company. */
-  searchUrl: string
+  /** The link opened by "No, new person": F2's search link, or F5's scanned profile. */
+  newPersonUrl: string
+  /** The link opened when picking a match; default the match's own LinkedIn link (F2). */
+  linkFor?: (match: SameNameMatch) => string
   /** True while saving, so a second tap does nothing. */
   busy: boolean
   /** `linkOpened`: the tap itself opened LinkedIn (B20). */
@@ -20,7 +22,15 @@ interface SameNameQuestionProps {
  * "Is this the same person?" before a Person with the same name is saved (FR-006, B15).
  * Choices that lead to LinkedIn are real links, so the tap opens it directly (B20).
  */
-export function SameNameQuestion({ matches, searchUrl, busy, onPick, onNewPerson, onBack }: SameNameQuestionProps) {
+export function SameNameQuestion({
+  matches,
+  newPersonUrl,
+  linkFor = (match) => linkedInUrlFor(match.person) ?? '',
+  busy,
+  onPick,
+  onNewPerson,
+  onBack,
+}: SameNameQuestionProps) {
   const { language, t } = useLanguage()
 
   /** Blocks the link while a save runs; otherwise lets it open LinkedIn and calls `then`. */
@@ -47,7 +57,7 @@ export function SameNameQuestion({ matches, searchUrl, busy, onPick, onNewPerson
               </span>
             </>
           )
-          const url = linkedInUrlFor(person)
+          const url = linkFor(match)
           // Met today: straight to the note step without LinkedIn (B19), so a plain button.
           if (metToday || !url) {
             return (
@@ -78,7 +88,7 @@ export function SameNameQuestion({ matches, searchUrl, busy, onPick, onNewPerson
         })}
         <a
           className="button-link"
-          href={searchUrl}
+          href={newPersonUrl}
           target="_blank"
           rel="noopener"
           aria-disabled={busy}

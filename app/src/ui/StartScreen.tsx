@@ -13,9 +13,16 @@ interface StartScreenProps {
   activeEvent: Event | undefined | 'loading'
   onChangeContext(): void
   onAddByName(): void
+  onScanQr(): void
 }
 
-export function StartScreen({ storageStatus, activeEvent, onChangeContext, onAddByName }: StartScreenProps) {
+export function StartScreen({
+  storageStatus,
+  activeEvent,
+  onChangeContext,
+  onAddByName,
+  onScanQr,
+}: StartScreenProps) {
   const { language, setLanguage, t } = useLanguage()
   const [diagnosticsOpen, setDiagnosticsOpen] = useState(false)
   const pressTimer = useRef<number | undefined>(undefined)
@@ -38,9 +45,14 @@ export function StartScreen({ storageStatus, activeEvent, onChangeContext, onAdd
       </p>
       <h1>{t('app.title')}</h1>
 
-      <button type="button" className="add-by-name" onClick={onAddByName}>
-        {t('start.addByName')}
-      </button>
+      <div className="start-actions">
+        <button type="button" className="add-by-name" onClick={onAddByName}>
+          {t('start.addByName')}
+        </button>
+        <button type="button" className="add-by-name" onClick={onScanQr}>
+          {t('start.scanQr')}
+        </button>
+      </div>
 
       <div className="language-switch" role="group" aria-label={t('app.languageSwitch')}>
         <span className="language-label">{t('app.languageSwitch')}</span>

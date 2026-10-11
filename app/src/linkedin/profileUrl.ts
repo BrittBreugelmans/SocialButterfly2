@@ -46,3 +46,22 @@ export function normalizeProfileUrl(text: string): NormalizedProfileUrl {
 export function shortProfileUrl(url: string): string {
   return url.replace(/^https:\/\/www\./, '')
 }
+
+/**
+ * A name suggested from a normalized profile link (F5, research R4): `jan-peeters-1a2b3c` →
+ * "Jan Peeters". Trailing parts with digits (LinkedIn's uniqueness code) are dropped. Returns ''
+ * when no usable name remains; the owner can always edit it.
+ */
+export function nameFromProfileUrl(url: string): string {
+  const raw = url.split('/in/')[1] ?? ''
+  let handle: string
+  try {
+    handle = decodeURIComponent(raw)
+  } catch {
+    return ''
+  }
+  const parts = handle.split('-').filter((part) => part !== '')
+  while (parts.length > 0 && /\d/.test(parts[parts.length - 1]!)) parts.pop()
+  if (!parts.some((part) => /\p{L}{2,}/u.test(part))) return ''
+  return parts.map((part) => part.charAt(0).toLocaleUpperCase() + part.slice(1)).join(' ')
+}

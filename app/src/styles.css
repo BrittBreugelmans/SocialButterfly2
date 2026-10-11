@@ -456,3 +456,59 @@ a.event-option {
   margin: 0 0 4px;
   font-weight: 600;
 }
+
+/* ---------- F5: add by QR ---------- */
+
+.start-actions {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.start-actions .add-by-name {
+  max-width: none;
+}
+
+.qr-video {
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  border-radius: var(--radius);
+  background: #000;
+  object-fit: cover;
+}
+
+.qr-hint,
+.qr-link {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.qr-known {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.qr-message {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--warning-bg);
+}
+
+.qr-message:empty {
+  display: none;
+}
+
+.qr-camera-error {
+  display: grid;
+  gap: 12px;
+}
+
+.qr-camera-error p {
+  margin: 0;
+}

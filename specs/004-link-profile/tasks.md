@@ -166,9 +166,9 @@ with every Encounter and note; Cancel stores nothing.
 ## Phase 5: Polish & Cross-Cutting Concerns
 
 - [X] T018 Run `npm run typecheck`, `npm test` and `npm run build` in `app/`; check that all texts on the note step come from `t()`.
-- [ ] T019 Commit and push to `main` (manual, Britt). Cloudflare deploys automatically.
-- [ ] T020 Validate on the iPhone with [quickstart.md](quickstart.md) sections 2–6, including the iOS "Plakken" bubble (manual, Britt).
-- [ ] T021 Tick the F4 items in `specs/features.md` and add a line to `wiki/log.md`, per CLAUDE.md.
+- [X] T019 Commit and push to `main` (manual, Britt). Cloudflare deploys automatically. *(2026-10-09: pushed as `7719aa4`.)*
+- [X] T020 Validate on the iPhone with [quickstart.md](quickstart.md) sections 2–6, including the iOS "Plakken" bubble (manual, Britt).
+- [X] T021 Tick the F4 items in `specs/features.md` and add a line to `wiki/log.md`, per CLAUDE.md.
 
 ---
 

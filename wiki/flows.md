@@ -18,7 +18,7 @@
 ## Flow B — Toevoegen via QR
 1. "Scan QR" → camera.
 2. App leest de profiel-URL, normaliseert ze en leidt de naam af (bv. `britt-breugelmans` → "Britt Breugelmans").
-3. Britt past de naam aan indien nodig.
+3. Britt past de naam aan indien nodig; optioneel bedrijf ([B22](beslissingen.md)).
 4. Bestaat de persoon al? → nieuwe ontmoeting koppelen (zie Flow D).
 5. Notitieveld verschijnt (overslaan kan).
 

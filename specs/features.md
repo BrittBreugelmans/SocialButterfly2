@@ -39,10 +39,10 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [ ] Terug naar Britts modus zonder dat de gast iets anders kan openen
 
 ## F4 — Profiel-link koppelen
-- [ ] Knop "Plak LinkedIn-link" leest het klembord (iOS-bevestiging)
-- [ ] URL wordt gevalideerd en genormaliseerd (`linkedin.com/in/<handle>`)
-- [ ] Bestaande persoon met dezelfde URL → samenvoegen na bevestiging (B21), geen dubbel
-- [ ] Actie "profiel-link ontbreekt" verdwijnt na koppelen
+- [x] Knop "Plak LinkedIn-link" leest het klembord (iOS-bevestiging)
+- [x] URL wordt gevalideerd en genormaliseerd (`linkedin.com/in/<handle>`)
+- [x] Bestaande persoon met dezelfde URL → samenvoegen na bevestiging (B21), geen dubbel
+- [x] Actie "profiel-link ontbreekt" verdwijnt na koppelen
 
 ## F5 — Toevoegen via QR
 - [ ] Camera opent en leest een LinkedIn-QR

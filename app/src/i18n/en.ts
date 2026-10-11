@@ -88,4 +88,17 @@ export const en: Record<TextKey, string> = {
   'link.merge': 'Merge',
   'link.cancel': 'Cancel',
   'link.merged': 'Merged with {name}.',
+
+  'start.scanQr': 'Scan QR',
+  'qr.title': 'Scan a LinkedIn QR code',
+  'qr.hint': 'Ask for the QR code in the LinkedIn app (search bar → QR icon).',
+  'qr.notProfile': 'This is not a LinkedIn profile code.',
+  'qr.shortLink': 'This is a short link. Ask for the profile QR code from the LinkedIn app.',
+  'qr.cameraDenied': 'The app may not use your camera. Allow it in your iPhone settings, or add by name.',
+  'qr.cameraUnavailable': 'The camera is not available. Add by name instead.',
+  'qr.confirmTitle': 'Who did you scan?',
+  'qr.known': 'You already know {name}.',
+  'qr.save': 'Save and open LinkedIn',
+  'qr.saveMetToday': 'Go to the note',
+  'qr.scanAgain': 'Scan again',
 }

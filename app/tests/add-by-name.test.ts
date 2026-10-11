@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { addDaysLocal, todayLocal } from '../src/data/dates'
 import { db } from '../src/data/db'
-import { ValidationError } from '../src/data/errors'
+import { DuplicateProfileUrlError, ValidationError } from '../src/data/errors'
 import {
   addByName,
   chooseContext,
@@ -15,6 +15,7 @@ import {
   getNoteStep,
   getPerson,
   getSettings,
+  updatePerson,
   updateSettings,
 } from '../src/data/repository'
 import { buildSearchUrl } from '../src/linkedin/links'
@@ -221,5 +222,70 @@ describe('Note step (User Story 3)', () => {
     await finishNoteStep(today.id, undefined)
     expect((await db.encounters.get(today.id))?.note).toBe('Payments')
     expect((await getSettings()).noteStepEncounterId).toBeUndefined()
+  })
+})
+
+describe('addByName with a scanned profile link (F5)', () => {
+  const JAN_URL = 'https://www.linkedin.com/in/jan-peeters'
+
+  it('stores the profile link on a new Person (US1)', async () => {
+    await chooseContext(undefined)
+    const { person, encounter } = await addByName({ name: 'Jan Peeters', company: 'Elmos', profileUrl: JAN_URL })
+    expect(person.profileUrl).toBe(JAN_URL)
+    expect(person.searchUrl).toBe(buildSearchUrl('Jan Peeters', 'Elmos'))
+    expect(person.connectionStatus).toBe('notConnected')
+    expect(encounter.date).toBe(todayLocal())
+    expect((await getSettings()).noteStepEncounterId).toBe(encounter.id)
+  })
+
+  it('refuses a link another Person already has, and saves nothing (US1)', async () => {
+    await createPerson({ name: 'Iemand', profileUrl: JAN_URL })
+    await expect(addByName({ name: 'Jan Peeters', profileUrl: JAN_URL })).rejects.toBeInstanceOf(
+      DuplicateProfileUrlError,
+    )
+    expect(await db.persons.count()).toBe(1)
+    expect(await db.encounters.count()).toBe(0)
+  })
+
+  it('gives a Person without a link the scanned link (US2, B15)', async () => {
+    const jan = await storeJan('Elmos')
+    const { person } = await addByName({ name: 'Jan Peeters', existingPersonId: jan.id, profileUrl: JAN_URL })
+    expect(person.profileUrl).toBe(JAN_URL)
+    expect(person.name).toBe('Jan Peeters')
+    expect(person.company).toBe('Elmos')
+    expect((await getPerson(jan.id))?.profileUrl).toBe(JAN_URL)
+    expect(await db.encounters.count()).toBe(1)
+  })
+
+  it('leaves a Person with this link unchanged and reuses today\'s Encounter (US2, B8, B19)', async () => {
+    await chooseContext(undefined)
+    const jan = await createPerson({ name: 'Jan Peeters', profileUrl: JAN_URL })
+    await updatePerson(jan.id, { connectionStatus: 'connected' })
+    const stored = await getPerson(jan.id)
+
+    const first = await addByName({ name: 'x', existingPersonId: jan.id, profileUrl: JAN_URL })
+    expect(first.alreadyMetToday).toBe(false)
+    expect(await getPerson(jan.id)).toEqual(stored)
+    const second = await addByName({ name: 'x', existingPersonId: jan.id, profileUrl: JAN_URL })
+    expect(second.alreadyMetToday).toBe(true)
+    expect(await db.encounters.count()).toBe(1)
+  })
+
+  it('refuses a Person that has another link (US2)', async () => {
+    const jan = await createPerson({ name: 'Jan Peeters', profileUrl: 'https://www.linkedin.com/in/other' })
+    await expect(addByName({ name: 'x', existingPersonId: jan.id, profileUrl: JAN_URL })).rejects.toBeInstanceOf(
+      ValidationError,
+    )
+    expect(await db.encounters.count()).toBe(0)
+  })
+
+  it('refuses a link that belongs to a third Person (US2)', async () => {
+    const jan = await storeJan()
+    await createPerson({ name: 'Iemand', profileUrl: JAN_URL })
+    await expect(addByName({ name: 'x', existingPersonId: jan.id, profileUrl: JAN_URL })).rejects.toBeInstanceOf(
+      DuplicateProfileUrlError,
+    )
+    expect((await getPerson(jan.id))?.profileUrl).toBeUndefined()
+    expect(await db.encounters.count()).toBe(0)
   })
 })

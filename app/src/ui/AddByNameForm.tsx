@@ -112,7 +112,7 @@ export function AddByNameForm({ activeEvent, onSaved, onBack }: AddByNameFormPro
     return (
       <SameNameQuestion
         matches={question}
-        searchUrl={searchUrl}
+        newPersonUrl={searchUrl}
         busy={saving}
         onPick={(match, linkOpened) => void busy(() => save(match.person.id, linkOpened))}
         onNewPerson={() => void busy(() => save(undefined, true))}

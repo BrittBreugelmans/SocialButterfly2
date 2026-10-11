@@ -6,13 +6,14 @@ import { useOnline } from './platform/online'
 import { requestPersistentStorage, type StorageStatus } from './platform/persistence'
 import { isStandalone } from './platform/standalone'
 import { AddByNameForm, type SavedByName } from './ui/AddByNameForm'
+import { AddByQr } from './ui/AddByQr'
 import { Banners, OfflineScreen } from './ui/Banners'
 import { ContextChoice } from './ui/ContextChoice'
 import { NewEventForm } from './ui/NewEventForm'
 import { NoteStep } from './ui/NoteStep'
 import { StartScreen } from './ui/StartScreen'
 
-type Screen = 'choice' | 'newEvent' | 'start' | 'addByName' | 'noteStep'
+type Screen = 'choice' | 'newEvent' | 'start' | 'addByName' | 'addByQr' | 'noteStep'
 
 export function App() {
   const online = useOnline()
@@ -71,7 +72,7 @@ export function App() {
 
   // Load the active Event whenever the start screen or the quick mode form is shown (FR-008, F2 FR-002).
   useEffect(() => {
-    if ((screen !== 'start' && screen !== 'addByName') || status === 'loading') return
+    if ((screen !== 'start' && screen !== 'addByName' && screen !== 'addByQr') || status === 'loading') return
     let cancelled = false
     setActiveEvent('loading')
     void Promise.all([getSettings(), listEvents()]).then(([settings, events]) => {
@@ -100,6 +101,16 @@ export function App() {
         <ContextChoice onNewEvent={() => setScreen('newEvent')} onDone={contextChosen} />
       ) : screen === 'newEvent' ? (
         <NewEventForm onSaved={contextChosen} onBack={() => setScreen('choice')} />
+      ) : screen === 'addByQr' ? (
+        <AddByQr
+          activeEvent={activeEvent}
+          onSaved={(result) => {
+            setNoteStep(result)
+            setScreen('noteStep')
+          }}
+          onAddByName={() => setScreen('addByName')}
+          onBack={() => setScreen('start')}
+        />
       ) : screen === 'addByName' ? (
         <AddByNameForm
           activeEvent={activeEvent}
@@ -130,6 +141,7 @@ export function App() {
           activeEvent={activeEvent}
           onChangeContext={() => setScreen('choice')}
           onAddByName={() => setScreen('addByName')}
+          onScanQr={() => setScreen('addByQr')}
         />
       )}
     </>

@@ -89,6 +89,19 @@ export const nl = {
   'link.merge': 'Samenvoegen',
   'link.cancel': 'Annuleren',
   'link.merged': 'Samengevoegd met {name}.',
+
+  'start.scanQr': 'Scan QR',
+  'qr.title': 'Scan een LinkedIn-QR',
+  'qr.hint': 'Vraag de QR-code in de LinkedIn-app (zoekbalk → QR-icoon).',
+  'qr.notProfile': 'Dit is geen LinkedIn-profielcode.',
+  'qr.shortLink': 'Dit is een korte link. Vraag de profiel-QR uit de LinkedIn-app.',
+  'qr.cameraDenied': 'De app mag je camera niet gebruiken. Sta het toe in je iPhone-instellingen, of voeg toe via naam.',
+  'qr.cameraUnavailable': 'De camera is niet beschikbaar. Voeg toe via naam.',
+  'qr.confirmTitle': 'Wie heb je gescand?',
+  'qr.known': 'Je kent {name} al.',
+  'qr.save': 'Bewaar en open LinkedIn',
+  'qr.saveMetToday': 'Naar de notitie',
+  'qr.scanAgain': 'Opnieuw scannen',
 } as const
 
 export type TextKey = keyof typeof nl
