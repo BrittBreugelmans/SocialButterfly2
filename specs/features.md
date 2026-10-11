@@ -45,11 +45,11 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [x] Actie "profiel-link ontbreekt" verdwijnt na koppelen
 
 ## F5 — Toevoegen via QR
-- [ ] Camera opent en leest een LinkedIn-QR
-- [ ] URL genormaliseerd (extra parameters weg)
-- [ ] Naam afgeleid uit de URL en aanpasbaar
-- [ ] Bestaande persoon herkend → nieuwe ontmoeting toegevoegd
-- [ ] Niet-LinkedIn-QR → duidelijke melding, niets opgeslagen
+- [x] Camera opent en leest een LinkedIn-QR
+- [x] URL genormaliseerd (extra parameters weg)
+- [x] Naam afgeleid uit de URL en aanpasbaar
+- [x] Bestaande persoon herkend → nieuwe ontmoeting toegevoegd
+- [x] Niet-LinkedIn-QR → duidelijke melding, niets opgeslagen
 
 ## F6 — Notities
 - [ ] Notitie toevoegen meteen na opslaan of later ⚠️ #5

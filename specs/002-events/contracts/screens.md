@@ -34,6 +34,8 @@ Start: context bar (Event name + dates, or "Casual networking") ──tap──�
 | Upcoming Events | Heading `choice.upcoming` |
 | Past Events | Heading `choice.past`; listed last |
 | No Events at all | Only "New event" and "Casual networking" (US2 scenario 4) |
+| Upcoming or past Event tapped (B23) | A warning box `choice.warnUpcoming` / `choice.warnPast` with `choice.chooseAnyway` and `choice.cancel`; nothing is chosen until "Choose anyway". |
+| After a new Event that does not run today (B24) | A line `choice.createdLater` / `choice.createdPast` on top. |
 
 ## New event form
 
@@ -45,7 +47,9 @@ Start: context bar (Event name + dates, or "Casual networking") ──tap──�
 | Save (`event.save`) | | disabled while the name is empty; on a `ValidationError` shows `event.errorName` or `event.errorDates` |
 | Back (`event.back`) | | returns to the choice without saving |
 
-Saving calls `createAndActivateEvent` and opens the start screen.
+Saving an Event that runs today calls `createAndActivateEvent` and opens the start screen. An
+Event that does not run today is saved with `createEvent` (not active) and the choice opens again
+(B24).
 
 ## Start screen (changed)
 
@@ -77,5 +81,11 @@ A **context bar** at the top of the start screen:
 | `context.at` | Je bent op | You're at |
 | `context.casual` | Netwerken zonder evenement | Casual networking |
 | `context.change` | Wijzig evenement | Change event |
+| `choice.warnUpcoming` | {name} begint pas op {date}. Ontmoetingen van vandaag komen er toch onder. | {name} only starts on {date}. Today's encounters will still go under it. |
+| `choice.warnPast` | {name} is al voorbij ({dates}). Ontmoetingen van vandaag komen er toch onder. | {name} is already over ({dates}). Today's encounters will still go under it. |
+| `choice.chooseAnyway` | Toch kiezen | Choose anyway |
+| `choice.cancel` | Annuleren | Cancel |
+| `choice.createdLater` | {name} begint op {date} en staat klaar. Kies hoe je vandaag netwerkt. | {name} starts on {date} and is ready. Choose how you network today. |
+| `choice.createdPast` | {name} is al voorbij en is niet actief. Kies hoe je vandaag netwerkt. | {name} is already over and is not active. Choose how you network today. |
 
 Tone per `wiki/merk-en-stijl.md`: friendly, short. Final wording can be tuned in F11.

@@ -31,3 +31,10 @@ export function orderEventsForChoice(events: Event[], today: string, previousEve
     .sort((a, b) => b.endDate.localeCompare(a.endDate))
   return { current, upcoming, past }
 }
+
+/** Where an Event stands on `today`: running, not started yet, or over (F1 follow-up B23, B24). */
+export function eventStatusOn(event: Pick<Event, 'startDate' | 'endDate'>, today: string): 'current' | 'upcoming' | 'past' {
+  if (event.startDate > today) return 'upcoming'
+  if (event.endDate < today) return 'past'
+  return 'current'
+}

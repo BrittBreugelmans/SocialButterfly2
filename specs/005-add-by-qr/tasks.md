@@ -158,9 +158,9 @@ without a link triggers the F2 question (B15) and gets the link.
 ## Phase 6: Polish & Cross-Cutting Concerns
 
 - [X] T021 Run `npm run typecheck`, `npm test` and `npm run build` in `app/`; check that all texts on the new screens come from `t()`, and that the build puts jsQR in its own chunk (not in the main bundle). *(2026-10-11: 194 tests green five times in a row; `jsQR-*.js` is its own chunk of 130 kB, 47 kB gzipped.)*
-- [ ] T022 Commit and push to `main` (manual, Britt). Cloudflare deploys automatically.
-- [ ] T023 Validate on the iPhone with [quickstart.md](quickstart.md) sections 2–6, with a second phone showing a LinkedIn QR code; note in section 5 where iOS shows the camera setting (manual, Britt).
-- [ ] T024 Tick the F5 items in `specs/features.md` and add a line to `wiki/log.md`, per CLAUDE.md.
+- [X] T022 Commit and push to `main` (manual, Britt). Cloudflare deploys automatically. *(2026-10-11: pushed as `22df4b0`.)*
+- [X] T023 Validate on the iPhone with [quickstart.md](quickstart.md) sections 2–6, with a second phone showing a LinkedIn QR code; note in section 5 where iOS shows the camera setting (manual, Britt).
+- [X] T024 Tick the F5 items in `specs/features.md` and add a line to `wiki/log.md`, per CLAUDE.md.
 
 ---
 

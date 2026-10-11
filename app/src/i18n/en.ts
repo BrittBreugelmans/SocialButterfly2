@@ -52,6 +52,12 @@ export const en: Record<TextKey, string> = {
   'context.at': "You're at",
   'context.casual': 'Casual networking',
   'context.change': 'Change event',
+  'choice.warnUpcoming': "{name} only starts on {date}. Today's encounters will still go under it.",
+  'choice.warnPast': "{name} is already over ({dates}). Today's encounters will still go under it.",
+  'choice.chooseAnyway': 'Choose anyway',
+  'choice.cancel': 'Cancel',
+  'choice.createdLater': '{name} starts on {date} and is ready. Choose how you network today.',
+  'choice.createdPast': '{name} is already over and is not active. Choose how you network today.',
 
   'start.addByName': 'Add by name',
 

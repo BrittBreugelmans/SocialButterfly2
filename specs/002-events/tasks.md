@@ -196,6 +196,20 @@ one tap opens the choice.
 
 ---
 
+## Phase 7: Follow-up — Events that do not run today (2026-10-11)
+
+Bug found by Britt after F5: an Event starting on 12 October could be active on 11 October.
+Decisions B23 (warn before choosing) and B24 (a new Event that does not run today is not made
+active).
+
+- [X] T032 Add `eventStatusOn(event, today): 'current' | 'upcoming' | 'past'` to `app/src/events/choice.ts`.
+- [X] T033 In `app/src/ui/ContextChoice.tsx`, tapping an upcoming or past Event shows a warning box (`choice.warnUpcoming` / `choice.warnPast`, `choice.chooseAnyway`, `choice.cancel`) before `chooseContext`; a current Event is chosen at once (B23).
+- [X] T034 In `app/src/ui/NewEventForm.tsx`, an Event that does not run today is saved with `createEvent` and reported through a new prop `onSavedNotActive`; `app/src/App.tsx` returns to the choice with `choice.createdLater` / `choice.createdPast` on top (B24).
+- [X] T035 Add the 6 keys to `nl.ts` and `en.ts`; add 6 tests to `app/tests/events-ui.test.tsx` (the form helper passes `onSavedNotActive`). 200 tests green.
+- [ ] T036 Push and check on the iPhone: a new Event for tomorrow is not active today; choosing it shows the warning (manual, Britt).
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies

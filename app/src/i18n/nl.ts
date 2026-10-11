@@ -52,6 +52,12 @@ export const nl = {
   'context.at': 'Je bent op',
   'context.casual': 'Netwerken zonder evenement',
   'context.change': 'Wijzig evenement',
+  'choice.warnUpcoming': '{name} begint pas op {date}. Ontmoetingen van vandaag komen er toch onder.',
+  'choice.warnPast': '{name} is al voorbij ({dates}). Ontmoetingen van vandaag komen er toch onder.',
+  'choice.chooseAnyway': 'Toch kiezen',
+  'choice.cancel': 'Annuleren',
+  'choice.createdLater': '{name} begint op {date} en staat klaar. Kies hoe je vandaag netwerkt.',
+  'choice.createdPast': '{name} is al voorbij en is niet actief. Kies hoe je vandaag netwerkt.',
 
   'start.addByName': 'Toevoegen via naam',
 

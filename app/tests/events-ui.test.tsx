@@ -5,6 +5,7 @@ import { App } from '../src/App'
 import { addDaysLocal, todayLocal } from '../src/data/dates'
 import { db } from '../src/data/db'
 import { chooseContext, createEvent, getSettings, updateSettings } from '../src/data/repository'
+import { formatDateRange } from '../src/events/formatDateRange'
 import { LanguageProvider } from '../src/i18n/LanguageProvider'
 import { nl } from '../src/i18n/nl'
 import { NewEventForm } from '../src/ui/NewEventForm'
@@ -33,13 +34,14 @@ function renderApp() {
 describe('NewEventForm (User Story 1)', () => {
   function renderForm() {
     const onSaved = vi.fn()
+    const onSavedNotActive = vi.fn()
     const onBack = vi.fn()
     render(
       <LanguageProvider>
-        <NewEventForm onSaved={onSaved} onBack={onBack} />
+        <NewEventForm onSaved={onSaved} onSavedNotActive={onSavedNotActive} onBack={onBack} />
       </LanguageProvider>,
     )
-    return { onSaved, onBack }
+    return { onSaved, onSavedNotActive, onBack }
   }
 
   it('suggests today for both dates and does not allow an earlier end date', () => {
@@ -187,5 +189,95 @@ describe('context bar (User Story 3, FR-008)', () => {
       nl['context.casual'],
     )
     expect(todayLocal()).toBe(TODAY)
+  })
+})
+
+describe('Events that do not run today (F1 follow-up, B23, B24)', () => {
+  const TOMORROW = addDaysLocal(TODAY, 1)
+
+  it('saves a new Event that starts later without making it active, and returns to the choice', async () => {
+    const user = userEvent.setup()
+    renderApp()
+    await user.click(await screen.findByRole('button', { name: nl['choice.newEvent'] }))
+    await user.type(screen.getByLabelText(nl['event.name']), 'Devoxx 2026')
+    fireEvent.change(screen.getByLabelText(nl['event.startDate']), { target: { value: TOMORROW } })
+    await user.click(screen.getByRole('button', { name: nl['event.save'] }))
+
+    const date = formatDateRange(TOMORROW, TOMORROW, 'nl')
+    expect(
+      await screen.findByText(nl['choice.createdLater'].replace('{name}', 'Devoxx 2026').replace('{date}', date)),
+    ).toBeInTheDocument()
+    expect(screen.getByText(nl['choice.upcoming'])).toBeInTheDocument()
+    const settings = await getSettings()
+    expect(settings.activeEventId).toBeUndefined()
+    expect(settings.contextChosenOn).toBeUndefined()
+    expect(await db.events.count()).toBe(1)
+  })
+
+  it('calls onSavedNotActive from the form for an Event that starts later', async () => {
+    const user = userEvent.setup()
+    const { onSaved, onSavedNotActive } = (() => {
+      const onSaved = vi.fn()
+      const onSavedNotActive = vi.fn()
+      render(
+        <LanguageProvider>
+          <NewEventForm onSaved={onSaved} onSavedNotActive={onSavedNotActive} onBack={() => {}} />
+        </LanguageProvider>,
+      )
+      return { onSaved, onSavedNotActive }
+    })()
+    await user.type(screen.getByLabelText(nl['event.name']), 'Later')
+    fireEvent.change(screen.getByLabelText(nl['event.startDate']), { target: { value: TOMORROW } })
+    await user.click(screen.getByRole('button', { name: nl['event.save'] }))
+    await vi.waitFor(() => expect(onSavedNotActive).toHaveBeenCalledTimes(1))
+    expect(onSaved).not.toHaveBeenCalled()
+  })
+
+  it('warns before choosing an Event that only starts later, and can cancel', async () => {
+    const user = userEvent.setup()
+    await createEvent({ name: 'Devoxx 2026', startDate: TOMORROW, endDate: TOMORROW })
+    renderApp()
+    await user.click(await screen.findByRole('button', { name: /Devoxx 2026/ }))
+
+    const date = formatDateRange(TOMORROW, TOMORROW, 'nl')
+    expect(
+      screen.getByText(nl['choice.warnUpcoming'].replace('{name}', 'Devoxx 2026').replace('{date}', date)),
+    ).toBeInTheDocument()
+    expect((await getSettings()).activeEventId).toBeUndefined()
+
+    await user.click(screen.getByRole('button', { name: nl['choice.cancel'] }))
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument()
+    expect(screen.getByText(nl['choice.title'])).toBeInTheDocument()
+  })
+
+  it('chooses an Event that starts later after "Choose anyway"', async () => {
+    const user = userEvent.setup()
+    const devoxx = await createEvent({ name: 'Devoxx 2026', startDate: TOMORROW, endDate: TOMORROW })
+    renderApp()
+    await user.click(await screen.findByRole('button', { name: /Devoxx 2026/ }))
+    await user.click(screen.getByRole('button', { name: nl['choice.chooseAnyway'] }))
+
+    expect(await screen.findByText(nl['app.title'])).toBeInTheDocument()
+    expect((await getSettings()).activeEventId).toBe(devoxx.id)
+  })
+
+  it('warns before choosing an Event that is over', async () => {
+    const user = userEvent.setup()
+    await createEvent({ name: 'Old fair', startDate: '2026-10-01', endDate: '2026-10-05' })
+    renderApp()
+    await user.click(await screen.findByRole('button', { name: /Old fair/ }))
+    const dates = formatDateRange('2026-10-01', '2026-10-05', 'nl')
+    expect(
+      screen.getByText(nl['choice.warnPast'].replace('{name}', 'Old fair').replace('{dates}', dates)),
+    ).toBeInTheDocument()
+  })
+
+  it('chooses an Event that runs today without a warning', async () => {
+    const user = userEvent.setup()
+    const today = await createEvent({ name: 'Today fair', startDate: TODAY, endDate: TODAY })
+    renderApp()
+    await user.click(await screen.findByRole('button', { name: /Today fair/ }))
+    expect(await screen.findByText(nl['app.title'])).toBeInTheDocument()
+    expect((await getSettings()).activeEventId).toBe(today.id)
   })
 })

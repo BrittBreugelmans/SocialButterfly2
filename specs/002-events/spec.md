@@ -18,6 +18,11 @@ Builds on F0 (`specs/001-app-foundation`): the Event and Settings data model alr
 - Q: When does the choice between an Event, a new Event and casual networking appear on opening? → A: On the first opening of each new day, with yesterday's choice on top if that Event is still running.
 - Q: Can the owner change or delete an Event in F1, or is that F10? → A: Entirely in F10 ("Evenementen beheren"); F1 only creates and chooses Events.
 
+### Session 2026-10-11 (bug after F5)
+
+- Q: Can an Event that does not run today (upcoming or past) be chosen in the daily choice? → A: Yes, but the app first warns that today's Encounters will go under it (Choose anyway / Cancel) (wiki B23).
+- Q: A new Event that does not run today: active at once? → A: No. It is saved, not made active, and the owner returns to the choice with a line saying when it starts (wiki B24).
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Create an Event on arrival (Priority: P1)
@@ -128,7 +133,9 @@ back again; the start screen shows the right context each time, also after reope
   end date, the end date MUST move along to the start date.
 - **FR-003**: Saving MUST be refused, with a clear message, when the name is empty or the end date
   is before the start date (B11). The same day is allowed.
-- **FR-004**: A newly created Event MUST become the active Event immediately.
+- **FR-004**: A newly created Event MUST become the active Event immediately **when it runs today**
+  (start date ≤ today ≤ end date). Otherwise it MUST be saved without becoming active, and the
+  owner returns to the choice with a line saying when it starts (B24).
 
 #### Choosing the context
 
@@ -138,8 +145,9 @@ back again; the start screen shows the right context each time, also after reope
   MUST be shown on top, so one tap continues with it.
 - **FR-006**: The choice MUST list stored Events with their dates: current and upcoming Events
   first (by start date), past Events after them.
-- **FR-007**: Choosing an Event MUST make it the active Event; choosing "Casual networking" MUST
-  leave no active Event. The choice and the day it was made MUST be stored on the device and survive closing the app.
+- **FR-007**: Choosing an Event that runs today MUST make it the active Event at once; choosing an
+  upcoming or past Event MUST first show a warning that today's Encounters will go under it, with
+  "Choose anyway" and "Cancel" (B23). Choosing "Casual networking" MUST leave no active Event. The choice and the day it was made MUST be stored on the device and survive closing the app.
 - **FR-008**: The start screen MUST always show the current context (Event name and dates, or
   "Casual networking") and open the choice with one tap.
 

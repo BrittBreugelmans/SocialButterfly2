@@ -2,6 +2,16 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-11** — bugfix F1 na melding Britt — B23: een evenement dat vandaag niet loopt, kan je
+  kiezen na een waarschuwing. B24: een nieuw evenement dat later begint, wordt bewaard maar niet
+  actief. F1-spec (FR-004, FR-007), contract en taken bijgewerkt; 200 tests groen. Ontmoetingen die
+  al onder het verkeerde evenement staan, zijn niet aangepast. Nog te controleren op de iPhone
+  (F1 T036).
+
+- **2026-10-11** — rollout en iPhone-controle F5 door Britt — Gepusht als `22df4b0`. iOS vraagt om
+  camera-toegang; scannen gaat heel snel. Alle taken van F5 en F5 in features.md afgevinkt. Bug
+  gemeld: een evenement dat pas morgen begint, kan vandaag al actief zijn (zie F1).
+
 - **2026-10-11** — implementatie F5 (`/speckit-implement`) — "Scan QR" op het startscherm: camera,
   bevestigingsscherm met afgeleide naam en optioneel bedrijf, één tik opent het profiel en bewaart.
   Bekende persoon via link → nieuwe ontmoeting; zelfde naam zonder link → "Is dit dezelfde

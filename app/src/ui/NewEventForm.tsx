@@ -1,18 +1,22 @@
 import { useId, useState, type FormEvent } from 'react'
 import { todayLocal } from '../data/dates'
 import { StorageFullError, ValidationError } from '../data/errors'
-import { createAndActivateEvent } from '../data/repository'
+import { createAndActivateEvent, createEvent } from '../data/repository'
 import type { Event } from '../data/types'
+import { eventStatusOn } from '../events/choice'
 import { useLanguage } from '../i18n/LanguageProvider'
 import type { TextKey } from '../i18n/nl'
 
 interface NewEventFormProps {
+  /** The Event runs today and is now active. */
   onSaved(event: Event): void
+  /** The Event does not run today: saved, not active (B24). */
+  onSavedNotActive(event: Event): void
   onBack(): void
 }
 
 /** Create an Event on arrival: a one-day Event needs only a name and one tap (FR-001–FR-004). */
-export function NewEventForm({ onSaved, onBack }: NewEventFormProps) {
+export function NewEventForm({ onSaved, onSavedNotActive, onBack }: NewEventFormProps) {
   const { t } = useLanguage()
   const id = useId()
   const [name, setName] = useState('')
@@ -32,7 +36,10 @@ export function NewEventForm({ onSaved, onBack }: NewEventFormProps) {
     setSaving(true)
     setError(undefined)
     try {
-      onSaved(await createAndActivateEvent({ name, startDate, endDate }))
+      // Only an Event that runs today becomes active; a later one waits in the choice (B24).
+      const runsToday = eventStatusOn({ startDate, endDate }, todayLocal()) === 'current'
+      if (runsToday) onSaved(await createAndActivateEvent({ name, startDate, endDate }))
+      else onSavedNotActive(await createEvent({ name, startDate, endDate }))
     } catch (err) {
       if (err instanceof ValidationError) setError(err.field === 'name' ? 'event.errorName' : 'event.errorDates')
       else if (!(err instanceof StorageFullError)) throw err // storage full: the F0 banner shows

@@ -30,6 +30,8 @@ export function App() {
   // F2: the open note step, and whether an unfinished one was looked for on start (B18).
   const [noteStep, setNoteStep] = useState<SavedByName & { message?: string }>()
   const [noteStepChecked, setNoteStepChecked] = useState(false)
+  // F1 follow-up (B24): an Event created for later, shown as a line on the choice.
+  const [createdNotActive, setCreatedNotActive] = useState<Event>()
 
   useEffect(() => {
     if (online) setOfflineAtStart(false)
@@ -98,9 +100,26 @@ export function App() {
     <>
       <Banners online={online} standalone={standalone} storageStatus={storageStatus} />
       {status === 'loading' || (status === 'ready' && !noteStepChecked) ? null : screen === 'choice' ? (
-        <ContextChoice onNewEvent={() => setScreen('newEvent')} onDone={contextChosen} />
+        <ContextChoice
+          createdNotActive={createdNotActive}
+          onNewEvent={() => {
+            setCreatedNotActive(undefined)
+            setScreen('newEvent')
+          }}
+          onDone={() => {
+            setCreatedNotActive(undefined)
+            contextChosen()
+          }}
+        />
       ) : screen === 'newEvent' ? (
-        <NewEventForm onSaved={contextChosen} onBack={() => setScreen('choice')} />
+        <NewEventForm
+          onSaved={contextChosen}
+          onSavedNotActive={(event) => {
+            setCreatedNotActive(event)
+            setScreen('choice')
+          }}
+          onBack={() => setScreen('choice')}
+        />
       ) : screen === 'addByQr' ? (
         <AddByQr
           activeEvent={activeEvent}
