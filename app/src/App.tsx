@@ -4,6 +4,7 @@ import type { Event } from './data/types'
 import { useDailyChoice } from './events/useDailyChoice'
 import { useOnline } from './platform/online'
 import { requestPersistentStorage, type StorageStatus } from './platform/persistence'
+import { useOpenActionCount } from './people/useOpenActionCount'
 import { isStandalone } from './platform/standalone'
 import { AddByNameForm, type SavedByName } from './ui/AddByNameForm'
 import { AddByQr } from './ui/AddByQr'
@@ -12,6 +13,7 @@ import { ContextChoice } from './ui/ContextChoice'
 import { NewEventForm } from './ui/NewEventForm'
 import { NoteStep } from './ui/NoteStep'
 import { StartScreen } from './ui/StartScreen'
+import { ActionsTab } from './ui/ActionsTab'
 import { ComingSoon } from './ui/ComingSoon'
 import { ContactsTab } from './ui/ContactsTab'
 import { TabBar, type Tab } from './ui/TabBar'
@@ -30,6 +32,8 @@ export function App() {
   const [screen, setScreen] = useState<Screen>('start')
   // F7 (B26): the chosen tab while the 'start' screen (the tabs) is shown. The app opens on Add.
   const [tab, setTab] = useState<Tab>('add')
+  // F8: the number of open Actions, as a badge on the Actions tab.
+  const openActionCount = useOpenActionCount()
   const [activeEvent, setActiveEvent] = useState<Event | undefined | 'loading'>('loading')
 
   // F2: the open note step, and whether an unfinished one was looked for on start (B18).
@@ -179,13 +183,13 @@ export function App() {
           ) : tab === 'contacts' ? (
             <ContactsTab onAddSomeone={() => setTab('add')} />
           ) : tab === 'actions' ? (
-            <ComingSoon textKey="soon.actions" />
+            <ActionsTab />
           ) : tab === 'myQr' ? (
             <ComingSoon textKey="soon.myQr" />
           ) : (
             <ComingSoon textKey="soon.settings" />
           )}
-          <TabBar tab={tab} onChange={setTab} />
+          <TabBar tab={tab} onChange={setTab} badges={{ actions: openActionCount }} />
         </div>
       )}
     </>

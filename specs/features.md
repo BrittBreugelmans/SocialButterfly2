@@ -68,9 +68,9 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [ ] Eén ontmoeting verwijderen; laatste ontmoeting = persoon verwijderen (B25)
 
 ## F8 — Acties-tab
-- [ ] Toont: notitie ontbreekt, nog niet geconnecteerd, profiel-link ontbreekt
+- [ ] Toont per persoon: notitie ontbreekt (B31), nog niet geconnecteerd, profiel-link ontbreekt
 - [ ] Actie oplossen vanuit de tab
-- [ ] Actie afwijzen ⚠️ #3
+- [ ] Actie afwijzen; komt terug bij een nieuwe ontmoeting (B30)
 - [ ] Teller/badge op de tab
 - [ ] Lege staat: "Alles gedaan, tijd om verder te fladderen."
 

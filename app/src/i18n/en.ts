@@ -115,7 +115,6 @@ export const en: Record<TextKey, string> = {
   'tab.myQr': 'My QR',
   'tab.settings': 'Settings',
   'soon.title': 'Coming soon',
-  'soon.actions': 'Your open actions will show up here soon.',
   'soon.myQr': 'Your LinkedIn QR code, with butterfly, is coming here soon.',
   'soon.settings': 'Soon you can manage events, choose the language and make a backup here.',
 
@@ -151,4 +150,17 @@ export const en: Record<TextKey, string> = {
   'encounter.deleteLast': "This is the only encounter with {name}. Delete the whole person? This can't be undone.",
   'diagnostics.addManyTestData': 'Add 500 test contacts',
   'person.noteFor': 'Note for {date} ({event})',
+
+  'tab.actionsCount': 'Actions, {count} open',
+  'actions.title': 'Actions',
+  'actions.noteMissing': 'Note missing',
+  'actions.notConnected': 'Not connected yet',
+  'actions.profileLinkMissing': 'Profile link missing',
+  'actions.writeNote': 'Write note',
+  'actions.connected': 'I connected',
+  'actions.dismiss': 'Dismiss',
+  'actions.dismissLabel': 'Dismiss {action} for {name}',
+  'actions.dismissed': '"{action}" dismissed for {name}.',
+  'actions.undo': 'Undo',
+  'actions.empty': 'All done — time to flutter on.',
 }

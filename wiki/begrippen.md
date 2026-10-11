@@ -12,8 +12,8 @@ Gebruik deze woorden consequent. De Engelse term is de naam in specs en code.
 | Notitie | `note` | Britts persoonlijke notitie bij een ontmoeting, om later een persoonlijk bericht te kunnen sturen. Nooit zichtbaar voor gasten. |
 | Profiel-URL | `profileUrl` | Genormaliseerde LinkedIn-URL, bv. `https://www.linkedin.com/in/britt-breugelmans`. |
 | Zoek-link | `searchUrl` | LinkedIn-zoekpagina met naam + bedrijf, gebruikt zolang de profiel-URL ontbreekt. |
-| Actie | `Action` | Openstaande taak op de Acties-tab. Types: notitie ontbreekt, nog niet geconnecteerd, profiel-link ontbreekt. |
-| Afgewezen actie | `dismissed` | Actie die Britt bewust negeert (bv. geen notitie nodig). Verschijnt niet meer. |
+| Actie | `Action` | Openstaande taak op de Acties-tab, per persoon. Types: notitie ontbreekt (geen enkele ontmoeting heeft een notitie, B31), nog niet geconnecteerd, profiel-link ontbreekt. |
+| Afgewezen actie | `dismissed` | Actie die Britt bewust negeert (bv. geen notitie nodig). Verschijnt niet meer, tot Britt de persoon opnieuw ontmoet (B30). |
 | Connectiestatus | `connectionStatus` | Of Britt al op "Connect" tikte in LinkedIn: "nog niet geconnecteerd" (`notConnected`) of "geconnecteerd" (`connected`). Britt zet het met "Ik heb geconnecteerd" (B16). |
 | Doorgeef-modus | `guestMode` | Scherm voor de gast: groot, vriendelijk, tweetalig, zonder Britts lijst of notities. |
 | Snelle modus | `quickMode` | Britt vult zelf in; compact en snel. |

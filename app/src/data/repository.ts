@@ -11,8 +11,9 @@ import {
   ValidationError,
 } from './errors'
 import { buildSearchUrl } from '../linkedin/links'
+import { ACTION_TYPES } from '../people/actions'
 import { normalizeName } from '../people/nameMatch'
-import type { ConnectionStatus, Encounter, Event, Language, Person, Settings } from './types'
+import type { ActionType, ConnectionStatus, Dismissal, Encounter, Event, Language, Person, Settings } from './types'
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -47,9 +48,26 @@ function isQuotaError(error: unknown): boolean {
   return false
 }
 
+type DataChangedListener = () => void
+const dataChangedListeners = new Set<DataChangedListener>()
+
+/**
+ * Called after every successful write (F8 research R4), so the Actions badge stays current
+ * wherever the change happened. Returns the unsubscribe function.
+ */
+export function onDataChanged(listener: DataChangedListener): () => void {
+  dataChangedListeners.add(listener)
+  return () => {
+    dataChangedListeners.delete(listener)
+  }
+}
+
+/** Every write goes through here: storage-full handling and the change signal (F8). */
 async function withStorageErrors<T>(write: () => Promise<T>): Promise<T> {
   try {
-    return await write()
+    const result = await write()
+    dataChangedListeners.forEach((listener) => listener())
+    return result
   } catch (error) {
     if (isQuotaError(error)) {
       storageFullListeners.forEach((listener) => listener())
@@ -231,11 +249,12 @@ export async function listPersons(): Promise<Person[]> {
   return db.persons.orderBy('name').toArray()
 }
 
-/** Deletes the Person and all their Encounters in one transaction. */
+/** Deletes the Person, all their Encounters and their dismissed Actions (F8) in one transaction. */
 export async function deletePerson(id: string): Promise<void> {
   await withStorageErrors(() =>
-    db.transaction('rw', db.persons, db.encounters, async () => {
+    db.transaction('rw', db.persons, db.encounters, db.dismissals, async () => {
       await db.encounters.where('personId').equals(id).delete()
+      await db.dismissals.where('personId').equals(id).delete()
       await db.persons.delete(id)
     }),
   )
@@ -517,6 +536,47 @@ export async function createEncounterInContext(input: { personId: string; note?:
 }
 
 // ---------------------------------------------------------------------------
+// Dismissed Actions (F8, specs/007-actions-tab)
+// ---------------------------------------------------------------------------
+
+export async function listDismissals(): Promise<Dismissal[]> {
+  return db.dismissals.toArray()
+}
+
+/**
+ * Dismisses an Action of a Person (FR-009) in ONE transaction. At most one record per Person and
+ * type: dismissing again updates it. `previous` is the record as it was, for Undo (research R6).
+ */
+export async function dismissAction(
+  personId: string,
+  type: ActionType,
+): Promise<{ dismissal: Dismissal; previous?: Dismissal }> {
+  if (!ACTION_TYPES.includes(type)) throw new ValidationError('type', 'Unknown Action type')
+  return withStorageErrors(() =>
+    db.transaction('rw', db.persons, db.dismissals, async () => {
+      if (!(await db.persons.get(personId))) throw new ValidationError('personId', 'Unknown Person')
+      const now = nowIso()
+      const previous = await db.dismissals.where('[personId+type]').equals([personId, type]).first()
+      const dismissal: Dismissal = previous
+        ? { ...previous, dismissedAt: now, updatedAt: now }
+        : { id: newId(), createdAt: now, updatedAt: now, personId, type, dismissedAt: now }
+      await db.dismissals.put(dismissal)
+      return previous ? { dismissal, previous } : { dismissal }
+    }),
+  )
+}
+
+/** Undo: deletes the dismissal, or puts the previous version back (research R6). */
+export async function undoDismissal(dismissalId: string, previous?: Dismissal): Promise<void> {
+  await withStorageErrors(() =>
+    db.transaction('rw', db.dismissals, async () => {
+      if (previous) await db.dismissals.put(previous)
+      else await db.dismissals.delete(dismissalId)
+    }),
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Add by name (F2, specs/003-add-by-name)
 // ---------------------------------------------------------------------------
 
@@ -729,7 +789,7 @@ export async function mergePersons(input: {
     throw new ValidationError('fromPersonId', 'Cannot merge a Person into itself')
   }
   return withStorageErrors(() =>
-    db.transaction('rw', db.persons, db.encounters, db.settings, async () => {
+    db.transaction('rw', db.persons, db.encounters, db.settings, db.dismissals, async () => {
       const from = await db.persons.get(input.fromPersonId)
       const into = await db.persons.get(input.intoPersonId)
       if (!from) throw new ValidationError('fromPersonId', 'Unknown Person')
@@ -766,6 +826,8 @@ export async function mergePersons(input: {
       })
       await db.persons.put(person)
       await db.persons.delete(from.id)
+      // `into` keeps its own dismissed Actions; those of the Person that disappears go (F8).
+      await db.dismissals.where('personId').equals(from.id).delete()
 
       if (noteStepId !== settings.noteStepEncounterId) {
         await db.settings.put(compact<Settings>({ ...settings, key: 'settings', noteStepEncounterId: noteStepId, updatedAt: now }))

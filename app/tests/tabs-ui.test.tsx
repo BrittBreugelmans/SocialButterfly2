@@ -42,13 +42,12 @@ describe('Tab bar (F7 FR-001–FR-001c)', () => {
     expect(tabButton('tab.contacts')).not.toHaveAttribute('aria-current')
   })
 
-  it('shows "coming soon" on the tabs that are not built yet', async () => {
+  it('shows "coming soon" on My QR and Settings, and the built tabs otherwise', async () => {
     const user = userEvent.setup()
     renderApp()
     await screen.findByRole('button', { name: nl['start.addByName'] })
 
     for (const [tab, text] of [
-      ['tab.actions', 'soon.actions'],
       ['tab.myQr', 'soon.myQr'],
       ['tab.settings', 'soon.settings'],
     ] as const) {
@@ -60,6 +59,9 @@ describe('Tab bar (F7 FR-001–FR-001c)', () => {
 
     await user.click(tabButton('tab.contacts'))
     expect(await screen.findByRole('heading', { name: nl['contacts.title'] })).toBeInTheDocument()
+
+    await user.click(tabButton('tab.actions'))
+    expect(await screen.findByRole('heading', { name: nl['actions.title'] })).toBeInTheDocument()
   })
 
   it('hides the tab bar in the add flow and the note step, and returns to Add afterwards', async () => {

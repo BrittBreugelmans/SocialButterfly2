@@ -2,6 +2,32 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-12** — implementatie F8 (`/speckit-implement`) — Acties-tab: één kaart per persoon met
+  open acties (notitie ontbreekt volgens B31, nog niet geconnecteerd, profiel-link ontbreekt),
+  nieuwste eerst; oplossen op de kaart (notitie bij de laatste ontmoeting, LinkedIn + "Ik heb
+  geconnecteerd", "Plak LinkedIn-link" met samenvoegvraag), naam opent het detailscherm, afwijzen
+  met "Ongedaan maken", komt terug bij een nieuwe ontmoeting (B30). Teller op de tab ("99+" boven
+  99). Database naar schemaversie 2 (tabel `dismissals`), upgrade getest met bestaande data. 290
+  tests groen (was 254), build OK, geen nieuwe bibliotheken. 28 van 31 taken klaar; open: push
+  (T029), controle op de iPhone (T030) en afvinken in features.md (T031).
+
+- **2026-10-11** — taken F8 (`/speckit-tasks`) ([tasks](../specs/007-actions-tab/tasks.md)) — 31 taken
+  in 7 fases: fundament (schemaversie 2, actieregels, teksten), dan per user story (lijst,
+  oplossen, afwijzen, teller), daarna afwerking. MVP = lijst + oplossen.
+
+- **2026-10-11** — plan F8 (`/speckit-plan`) ([plan](../specs/007-actions-tab/plan.md)) — Eerste
+  schemawijziging sinds F0: versie 2 voegt de tabel `dismissals` toe (persoon + type + moment),
+  bestaande data blijft ongemoeid. Acties worden in het geheugen afgeleid; een afwijzing telt tot er
+  een nieuwere ontmoeting is (B30). Teller op de tab via een centraal signaal na elke schrijfactie.
+  Detailscherm en "Plak LinkedIn-link" uit F7 hergebruikt. Geen nieuwe bibliotheken, geen nieuwe
+  beslissingen of open vragen.
+
+- **2026-10-11** — spec F8 (`/speckit-specify`) met Britt
+  ([spec](../specs/007-actions-tab/spec.md)) — B30: een afgewezen actie komt terug bij een nieuwe
+  ontmoeting (open vraag #3 gesloten; constitution 1.0.5). B31: "notitie ontbreekt" alleen als geen
+  enkele ontmoeting een notitie heeft; alle drie de acties horen bij een persoon. begrippen.md
+  (Actie, Afgewezen actie) en features.md (F8) bijgewerkt.
+
 - **2026-10-11** — wijziging F7 op vraag van Britt — B28: notitie hoort bij een ontmoeting (open
   vraag #5 gesloten; constitution 1.0.4). B29: F6 gaat op in F7; de aanpasmodus van het
   detailscherm past naam, bedrijf en de notitie van elke ontmoeting aan, alles in één keer bewaard.

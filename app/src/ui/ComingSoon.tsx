@@ -1,10 +1,10 @@
 import { useLanguage } from '../i18n/LanguageProvider'
 
 interface ComingSoonProps {
-  textKey: 'soon.actions' | 'soon.myQr' | 'soon.settings'
+  textKey: 'soon.myQr' | 'soon.settings'
 }
 
-/** A tab that is not built yet (B26): F8–F10 replace it. */
+/** A tab that is not built yet (B26): F9 and F10 replace it. */
 export function ComingSoon({ textKey }: ComingSoonProps) {
   const { t } = useLanguage()
   return (

@@ -49,41 +49,57 @@ const TABS: { tab: Tab; label: TextKey }[] = [
   { tab: 'settings', label: 'tab.settings' },
 ]
 
+/** Tabs that can show a count, and the name VoiceOver reads with it. */
+const BADGE_LABELS: Partial<Record<Tab, TextKey>> = { actions: 'tab.actionsCount' }
+
 interface TabBarProps {
   tab: Tab
   onChange(tab: Tab): void
+  /** Counts shown as a badge, e.g. open Actions (F8 FR-012). Nothing at 0. */
+  badges?: Partial<Record<Tab, number>>
 }
 
 /** The bottom tab bar (B26). Shown only on the five tab screens (FR-001c). */
-export function TabBar({ tab, onChange }: TabBarProps) {
+export function TabBar({ tab, onChange, badges }: TabBarProps) {
   const { t } = useLanguage()
   return (
     <nav className="tab-bar" aria-label={t('tabs.label')}>
-      {TABS.map((item) => (
-        <button
-          key={item.tab}
-          type="button"
-          aria-current={item.tab === tab ? 'page' : undefined}
-          onClick={() => {
-            if (item.tab !== tab) onChange(item.tab)
-          }}
-        >
-          <svg
-            aria-hidden="true"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+      {TABS.map((item) => {
+        const badgeLabel = BADGE_LABELS[item.tab]
+        const count = badgeLabel ? (badges?.[item.tab] ?? 0) : 0
+        return (
+          <button
+            key={item.tab}
+            type="button"
+            aria-current={item.tab === tab ? 'page' : undefined}
+            // The badge is hidden from VoiceOver; the count is read once in the name instead.
+            aria-label={badgeLabel && count > 0 ? t(badgeLabel, { count }) : undefined}
+            onClick={() => {
+              if (item.tab !== tab) onChange(item.tab)
+            }}
           >
-            {ICONS[item.tab]}
-          </svg>
-          <span>{t(item.label)}</span>
-        </button>
-      ))}
+            <svg
+              aria-hidden="true"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              {ICONS[item.tab]}
+            </svg>
+            {count > 0 && (
+              <span className="tab-badge" aria-hidden="true">
+                {count > 99 ? '99+' : count}
+              </span>
+            )}
+            <span>{t(item.label)}</span>
+          </button>
+        )
+      })}
     </nav>
   )
 }

@@ -57,3 +57,14 @@ export interface Settings {
   noteStepEncounterId?: string
   updatedAt: string
 }
+
+/** The three follow-up gaps (B7). All belong to a Person (B31). */
+export type ActionType = 'noteMissing' | 'notConnected' | 'profileLinkMissing'
+
+/** An Action the owner dismissed (F8). Counts until the Person has a newer Encounter (B30). */
+export interface Dismissal extends RecordMeta {
+  personId: string
+  type: ActionType
+  /** ISO 8601 UTC. When the owner last dismissed it. */
+  dismissedAt: string
+}

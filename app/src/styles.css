@@ -806,3 +806,144 @@ button.text-button.small {
   color: var(--muted);
   font-size: 0.85rem;
 }
+
+/* ---------- F8: actions tab ---------- */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px 16px;
+}
+
+.actions h1 {
+  margin-bottom: 4px;
+  font-size: 1.6rem;
+}
+
+.actions-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 8px;
+  text-align: center;
+}
+
+.actions-empty p {
+  margin: 0;
+}
+
+.action-card {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.action-heading {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.action-name {
+  min-height: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font-weight: 700;
+  text-align: left;
+}
+
+.action-company,
+.action-when {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.action-rows {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 12px;
+  padding-top: 8px;
+  border-top: 1px solid #dfe4e8;
+}
+
+.action-label {
+  font-weight: 600;
+}
+
+button.compact {
+  min-height: 40px;
+  padding: 0 14px;
+  font-size: 0.9rem;
+}
+
+.action-note,
+.action-paste {
+  display: grid;
+  flex-basis: 100%;
+  gap: 8px;
+}
+
+.action-note textarea {
+  min-height: calc(3 * 1.4em + 16px);
+  padding: 8px 12px;
+  border: 1px solid #c9d1d8;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 16px; /* 16px or more: iOS does not zoom in on focus */
+  line-height: 1.4;
+  resize: vertical;
+}
+
+.actions-message {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 12px;
+  margin: 0;
+  padding: 6px 6px 6px 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.action-row .text-button.small {
+  margin-left: auto;
+}
+
+.tab-bar button {
+  position: relative;
+}
+
+/* A quiet reminder, not an alarm: the theme blue (research R8). */
+.tab-badge {
+  position: absolute;
+  top: 2px;
+  left: calc(50% + 6px);
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}

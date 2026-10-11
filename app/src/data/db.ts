@@ -1,5 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie'
-import type { Encounter, Event, Person, Settings } from './types'
+import type { Dismissal, Encounter, Event, Person, Settings } from './types'
 
 // Only data/repository.ts may use this database (contracts/storage-api.md).
 export const db = new Dexie('sociale-vlinder') as Dexie & {
@@ -7,6 +7,7 @@ export const db = new Dexie('sociale-vlinder') as Dexie & {
   encounters: EntityTable<Encounter, 'id'>
   events: EntityTable<Event, 'id'>
   settings: EntityTable<Settings, 'key'>
+  dismissals: EntityTable<Dismissal, 'id'>
 }
 
 // Schema version 1. Every later change to tables or indexes adds a new version with an
@@ -16,4 +17,10 @@ db.version(1).stores({
   encounters: 'id, personId, eventId, date',
   events: 'id, startDate',
   settings: 'key',
+})
+
+// Schema version 2 (F8, specs/007-actions-tab research R1): adds the empty dismissals table.
+// No existing record is read or changed. At most one dismissal per Person and Action type.
+db.version(2).stores({
+  dismissals: 'id, personId, &[personId+type]',
 })

@@ -116,7 +116,6 @@ export const nl = {
   'tab.myQr': 'Mijn QR',
   'tab.settings': 'Instellingen',
   'soon.title': 'Binnenkort',
-  'soon.actions': 'Hier verschijnen straks je openstaande acties.',
   'soon.myQr': 'Hier komt straks jouw LinkedIn-QR, met vlinder.',
   'soon.settings': 'Hier kan je straks evenementen beheren, de taal kiezen en een back-up maken.',
 
@@ -153,6 +152,19 @@ export const nl = {
     'Dit is de enige ontmoeting met {name}. De hele persoon verwijderen? Dit kan niet ongedaan gemaakt worden.',
   'diagnostics.addManyTestData': '500 testcontacten toevoegen',
   'person.noteFor': 'Notitie bij {date} ({event})',
+
+  'tab.actionsCount': 'Acties, {count} open',
+  'actions.title': 'Acties',
+  'actions.noteMissing': 'Notitie ontbreekt',
+  'actions.notConnected': 'Nog niet geconnecteerd',
+  'actions.profileLinkMissing': 'Profiel-link ontbreekt',
+  'actions.writeNote': 'Schrijf notitie',
+  'actions.connected': 'Ik heb geconnecteerd',
+  'actions.dismiss': 'Afwijzen',
+  'actions.dismissLabel': '{action} afwijzen voor {name}',
+  'actions.dismissed': '"{action}" afgewezen voor {name}.',
+  'actions.undo': 'Ongedaan maken',
+  'actions.empty': 'Alles gedaan, tijd om verder te fladderen.',
 } as const
 
 export type TextKey = keyof typeof nl
