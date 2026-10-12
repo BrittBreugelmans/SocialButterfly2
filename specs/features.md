@@ -75,15 +75,15 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [X] Lege staat: "Alles gedaan, tijd om verder te fladderen."
 
 ## F9 — Mijn QR
-- [ ] Britts LinkedIn-QR groot op het scherm, lokaal gemaakt (B32); eigen link eenmalig plakken (B33)
-- [ ] Vlinder in het midden, QR blijft scanbaar
-- [ ] Scherm blijft helder (geen dimmen tijdens tonen, waar mogelijk)
-- [ ] Bereikbaar vanaf het offline-scherm: "Toon mijn QR" (B34)
+- [X] Britts LinkedIn-QR groot op het scherm, lokaal gemaakt (B32); eigen link eenmalig plakken (B33)
+- [?] Vlinder in het midden, QR blijft scanbaar
+- [X] Scherm blijft helder (geen dimmen tijdens tonen, waar mogelijk)
+- [?] Bereikbaar vanaf het offline-scherm: "Toon mijn QR" (B34)
 
 ## F10 — Instellingen & data
-- [ ] Evenementen beheren
-- [ ] Taal van de app kiezen ⚠️ #8
-- [ ] CSV-export ⚠️ #6
+- [ ] Evenementen beheren; ontmoetingen blijven bij verwijderen (B38)
+- [ ] Taal van de app kiezen; standaard NL (B37)
+- [ ] CSV-export: één rij per ontmoeting, geen import (B35, B36)
 - [ ] Alle data wissen (met bevestiging)
 - [ ] Herinnering om een back-up te maken (T10, T11)
 

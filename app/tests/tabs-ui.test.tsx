@@ -42,20 +42,18 @@ describe('Tab bar (F7 FR-001–FR-001c)', () => {
     expect(tabButton('tab.contacts')).not.toHaveAttribute('aria-current')
   })
 
-  it('shows "coming soon" on Settings only, and the built tabs otherwise', async () => {
+  it('shows a built screen on every tab, with no "coming soon" left (F10)', async () => {
     const user = userEvent.setup()
     renderApp()
     await screen.findByRole('button', { name: nl['start.addByName'] })
 
     await user.click(tabButton('tab.settings'))
-    expect(screen.getByRole('heading', { name: nl['soon.title'] })).toBeInTheDocument()
-    expect(screen.getByText(nl['soon.settings'])).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { level: 1, name: nl['settings.title'] })).toBeInTheDocument()
     expect(tabButton('tab.settings')).toHaveAttribute('aria-current', 'page')
 
     // F9: My QR is built; without an own link it shows the setup.
     await user.click(tabButton('tab.myQr'))
     expect(await screen.findByRole('heading', { name: nl['myQr.setupTitle'] })).toBeInTheDocument()
-    expect(screen.queryByText(nl['soon.title'])).not.toBeInTheDocument()
     expect(tabButton('tab.myQr')).toHaveAttribute('aria-current', 'page')
 
     await user.click(tabButton('tab.contacts'))
@@ -81,6 +79,19 @@ describe('Tab bar (F7 FR-001–FR-001c)', () => {
     await user.click(screen.getByRole('button', { name: nl['note.skip'] }))
     expect(await screen.findByRole('button', { name: nl['start.addByName'] })).toBeInTheDocument()
     expect(tabButton('tab.add')).toHaveAttribute('aria-current', 'page')
+  })
+
+  it('shows the version label and Diagnostics on Settings, not on Add (F10 FR-002)', async () => {
+    const user = userEvent.setup()
+    renderApp()
+    await screen.findByRole('button', { name: nl['start.addByName'] })
+    expect(screen.queryByRole('button', { name: nl['diagnostics.open'] })).not.toBeInTheDocument()
+
+    await user.click(tabButton('tab.settings'))
+    const version = await screen.findByRole('button', { name: nl['diagnostics.open'] })
+    version.focus()
+    await user.keyboard('{Enter}')
+    expect(screen.getByRole('dialog', { name: nl['diagnostics.title'] })).toBeInTheDocument()
   })
 
   it('hides the tab bar on the daily choice', async () => {

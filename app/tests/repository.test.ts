@@ -2,7 +2,6 @@ import { describe, expect, it, vi } from 'vitest'
 import { db } from '../src/data/db'
 import {
   DuplicateProfileUrlError,
-  EventInUseError,
   StorageFullError,
   ValidationError,
 } from '../src/data/errors'
@@ -164,12 +163,22 @@ describe('deleting', () => {
     expect(await db.encounters.count()).toBe(0)
   })
 
-  it('refuses to delete an Event that still has Encounters', async () => {
+  it('keeps its Encounters without an Event (B38)', async () => {
     const devoxx = await event()
     const person = await createPerson({ name: 'Britt', searchUrl: SEARCH_URL })
-    await createEncounter({ personId: person.id, eventId: devoxx.id, date: '2026-10-07' })
-    await expect(deleteEvent(devoxx.id)).rejects.toBeInstanceOf(EventInUseError)
-    expect(await db.events.count()).toBe(1)
+    const before = await createEncounter({ personId: person.id, eventId: devoxx.id, date: '2026-10-07', note: 'AI' })
+    await new Promise((resolve) => setTimeout(resolve, 5))
+
+    await deleteEvent(devoxx.id)
+
+    expect(await db.events.count()).toBe(0)
+    expect(await db.encounters.count()).toBe(1)
+    const after = await db.encounters.get(before.id)
+    expect(after).toBeDefined()
+    expect(after!.eventId).toBeUndefined()
+    expect('eventId' in after!).toBe(false)
+    expect(after).toMatchObject({ personId: person.id, date: '2026-10-07', note: 'AI', createdAt: before.createdAt })
+    expect(after!.updatedAt > before.updatedAt).toBe(true)
   })
 })
 

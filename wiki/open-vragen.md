@@ -10,12 +10,13 @@ Nog niet beslist. Een agent vult deze **nooit** zelf in. Na een beslissing: verp
 3. ~~**Afgewezen acties.** Definitief, of kunnen ze terugkomen (bv. bij een nieuwe ontmoeting)?~~ → beslist: B30.
 4. ~~**Bedrijf.** Verplicht veld? Ook bewaren bij een QR-scan?~~ → beslist: B17 (optioneel) en B22 (optioneel veld bij QR).
 5. ~~**Notitie per ontmoeting of per persoon?** (Model zegt per ontmoeting; bevestigen.)~~ → beslist: B28.
-6. **CSV-export.** Welke kolommen? Ook importeren (herstellen van back-up)?
+6. ~~**CSV-export.** Welke kolommen? Ook importeren (herstellen van back-up)?~~ → beslist: B35 en B36.
 7. ~~**Evenementen.** Wat als er geen actief evenement is? Standaard "Zonder evenement"?~~ → beslist: B12.
 
 ## Merk & UX
-8. Standaardtaal van de app voor Britt zelf (NL?) en van de doorgeef-modus.
+8. ~~Standaardtaal van de app voor Britt zelf (NL?) en van de doorgeef-modus.~~ → beslist: B37.
 9. Volgorde van de kwaliteitswaarden (snelheid > correctheid > plezier > eenvoud) bevestigen.
+16. ~~**Icoonachtergrond** (F11): wit met blauwe vlinder, of blauw met lichte vlinder?~~ → beslist: M10.
 
 ## Techniek (voor de plan-fase)
 10. ~~Stack en hosting (gratis, bv. GitHub Pages of Netlify).~~ → beslist: T7, T8.

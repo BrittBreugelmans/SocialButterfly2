@@ -5,7 +5,6 @@ import { todayLocal } from './dates'
 import { db } from './db'
 import {
   DuplicateProfileUrlError,
-  EventInUseError,
   LastEncounterError,
   StorageFullError,
   ValidationError,
@@ -413,11 +412,20 @@ export async function listEvents(): Promise<Event[]> {
   return db.events.orderBy('startDate').reverse().toArray()
 }
 
-/** Rejects with EventInUseError while the Event has Encounters (no silent loss). */
+/**
+ * Deletes the Event in ONE transaction. Its Encounters stay, with their date and note, as without
+ * an Event (B38, F10 research R5): nothing is lost. Same-day casual Encounters are not folded
+ * together (B19 is a rule for adding). The active Event falls back to casual networking.
+ */
 export async function deleteEvent(id: string): Promise<void> {
   await withStorageErrors(() =>
     db.transaction('rw', db.events, db.encounters, db.settings, async () => {
-      if ((await db.encounters.where('eventId').equals(id).count()) > 0) throw new EventInUseError()
+      if (!(await db.events.get(id))) throw new ValidationError('id', 'Unknown Event')
+      const now = nowIso()
+      const encounters = await db.encounters.where('eventId').equals(id).toArray()
+      await db.encounters.bulkPut(
+        encounters.map((encounter) => compact<Encounter>({ ...encounter, eventId: undefined, updatedAt: now })),
+      )
       await db.events.delete(id)
       const settings = await db.settings.get('settings')
       if (settings?.activeEventId === id) {
@@ -470,6 +478,68 @@ export async function setOwnerProfileUrl(url: string): Promise<Settings> {
     throw new ValidationError('ownerProfileUrl', 'Not a normalized profile link')
   }
   return updateSettings({ ownerProfileUrl: url })
+}
+
+// ---------------------------------------------------------------------------
+// Backup (F10, specs/009-settings-data)
+// ---------------------------------------------------------------------------
+
+/** Everything that goes into the CSV backup, read at one moment (research R3). */
+export interface BackupSnapshot {
+  /** ISO 8601 UTC, taken just before the read transaction. */
+  takenAt: string
+  persons: Person[]
+  encounters: Encounter[]
+  events: Event[]
+}
+
+/**
+ * Reads Persons, Encounters and Events in ONE read transaction, so the file is consistent. A write
+ * that lands between takenAt and the read is in the file and also counts as "after the backup":
+ * at most one extra reminder, never a lost one.
+ */
+export async function readBackupSnapshot(): Promise<BackupSnapshot> {
+  const takenAt = nowIso()
+  return db.transaction('r', db.persons, db.encounters, db.events, async () => {
+    const [persons, encounters, events] = await Promise.all([
+      db.persons.toArray(),
+      db.encounters.toArray(),
+      db.events.toArray(),
+    ])
+    return { takenAt, persons, encounters, events }
+  })
+}
+
+/** Stores takenAt of the shared snapshot as the last backup (FR-008). Never moves back in time. */
+export async function recordBackup(takenAt: string): Promise<Settings> {
+  const current = await getSettings()
+  if (current.lastBackupAt !== undefined && current.lastBackupAt >= takenAt) return current
+  return updateSettings({ lastBackupAt: takenAt })
+}
+
+/** For the "Delete all data" confirmation (FR-018). */
+export async function countData(): Promise<{ persons: number; encounters: number; events: number }> {
+  const [persons, encounters, events] = await Promise.all([db.persons.count(), db.encounters.count(), db.events.count()])
+  return { persons, encounters, events }
+}
+
+/**
+ * Deletes everything on the device except the language, in ONE transaction: all of it, or nothing
+ * (FR-019, research R6). The database itself stays open, so no hook needs a reload.
+ */
+export async function deleteAllData(): Promise<void> {
+  await withStorageErrors(() =>
+    db.transaction('rw', [db.persons, db.encounters, db.events, db.dismissals, db.settings], async () => {
+      const { language } = await getSettings()
+      await Promise.all([db.persons.clear(), db.encounters.clear(), db.events.clear(), db.dismissals.clear()])
+      await db.settings.put({ key: 'settings', language, updatedAt: nowIso() })
+    }),
+  )
+}
+
+/** "Later" on the backup reminder: hidden for the rest of today (FR-011). */
+export async function postponeBackupReminder(): Promise<Settings> {
+  return updateSettings({ backupReminderLaterOn: todayLocal() })
 }
 
 // ---------------------------------------------------------------------------

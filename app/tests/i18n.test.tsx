@@ -22,22 +22,36 @@ beforeEach(async () => {
   await updateSettings({ contextChosenOn: todayLocal() })
 })
 
+/** The switch lives on the Settings tab since F10 (FR-002, FR-016). */
+async function openSettings(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(await screen.findByRole('button', { name: nl['tab.settings'] }))
+}
+
 describe('language switch (FR-015, FR-016)', () => {
-  it('starts in Dutch', async () => {
+  it('starts in Dutch (B37)', async () => {
     renderApp()
     expect(await screen.findByText('De Sociale Vlinder')).toBeInTheDocument()
     expect(document.documentElement.lang).toBe('nl')
+  })
+
+  it('is not on the Add tab any more (F10)', async () => {
+    renderApp()
+    await screen.findByRole('button', { name: nl['start.addByName'] })
+    expect(screen.queryByRole('button', { name: nl['app.languageEn'] })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: nl['app.languageNl'] })).not.toBeInTheDocument()
   })
 
   it('switches all visible text at once and remembers the choice', async () => {
     const user = userEvent.setup()
     const { unmount } = renderApp()
     await screen.findByText(nl['storage.notPersisted'])
+    await openSettings(user)
 
     await user.click(await screen.findByRole('button', { name: nl['app.languageEn'] }))
-    expect(screen.getByText('The Social Butterfly')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: en['settings.title'] })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: en['tab.add'] })).toBeInTheDocument()
     expect(screen.getByText(en['storage.notPersisted'])).toBeInTheDocument()
-    expect(screen.queryByText(nl['app.title'])).not.toBeInTheDocument()
+    expect(screen.queryByText(nl['backup.title'])).not.toBeInTheDocument()
     expect(document.documentElement.lang).toBe('en')
     await waitFor(async () => expect((await getSettings()).language).toBe('en'))
 
@@ -51,9 +65,10 @@ describe('language switch (FR-015, FR-016)', () => {
     vi.spyOn(db.settings, 'put').mockRejectedValue(new DOMException('full', 'QuotaExceededError'))
     renderApp()
     await screen.findByText(nl['storage.notPersisted'])
+    await openSettings(user)
 
     await user.click(await screen.findByRole('button', { name: nl['app.languageEn'] }))
     expect(await screen.findByText(en['storage.full'])).toBeInTheDocument()
-    expect(screen.getByText('The Social Butterfly')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: en['settings.title'] })).toBeInTheDocument()
   })
 })

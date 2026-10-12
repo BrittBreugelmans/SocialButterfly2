@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { addDaysLocal, todayLocal } from '../data/dates'
-import { EventInUseError, StorageFullError } from '../data/errors'
+import { StorageFullError } from '../data/errors'
 import {
   countEncountersSince,
   createEncounter,
@@ -9,6 +9,7 @@ import {
   deleteEvent,
   updatePerson,
   deletePerson,
+  listEncountersByEvent,
   listEvents,
   listPersons,
 } from '../data/repository'
@@ -65,12 +66,9 @@ async function removeTestData(): Promise<void> {
   }
   for (const event of await listEvents()) {
     if (!event.name.startsWith(TEST_PREFIX)) continue
-    try {
-      await deleteEvent(event.id)
-    } catch (error) {
-      // An Event that real Encounters still use stays (no silent loss).
-      if (!(error instanceof EventInUseError)) throw error
-    }
+    // An Event that real Encounters still use stays (no silent loss). Deleting would keep those
+    // Encounters (B38) but take away their Event, so it is skipped.
+    if ((await listEncountersByEvent(event.id)).length === 0) await deleteEvent(event.id)
   }
 }
 

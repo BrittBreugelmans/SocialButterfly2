@@ -2,6 +2,68 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-12** — implementatie F10 (`/speckit-implement`) — Instellingen-tab:
+  - CSV-back-up via het deelmenu van de iPhone (puntkomma, BOM, `'` vóór formules);
+  - laatste back-up = moment van de momentopname;
+  - back-upherinnering op Toevoegen, met "Later" (T10, T11, B40);
+  - evenementen aanpassen en verwijderen; de ontmoetingen blijven, zonder evenement (B38);
+  - de taalknop, de versie en Diagnostics staan nu in Instellingen;
+  - alle data wissen na het typen van "WISSEN" (B41).
+
+  `EventInUseError` en `ComingSoon` zijn weg. Geen nieuwe bibliotheek, geen schemawijziging.
+  419 tests groen (was 344), build OK, bundel +3,3 kB gecomprimeerd. 48 van 51 taken klaar;
+  open: push (T049), controle op de iPhone (T050) en afvinken in features.md (T051). De tekst
+  van de herinnering is nog te keuren (merk-en-stijl).
+
+- **2026-10-12** — gesprek met Britt (F11) — M9: voorlopig logo = voorstel B (Netwerkvleugels);
+  Britt levert zelf nog een eigen logo (12 of 13 okt). M10: witte icoonachtergrond (open vraag
+  #16 gesloten). Taken F11: T003 afgevinkt, T005 vervalt.
+
+- **2026-10-12** — taken F10 (`/speckit-tasks`) ([tasks](../specs/009-settings-data/tasks.md)) — 51
+  taken in 8 fases: setup, fundament (veld, teksten, lege Instellingen-tab met versie en
+  Diagnostics), dan per user story (CSV-back-up, herinnering, evenementen beheren, taal, alle data
+  wissen), daarna afwerking. MVP = back-up + herinnering.
+
+- **2026-10-12** — gesprek met Britt (F11) — M8: kleurenpalet goedgekeurd. Keuzepagina met 3
+  logovoorstellen gemaakt ([logo-proposals.html](../specs/010-brand-delight/logo-proposals.html));
+  keuze van Britt volgt.
+
+- **2026-10-12** — plan F11 (`/speckit-plan`) ([plan](../specs/010-brand-delight/plan.md)) — Geen
+  nieuwe bibliotheek, geen datawijziging. Eén logobestand (`logo.svg`) voor icoon, opstartscherm,
+  app en Mijn QR; eerst 3 voorstellen op een keuzepagina (M5). Kleurvoorstel met 12 kleuren, eigen
+  blauw `#0d5fb8` i.p.v. LinkedIns `#0a66c2`; alle tekst haalt WCAG AA. Opstartbeelden voor iPhones
+  op iOS 17+. Vlinder: 1,2 s, tikken gaan erdoor, niets bij "Beweging beperken". Bekende beperking:
+  in het zeldzame B19-geval na een herstart door iOS kan de vlinder één keer vliegen.
+  Merk-en-stijl: kleurvoorstel (te keuren).
+
+- **2026-10-12** — plan F10 (`/speckit-plan`) ([plan](../specs/009-settings-data/plan.md)) — Geen
+  nieuwe bibliotheek, geen schemawijziging; één nieuw veld `backupReminderLaterOn` in de
+  instellingen. CSV: puntkomma, BOM voor Excel, `'` vóór cellen die met `= + - @` beginnen (anders
+  ziet Excel een formule). Bestand via het deelmenu van de iPhone ("Bewaar in Bestanden"); het
+  bestand staat al klaar vóór de tik, anders weigert iOS het deelmenu. Laatste back-up = moment
+  van de momentopname. `deleteEvent` houdt de ontmoetingen (B38). Begrippen: Back-up,
+  Back-upherinnering, Alle data wissen. Merk-en-stijl: tekst van de herinnering (te keuren).
+  Na te kijken op de iPhone: annuleren in Bestanden, Excel met Belgische instellingen.
+
+- **2026-10-12** — spec F11 (`/speckit-specify`) met Britt ([spec](../specs/010-brand-delight/spec.md)) —
+  M5 (logo getekend in het project, Britt keurt goed; anders maakt ze het zelf), M6 (geen donkere
+  modus), M7 (vlinder fladdert bij het afsluiten van het notitiescherm). Merk-en-stijl bijgewerkt.
+
+- **2026-10-12** — clarify F10 (`/speckit-clarify`) met Britt ([spec](../specs/009-settings-data/spec.md)) —
+  B39 (CSV met puntkomma), B40 (back-upherinnering ook bij wijzigingen, breidt T10/T11 uit),
+  B41 (alle data wissen: woord typen). Spec: FR-005, FR-009a, FR-018, user stories 2 en 5, SC-003.
+  Flows (Instellingen) bijgewerkt.
+
+- **2026-10-12** — testlijst voor een externe tester ([testlijst](../specs/testlijst-v1.html)) — 58
+  stappen over F0–F9, per stap OK / Probleem / Overgeslagen en een notitie, met een verslag om te
+  kopiëren en naar Britt te sturen. Vinkjes blijven alleen op het toestel van de tester.
+
+- **2026-10-12** — spec F10 (`/speckit-specify`) met Britt ([spec](../specs/009-settings-data/spec.md)) —
+  B35 (CSV: één rij per ontmoeting), B36 (geen import in v1), B37 (standaardtaal NL; doorgeef-modus
+  volgt de app), B38 (evenement verwijderen: ontmoetingen blijven, zonder evenement). Open vragen
+  #6 en #8 gesloten. Bijgewerkt: flows (Instellingen), features.md (⚠️ bij F10 weg), constitution
+  v1.0.6 (#6 en #8 uit de open vragen).
+
 - **2026-10-12** — implementatie F9 (`/speckit-implement`) — Mijn QR-tab:
   - de eerste keer "Plak LinkedIn-link" (regels van F4, gedeelde functie `pasteProfileUrl`);
   - daarna de QR, lokaal gemaakt met uqr, foutcorrectie H, donkerblauw op wit, met de vlinder in

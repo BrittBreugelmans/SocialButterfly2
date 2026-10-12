@@ -21,14 +21,6 @@ export class DuplicateProfileUrlError extends Error {
   }
 }
 
-/** An Event that still has Encounters cannot be deleted. */
-export class EventInUseError extends Error {
-  constructor() {
-    super('This Event still has Encounters')
-    this.name = 'EventInUseError'
-  }
-}
-
 /** The device refused to store more data. Existing data is untouched. */
 export class StorageFullError extends Error {
   constructor() {

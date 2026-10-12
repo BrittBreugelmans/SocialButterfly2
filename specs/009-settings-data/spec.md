@@ -28,6 +28,13 @@ switch and Diagnostics stay on the Add tab until F10).
 - Q: What happens when the owner deletes an Event that still has Encounters? → A: After
   confirmation the Event is deleted and its Encounters stay, as without an Event. Nothing is lost
   (wiki B38).
+- Q: Which separator does the CSV use between columns? → A: A semicolon (`;`), so the file opens
+  straight into columns in Excel with Belgian settings, and in Numbers (wiki B39).
+- Q: Does the backup reminder also come when only notes or other data changed since the last
+  backup? → A: Yes. Changes to Persons, Encounters and Events count too, with the same timing as
+  T10/T11: never during the Event or on the day of the change (wiki B40).
+- Q: How hard is it to confirm "Delete all data"? → A: The delete button only works after the
+  owner types a word: "WISSEN" in Dutch, "DELETE" in English (wiki B41).
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -83,7 +90,10 @@ reminder appears. Make the backup: it is gone. Add Encounters during a running E
    disappears.
 5. **When** she taps "Later", **Then** the reminder is hidden for the rest of today and is checked
    again on the first open of a next day.
-6. **Given** no Encounters were added since the last backup, **Then** no reminder appears.
+6. **Given** after her last backup she wrote notes on the Actions tab yesterday, and added no
+   Encounters, **When** she opens the app for the first time today, **Then** the reminder appears
+   (B40).
+7. **Given** nothing was added or changed since the last backup, **Then** no reminder appears.
 
 ---
 
@@ -150,10 +160,13 @@ are empty, My QR asks for the link again, the next open starts with the daily ch
 
 1. **When** she taps "Delete all data", **Then** a confirmation shows the number of Persons,
    Encounters and Events, says it cannot be undone, and offers "Make backup first".
-2. **When** she confirms, **Then** all Persons, Encounters, Events, notes, dismissed Actions, the
-   own profile link (B33), the active Event and the last-backup time are deleted.
-3. **When** she cancels, **Then** nothing changes.
-4. **Given** the deletion is done, **Then** the app shows the Add tab as on a first start, in the
+2. **Given** the confirmation, **Then** the delete button only works after she types "WISSEN"
+   (Dutch) or "DELETE" (English) (B41).
+3. **When** she has typed the word and confirms, **Then** all Persons, Encounters, Events, notes,
+   dismissed Actions, the own profile link (B33), the active Event and the last-backup time are
+   deleted.
+4. **When** she cancels, **Then** nothing changes.
+5. **Given** the deletion is done, **Then** the app shows the Add tab as on a first start, in the
    same language.
 
 ---
@@ -204,8 +217,9 @@ are empty, My QR asks for the link again, the next open starts with the daily ch
   Person has at least one Encounter (B25). An Event without Encounters MUST get one row with only
   the event columns filled, so every Event is in the backup.
 - **FR-004a**: The app MUST NOT offer importing a backup in v1 (B36).
-- **FR-005**: The file MUST open correctly in Numbers and Excel: UTF-8 with accents and emoji
-  intact, and commas, quotes and line breaks in text kept within their cell.
+- **FR-005**: Columns MUST be separated by a semicolon (`;`) (B39). The file MUST open straight
+  into columns in Numbers and in Excel with Belgian settings: accents and emoji intact, and
+  semicolons, commas, quotes and line breaks in text kept within their cell.
 - **FR-006**: Text that a spreadsheet would read as a formula (starting with `=`, `+`, `-` or `@`)
   MUST be exported so it shows as text.
 - **FR-007**: The file name MUST contain the app name and the date, for example
@@ -218,6 +232,10 @@ are empty, My QR asks for the link again, the next open starts with the daily ch
 - **FR-009**: On the first open of a day, the app MUST show the backup reminder on the Add tab
   when Encounters were added since the last backup that belong to an Event whose end date is
   before today (T10), or that have no Event and a date before today (T11).
+- **FR-009a**: Changes since the last backup MUST also trigger the reminder (B40): a changed name,
+  company, profile link, connection status, note or Event, made on a day before today. While the
+  active Event runs today, such changes wait until the first open after its end date. Deleting a
+  Person or Encounter does not count: the last backup still holds them.
 - **FR-010**: The reminder MUST NOT appear for Encounters of a running Event or casual Encounters
   of today, and never during the add flow, note step or guest mode.
 - **FR-011**: The reminder MUST offer "Make backup" (runs FR-003) and "Later" (hides it until the
@@ -245,7 +263,9 @@ are empty, My QR asks for the link again, the next open starts with the daily ch
 #### Delete all data
 
 - **FR-018**: "Delete all data" MUST ask for confirmation with the number of Persons, Encounters
-  and Events, state that it cannot be undone, and offer "Make backup first".
+  and Events, state that it cannot be undone, and offer "Make backup first". The delete button
+  MUST only work after the owner types "WISSEN" (Dutch) or "DELETE" (English), following the app
+  language; upper or lower case and spaces around the word do not matter (B41).
 - **FR-019**: After confirmation, the app MUST delete all Persons, Encounters, Events, dismissed
   Actions, the own profile link, the active Event, the daily-choice date, the open note step and
   the last-backup time. Only the language choice MUST remain.
@@ -276,8 +296,8 @@ are empty, My QR asks for the link again, the next open starts with the daily ch
 - **SC-002**: In a test backup, 100% of Persons, Encounters, Events and notes are present and
   readable in Numbers and Excel, including accents, emoji, commas and line breaks.
 - **SC-003**: In tests over a multi-day Event and casual networking, the reminder appears on the
-  first open after the end date in 100% of cases with new Encounters, and 0 times during an Event
-  or on the day of casual networking.
+  first open after the end date in 100% of cases with new or changed data, and 0 times during an
+  Event or on the day of casual networking or of the change.
 - **SC-004**: After "Delete all data", 0 Persons, Encounters, Events and dismissed Actions remain,
   and the own profile link is gone.
 - **SC-005**: Renaming an Event takes at most 4 taps plus typing, and the new name shows
@@ -297,7 +317,7 @@ are empty, My QR asks for the link again, the next open starts with the daily ch
   link (not a Person, B33). Record IDs are not needed, since there is no import (B36).
 - **Column headers and connection status** are written in English (`connected`,
   `notConnected`), whatever the app language, so files from different days look the same.
-- **Deleting an Event can affect the Actions tab**: Encounters only change Event, so no Action
-  opens or closes because of it.
+- **Deleting an Event does not change the Actions tab**: Encounters only lose their Event, so no
+  Action opens or closes because of it.
 - **Delete all data keeps the language**: it is a device choice, not personal data.
 - **No account, no cloud**: backups are files the owner keeps herself (constitution II, IV).

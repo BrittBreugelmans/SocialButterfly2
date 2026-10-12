@@ -49,8 +49,10 @@ export interface Settings {
   language: Language
   /** Absent means casual networking. */
   activeEventId?: string
-  /** ISO 8601 UTC. Set by the CSV export (F10). */
+  /** ISO 8601 UTC. takenAt of the snapshot in the last finished CSV backup (F10, research R3). Never moves back in time. */
   lastBackupAt?: string
+  /** Local date (YYYY-MM-DD) on which the owner tapped "Later" on the backup reminder (F10). */
+  backupReminderLaterOn?: string
   /** Local date (YYYY-MM-DD) on which the owner last chose an Event or casual networking (FR-005). */
   contextChosenOn?: string
   /** The Encounter whose note step is open (F2, B18). Ignored when the Encounter is gone or not dated today. */

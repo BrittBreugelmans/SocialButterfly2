@@ -127,10 +127,6 @@ h1 {
   align-items: center;
 }
 
-.language-label {
-  color: var(--muted);
-}
-
 .version-label {
   margin-top: 32px;
   min-height: 44px;
@@ -554,15 +550,6 @@ a.event-option {
 
 .diagnostics {
   z-index: 20;
-}
-
-.coming-soon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding: 48px 24px;
-  text-align: center;
 }
 
 .contacts,
@@ -1019,4 +1006,141 @@ button.compact {
 
 .offline-screen button {
   margin-top: 16px;
+}
+
+/* ---------- F10: settings & data ---------- */
+
+.settings-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px 16px;
+}
+
+.settings-tab h1 {
+  font-size: 1.6rem;
+}
+
+.settings-section {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.settings-section h2 {
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+}
+
+.settings-section > button {
+  justify-self: start;
+}
+
+.settings-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.settings-message {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.settings-message:empty {
+  display: none;
+}
+
+.settings-tab .version-label {
+  align-self: center;
+  margin-top: 8px;
+}
+
+/* Backup reminder on the Add tab: friendly, not alarming. Light blue = F11 proposal (R3); F11 may
+   swap it for its brand token. Kept compact so "Voeg toe via naam" stays above the fold. */
+.banner-reminder {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  max-width: 420px;
+  background: #e8f1fb;
+  text-align: left;
+}
+
+.banner-reminder p {
+  margin: 0;
+}
+
+.banner-reminder-failed {
+  color: var(--danger);
+}
+
+.banner-reminder-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.event-rows {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.event-row {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  min-height: 56px;
+  padding: 8px 14px;
+  border: 1px solid #dfe4e8;
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  text-align: left;
+}
+
+.event-row-name {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 600;
+}
+
+.event-row-active {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.event-row-meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.settings-section > button.danger {
+  justify-self: start;
+}
+
+.delete-all-panel label {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.delete-all-panel input {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #c9d1d8;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 16px; /* 16px or more: iOS does not zoom in on focus */
+  letter-spacing: 0.05em;
 }

@@ -1,14 +1,56 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
+import { useBackup } from '../backup/useBackup'
+import { StorageFullError } from '../data/errors'
+import { postponeBackupReminder } from '../data/repository'
 import type { Event } from '../data/types'
 import { useLanguage } from '../i18n/LanguageProvider'
-import type { StorageStatus } from '../platform/persistence'
 import { ContextBar } from './ContextBar'
-import { Diagnostics } from './Diagnostics'
 
-const LONG_PRESS_MS = 600
+/** The backup reminder (F10 FR-009–FR-011): a banner, never a blocking screen (constitution VIII). */
+function BackupReminder() {
+  const { t } = useLanguage()
+  const { reminderDue, makeBackup } = useBackup()
+  const [failed, setFailed] = useState(false)
+
+  if (!reminderDue) return null
+
+  function ignoreStorageFull(error: unknown) {
+    // Storage full: the F0 banner shows.
+    if (!(error instanceof StorageFullError)) throw error
+  }
+
+  return (
+    <div className="banner banner-reminder" role="status">
+      <p>{t('reminder.text')}</p>
+      {failed && <p className="banner-reminder-failed">{t('backup.failed')}</p>}
+      <div className="banner-reminder-actions">
+        <button
+          type="button"
+          onClick={() => {
+            // Straight from the tap: the share sheet opens before any await (research R2).
+            setFailed(false)
+            makeBackup()
+              .then((result) => setFailed(result === 'failed'))
+              .catch(ignoreStorageFull)
+          }}
+        >
+          {t('reminder.make')}
+        </button>
+        <button
+          type="button"
+          className="secondary"
+          onClick={() => {
+            postponeBackupReminder().catch(ignoreStorageFull)
+          }}
+        >
+          {t('reminder.later')}
+        </button>
+      </div>
+    </div>
+  )
+}
 
 interface StartScreenProps {
-  storageStatus: StorageStatus | 'checking'
   /** The active Event, undefined during casual networking, or 'loading' while it is read. */
   activeEvent: Event | undefined | 'loading'
   onChangeContext(): void
@@ -16,29 +58,13 @@ interface StartScreenProps {
   onScanQr(): void
 }
 
-export function StartScreen({
-  storageStatus,
-  activeEvent,
-  onChangeContext,
-  onAddByName,
-  onScanQr,
-}: StartScreenProps) {
-  const { language, setLanguage, t } = useLanguage()
-  const [diagnosticsOpen, setDiagnosticsOpen] = useState(false)
-  const pressTimer = useRef<number | undefined>(undefined)
-
-  // Long press on the version label opens Diagnostics, so a guest does not open it by accident.
-  function startPress() {
-    window.clearTimeout(pressTimer.current)
-    pressTimer.current = window.setTimeout(() => setDiagnosticsOpen(true), LONG_PRESS_MS)
-  }
-  function cancelPress() {
-    window.clearTimeout(pressTimer.current)
-  }
+export function StartScreen({ activeEvent, onChangeContext, onAddByName, onScanQr }: StartScreenProps) {
+  const { t } = useLanguage()
 
   return (
     <main className="start-screen">
       <ContextBar event={activeEvent} onChange={onChangeContext} />
+      <BackupReminder />
 
       <p className="butterfly" aria-hidden="true">
         🦋
@@ -53,36 +79,6 @@ export function StartScreen({
           {t('start.scanQr')}
         </button>
       </div>
-
-      <div className="language-switch" role="group" aria-label={t('app.languageSwitch')}>
-        <span className="language-label">{t('app.languageSwitch')}</span>
-        <button type="button" aria-pressed={language === 'nl'} onClick={() => void setLanguage('nl')}>
-          {t('app.languageNl')}
-        </button>
-        <button type="button" aria-pressed={language === 'en'} onClick={() => void setLanguage('en')}>
-          {t('app.languageEn')}
-        </button>
-      </div>
-
-      <button
-        type="button"
-        className="version-label"
-        aria-label={t('diagnostics.open')}
-        onPointerDown={startPress}
-        onPointerUp={cancelPress}
-        onPointerLeave={cancelPress}
-        onPointerCancel={cancelPress}
-        onContextMenu={(event) => event.preventDefault()}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter' || event.key === ' ') setDiagnosticsOpen(true)
-        }}
-      >
-        v{__APP_VERSION__}
-      </button>
-
-      {diagnosticsOpen && (
-        <Diagnostics storageStatus={storageStatus} onClose={() => setDiagnosticsOpen(false)} />
-      )}
     </main>
   )
 }

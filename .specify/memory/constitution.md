@@ -1,8 +1,10 @@
 <!--
 Sync Impact Report
-- Version change: 1.0.4 → 1.0.5 (PATCH: Open Questions list brought up to date)
+- Version change: 1.0.5 → 1.0.6 (PATCH: Open Questions list brought up to date)
 - Modified principles: none
-- Removed from Open Questions: #3 (decided: wiki B30, a dismissed Action returns on a new Encounter)
+- Removed from Open Questions: #6 (decided: wiki B35 one row per Encounter, B36 no import in v1)
+  and #8 (decided: wiki B37 Dutch by default, guestMode follows the app language)
+- Earlier (1.0.5): removed #3 (wiki B30)
 - Earlier (1.0.4): removed #5 (wiki B28)
 - Earlier (1.0.3): removed #4 (wiki B17, B22)
 - Earlier (1.0.2): removed #1 (wiki B15) and #2 (wiki B16); narrowed #4
@@ -157,12 +159,10 @@ Each principle has a **Rule**, a **Rationale** and a **Verify** step for reviewe
 - **Compliance:** reviews of specs, plans and code check against the principles above.
 - Agents MUST NOT resolve open questions themselves; they stay open until the owner decides.
 
-**Version**: 1.0.5 | **Ratified**: 2026-10-07 | **Last Amended**: 2026-10-11
+**Version**: 1.0.6 | **Ratified**: 2026-10-07 | **Last Amended**: 2026-10-12
 
 ## Open Questions
 
 Numbers refer to `wiki/open-vragen.md`. Specs MUST NOT assume an answer.
 
-- **#6 CSV export** (VI): which columns? Also import as a restore?
-- **#8 Default language** (VII): for the owner and for `guestMode`.
 - **#9 Ranking of quality values** (Purpose): stated in the prompt; to be confirmed in the wiki.

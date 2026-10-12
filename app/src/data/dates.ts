@@ -13,6 +13,11 @@ export function todayLocal(): string {
   return format(new Date())
 }
 
+/** The local date of an ISO 8601 UTC time, as YYYY-MM-DD (F10 backup reminder). */
+export function localDateOf(iso: string): string {
+  return format(new Date(iso))
+}
+
 /** Adds days to a YYYY-MM-DD date. Uses calendar days, so daylight saving cannot shift the day. */
 export function addDaysLocal(date: string, days: number): string {
   const [year, month, day] = date.split('-').map(Number) as [number, number, number]

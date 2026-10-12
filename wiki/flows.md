@@ -13,7 +13,11 @@ tijdens de dagkeuze, het toevoegen, het notitiescherm en de doorgeef-modus.
    De eerste keer plakt Britt haar eigen profiel-link; aanpassen kan daar ([B33](beslissingen.md)).
    Het scherm blijft aan zolang de QR getoond wordt. Ook bereikbaar vanaf het offline-scherm
    ("Toon mijn QR", [B34](beslissingen.md)).
-5. **Instellingen**: evenementen beheren, taal, CSV-export.
+5. **Instellingen**: evenementen aanpassen en verwijderen ([B14](beslissingen.md); ontmoetingen
+   blijven, [B38](beslissingen.md)), taal (standaard NL, [B37](beslissingen.md)), CSV-back-up
+   (één rij per ontmoeting, puntkomma, geen import, [B35, B36, B39](beslissingen.md)), alle data
+   wissen (woord typen, [B41](beslissingen.md)). De back-upherinnering
+   ([T10, T11, B40](beslissingen.md)) verschijnt op Toevoegen.
 
 ## Flow A — Toevoegen via naam
 1. Britt kiest **doorgeef-modus** (geeft gsm door) of **snelle modus** (tikt zelf).

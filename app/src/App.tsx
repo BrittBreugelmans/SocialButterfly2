@@ -14,9 +14,9 @@ import { NewEventForm } from './ui/NewEventForm'
 import { NoteStep } from './ui/NoteStep'
 import { StartScreen } from './ui/StartScreen'
 import { ActionsTab } from './ui/ActionsTab'
-import { ComingSoon } from './ui/ComingSoon'
 import { ContactsTab } from './ui/ContactsTab'
 import { MyQrTab } from './ui/MyQrTab'
+import { SettingsTab } from './ui/SettingsTab'
 import { TabBar, type Tab } from './ui/TabBar'
 
 type Screen = 'choice' | 'newEvent' | 'start' | 'addByName' | 'addByQr' | 'noteStep'
@@ -93,6 +93,7 @@ export function App() {
   }, [status, noteStepChecked])
 
   // Load the active Event whenever the start screen or the quick mode form is shown (FR-008, F2 FR-002).
+  // Also on a tab change: Settings can rename or delete the active Event (F10 research R8).
   useEffect(() => {
     if ((screen !== 'start' && screen !== 'addByName' && screen !== 'addByQr') || status === 'loading') return
     let cancelled = false
@@ -103,7 +104,7 @@ export function App() {
     return () => {
       cancelled = true
     }
-  }, [screen, status])
+  }, [screen, status, tab])
 
   // Back to the tabs after a flow: always on the Add tab, where the flows start (F7 FR-001b).
   const toStart = useCallback(() => {
@@ -191,7 +192,6 @@ export function App() {
         <div className="has-tab-bar">
           {tab === 'add' ? (
             <StartScreen
-              storageStatus={storageStatus}
               activeEvent={activeEvent}
               onChangeContext={() => setScreen('choice')}
               onAddByName={() => setScreen('addByName')}
@@ -204,7 +204,14 @@ export function App() {
           ) : tab === 'myQr' ? (
             <MyQrTab />
           ) : (
-            <ComingSoon textKey="soon.settings" />
+            <SettingsTab
+              storageStatus={storageStatus}
+              onAllDataDeleted={() => {
+                // F10 (research R6): contextChosenOn is gone, so the daily choice appears.
+                recheck()
+                toStart()
+              }}
+            />
           )}
           <TabBar tab={tab} onChange={setTab} badges={{ actions: openActionCount }} />
         </div>

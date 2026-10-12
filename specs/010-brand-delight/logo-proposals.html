@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logo-voorstellen</title>
+<style>
+  :root {
+    --blue: #0d5fb8; --blue-dark: #0a3d73; --blue-light: #e8f1fb; --wing: #5aa2ec;
+    --text: #1b2430; --muted: #5a6672; --bg: #ffffff; --surface: #f3f6f9; --border: #c9d1d8;
+    color-scheme: light;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--surface); padding: 24px 16px 48px; }
+  main { max-width: 1040px; margin: 0 auto; display: grid; gap: 24px; }
+  h1 { margin: 0; color: var(--blue); font-size: 1.8rem; }
+  .intro { margin: 0; color: var(--muted); max-width: 70ch; line-height: 1.5; }
+
+  /* Colour roles of the logo. Default: on a white background. */
+  .on-white { --main: var(--blue); --soft: var(--wing); --deep: var(--blue-dark); --hole: var(--bg); }
+  .on-blue  { --main: var(--bg); --soft: var(--blue-light); --deep: var(--blue-dark); --hole: var(--blue); }
+
+  .card { background: var(--bg); border: 1px solid var(--border); border-radius: 18px; padding: 20px; display: grid; gap: 16px; }
+  .card h2 { margin: 0; font-size: 1.3rem; }
+  .card h2 span { color: var(--blue); }
+  .card p { margin: 0; color: var(--muted); line-height: 1.45; }
+  .row { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-end; }
+  figure { margin: 0; display: grid; justify-items: center; gap: 8px; }
+  figcaption { font-size: 0.78rem; color: var(--muted); text-align: center; max-width: 120px; }
+
+  .tile { width: 60px; height: 60px; border-radius: 13.5px; display: grid; place-items: center;
+          box-shadow: 0 1px 4px rgb(27 36 48 / 0.18); }
+  .tile.on-white { background: var(--bg); }
+  .tile.on-blue { background: var(--blue); }
+  .tile svg { width: 51px; height: 51px; }
+  .home { background: linear-gradient(160deg, #3d5a80, #98a9c2); border-radius: 14px; padding: 14px 18px 10px;
+          display: grid; justify-items: center; gap: 4px; }
+  .home small { color: #fff; font-size: 0.72rem; }
+  .fav { width: 24px; height: 24px; }
+  .start { width: 170px; border: 1px solid var(--border); border-radius: 16px; padding: 18px 10px;
+           display: grid; justify-items: center; gap: 6px; }
+  .start svg { width: 96px; height: 96px; }
+  .start strong { color: var(--blue); font-size: 0.95rem; }
+  .qr svg { width: 150px; height: 150px; }
+  .big svg { width: 200px; height: 200px; }
+
+  .swatches { display: flex; flex-wrap: wrap; gap: 10px; }
+  .swatch { display: grid; gap: 4px; font-size: 0.75rem; color: var(--muted); }
+  .swatch i { display: block; width: 64px; height: 40px; border-radius: 8px; border: 1px solid var(--border); }
+  @media (max-width: 600px) { .big svg { width: 140px; height: 140px; } }
+</style>
+</head>
+<body>
+
+<!-- The three proposals. Colours come from the roles --main, --soft, --deep, --hole (palette only). -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- A: the two top wings are two network nodes, linked through the body. -->
+  <symbol id="logo-a" viewBox="0 0 512 512">
+    <g stroke="var(--deep)" stroke-width="14" stroke-linecap="round">
+      <line x1="146" y1="176" x2="256" y2="236"/>
+      <line x1="366" y1="176" x2="256" y2="236"/>
+      <line x1="184" y1="352" x2="256" y2="300"/>
+      <line x1="328" y1="352" x2="256" y2="300"/>
+    </g>
+    <circle cx="146" cy="176" r="80" fill="var(--main)"/>
+    <circle cx="366" cy="176" r="80" fill="var(--main)"/>
+    <circle cx="146" cy="176" r="28" fill="var(--hole)"/>
+    <circle cx="366" cy="176" r="28" fill="var(--hole)"/>
+    <circle cx="184" cy="352" r="50" fill="var(--soft)"/>
+    <circle cx="328" cy="352" r="50" fill="var(--soft)"/>
+    <circle cx="184" cy="352" r="16" fill="var(--hole)"/>
+    <circle cx="328" cy="352" r="16" fill="var(--hole)"/>
+    <rect x="242" y="200" width="28" height="210" rx="14" fill="var(--deep)"/>
+    <circle cx="256" cy="236" r="22" fill="var(--deep)"/>
+    <g stroke="var(--deep)" stroke-width="10" stroke-linecap="round">
+      <path d="M248 216 L214 120"/><path d="M264 216 L298 120"/>
+    </g>
+    <circle cx="214" cy="120" r="14" fill="var(--deep)"/>
+    <circle cx="298" cy="120" r="14" fill="var(--deep)"/>
+  </symbol>
+
+  <!-- B: each wing holds a small network of nodes and lines. -->
+  <symbol id="logo-b" viewBox="0 0 512 512">
+    <g id="logo-b-half">
+      <polygon points="272,214 318,96 432,92 462,190 352,262" fill="var(--main)"
+               stroke="var(--main)" stroke-width="16" stroke-linejoin="round"/>
+      <polygon points="272,282 380,272 418,350 344,416 286,364" fill="var(--soft)"
+               stroke="var(--soft)" stroke-width="16" stroke-linejoin="round"/>
+      <g stroke="var(--hole)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <path d="M330 140 L414 132 L420 196 L350 218 Z M330 140 L420 196"/>
+        <path d="M330 320 L384 330 L348 378 Z"/>
+      </g>
+      <g fill="var(--hole)">
+        <circle cx="330" cy="140" r="11"/><circle cx="414" cy="132" r="11"/>
+        <circle cx="420" cy="196" r="11"/><circle cx="350" cy="218" r="11"/>
+        <circle cx="330" cy="320" r="9"/><circle cx="384" cy="330" r="9"/><circle cx="348" cy="378" r="9"/>
+      </g>
+    </g>
+    <use href="#logo-b-half" transform="translate(512 0) scale(-1 1)"/>
+    <rect x="243" y="180" width="26" height="230" rx="13" fill="var(--deep)"/>
+    <g stroke="var(--deep)" stroke-width="10" stroke-linecap="round">
+      <path d="M249 194 L216 110"/><path d="M263 194 L296 110"/>
+    </g>
+    <circle cx="216" cy="110" r="13" fill="var(--deep)"/>
+    <circle cx="296" cy="110" r="13" fill="var(--deep)"/>
+  </symbol>
+
+  <!-- C: today's placeholder, cleaned up: the wings meet in one shared node; two outer nodes linked to it. -->
+  <symbol id="logo-c" viewBox="0 0 512 512">
+    <ellipse cx="166" cy="190" rx="104" ry="74" transform="rotate(-28 166 190)" fill="var(--main)"/>
+    <ellipse cx="346" cy="190" rx="104" ry="74" transform="rotate(28 346 190)" fill="var(--main)"/>
+    <ellipse cx="194" cy="326" rx="64" ry="48" transform="rotate(32 194 326)" fill="var(--soft)"/>
+    <ellipse cx="318" cy="326" rx="64" ry="48" transform="rotate(-32 318 326)" fill="var(--soft)"/>
+    <g stroke="var(--hole)" stroke-width="8" stroke-linecap="round">
+      <line x1="256" y1="244" x2="112" y2="152"/>
+      <line x1="256" y1="244" x2="400" y2="152"/>
+    </g>
+    <circle cx="112" cy="152" r="20" fill="var(--hole)"/>
+    <circle cx="400" cy="152" r="20" fill="var(--hole)"/>
+    <circle cx="112" cy="152" r="9" fill="var(--deep)"/>
+    <circle cx="400" cy="152" r="9" fill="var(--deep)"/>
+    <rect x="245" y="196" width="22" height="170" rx="11" fill="var(--deep)"/>
+    <circle cx="256" cy="244" r="26" fill="var(--deep)"/>
+    <circle cx="256" cy="244" r="10" fill="var(--hole)"/>
+    <g stroke="var(--deep)" stroke-width="10" stroke-linecap="round">
+      <path d="M250 206 L222 116"/><path d="M262 206 L290 116"/>
+    </g>
+    <circle cx="222" cy="116" r="12" fill="var(--deep)"/>
+    <circle cx="290" cy="116" r="12" fill="var(--deep)"/>
+  </symbol>
+</svg>
+
+<main>
+  <header>
+    <h1>Logo-voorstellen</h1>
+    <p class="intro">Drie vlinders waarvan de vleugels op verbonden netwerkknooppunten lijken (M5). Kies
+      <strong>A, B of C</strong> en een <strong>icoonachtergrond: wit of blauw</strong>. Vind je er geen
+      enkele mooi, dan maak je er zelf een. De QR hieronder is een voorbeeld en is niet scanbaar.</p>
+  </header>
+  <div id="cards"></div>
+
+  <section class="card">
+    <h2>Kleurenpalet <span>(goedgekeurd, M8)</span></h2>
+    <div class="swatches" id="swatches"></div>
+  </section>
+</main>
+
+<script>
+  const proposals = [
+    ['a', 'A: Twee knooppunten', 'De bovenste vleugels zijn twee netwerkknooppunten (ringen), via het lijf met elkaar verbonden. Het meest letterlijk: "twee verbonden knooppunten".'],
+    ['b', 'B: Netwerkvleugels', 'Hoekige vleugels met in elke vleugel een klein netwerk van punten en lijnen. Het meest "tech"; het netwerk zie je pas op groter formaat.'],
+    ['c', 'C: Verfijnd', 'De huidige vlinder, opgeschoond: de vleugels komen samen in één centraal knooppunt, met een lijn naar een knooppunt in elke vleugel. Het meest "vlinder", subtiel netwerk.'],
+  ]
+  const use = (id, cls = 'on-white') => `<svg class="${cls}" viewBox="0 0 512 512" role="img"><use href="#logo-${id}"/></svg>`
+
+  // A look-alike QR (seeded noise + finder patterns), only to judge the logo in the centre.
+  function sampleQr(id) {
+    const n = 29, q = 2, size = n + 2 * q, badge = 7, b0 = (n - badge) / 2
+    let seed = 7, d = ''
+    const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647)
+    const finder = (x, y) => {
+      const fx = x < 7 ? x : x >= n - 7 ? x - (n - 7) : -1
+      const fy = y < 7 ? y : y >= n - 7 ? y - (n - 7) : -1
+      if (fx < 0 || fy < 0 || (x >= n - 7 && y >= n - 7)) return undefined
+      return fx === 0 || fx === 6 || fy === 0 || fy === 6 || (fx >= 2 && fx <= 4 && fy >= 2 && fy <= 4)
+    }
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
+      const f = finder(x, y)
+      const inSep = (x < 8 && y < 8) || (x >= n - 8 && y < 8) || (x < 8 && y >= n - 8)
+      const inBadge = x >= b0 && x < b0 + badge && y >= b0 && y < b0 + badge
+      const dark = f !== undefined ? f : inSep || inBadge ? false : rnd() < 0.5
+      if (dark) d += `M${x + q} ${y + q}h1v1h-1z`
+    }
+    return `<svg class="on-white" viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges" role="img">
+      <rect width="${size}" height="${size}" fill="#ffffff"/><path d="${d}" fill="var(--blue-dark)"/>
+      <rect x="${b0 + q}" y="${b0 + q}" width="${badge}" height="${badge}" rx="1" fill="#ffffff"/>
+      <svg x="${b0 + q + 0.5}" y="${b0 + q + 0.5}" width="${badge - 1}" height="${badge - 1}" viewBox="0 0 512 512" shape-rendering="auto"><use href="#logo-${id}"/></svg>
+    </svg>`
+  }
+
+  document.getElementById('cards').innerHTML = proposals.map(([id, name, text]) => `
+    <section class="card">
+      <h2>${name}</h2>
+      <p>${text}</p>
+      <div class="row">
+        <figure><div class="home"><div class="tile on-white">${use(id)}</div><small>SB</small></div><figcaption>Beginscherm, wit</figcaption></figure>
+        <figure><div class="home"><div class="tile on-blue">${use(id, 'on-blue')}</div><small>SB</small></div><figcaption>Beginscherm, blauw</figcaption></figure>
+        <figure><span class="fav">${use(id)}</span><figcaption>Browsertab (24 px)</figcaption></figure>
+        <figure><div class="start">${use(id)}<strong>De Sociale Vlinder</strong></div><figcaption>Startscherm</figcaption></figure>
+        <figure class="qr">${sampleQr(id)}<figcaption>Midden in Mijn QR</figcaption></figure>
+        <figure class="big">${use(id)}<figcaption>Groot</figcaption></figure>
+      </div>
+    </section>`).join('')
+
+  const swatches = [['blue', '#0d5fb8'], ['blueDark', '#0a3d73'], ['blueLight', '#e8f1fb'], ['wing', '#5aa2ec'],
+    ['text', '#1b2430'], ['muted', '#5a6672'], ['bg', '#ffffff'], ['surface', '#f3f6f9'], ['border', '#c9d1d8'],
+    ['warningBg', '#fff4d6'], ['errorBg', '#fde8e8'], ['danger', '#c62828']]
+  document.getElementById('swatches').innerHTML = swatches
+    .map(([name, hex]) => `<div class="swatch"><i style="background:${hex}"></i>${name}<br>${hex}</div>`).join('')
+</script>
+</body>
+</html>

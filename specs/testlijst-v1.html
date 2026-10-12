@@ -1,0 +1,356 @@
+<title>Testlijst Sociale Vlinder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+  /* Layout: one phone-first column of test steps, grouped per screen, a sticky progress bar on top. */
+  :root {
+    --bg: #f6f8fb;
+    --surface: #ffffff;
+    --fg: #17212b;
+    --muted: #5b6875;
+    --line: #dbe2ea;
+    --accent: #0a66c2;
+    --accent-soft: #e4effa;
+    --ok: #1f7a4d;
+    --ok-soft: #e2f3ea;
+    --bad: #b3261e;
+    --bad-soft: #fbe7e5;
+    --skip: #6b7480;
+    --skip-soft: #eceff3;
+    --warn-soft: #fff4d6;
+    --display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+    --body: "Figtree", -apple-system, "Segoe UI", system-ui, sans-serif;
+    --radius: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f151c; --surface: #17202a; --fg: #e6edf4; --muted: #9aa8b6; --line: #2a3643;
+      --accent: #5aa6f0; --accent-soft: #16304a; --ok: #5cc98f; --ok-soft: #143425;
+      --bad: #f2887f; --bad-soft: #3d1c1a; --skip: #a3adb8; --skip-soft: #252e38; --warn-soft: #3a3115;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f151c; --surface: #17202a; --fg: #e6edf4; --muted: #9aa8b6; --line: #2a3643;
+    --accent: #5aa6f0; --accent-soft: #16304a; --ok: #5cc98f; --ok-soft: #143425;
+    --bad: #f2887f; --bad-soft: #3d1c1a; --skip: #a3adb8; --skip-soft: #252e38; --warn-soft: #3a3115;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.5; }
+  .wrap { max-width: 720px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 64px; }
+
+  h1, h2 { font-family: var(--display); text-wrap: balance; margin: 0; }
+  h1 { font-size: 1.9rem; line-height: 1.15; }
+  h2 { font-size: 1.25rem; }
+  p { margin: 0; }
+  a { color: var(--accent); }
+  .lede { color: var(--muted); margin-top: 8px; max-width: 60ch; }
+
+  .notes { display: grid; gap: 8px; margin-top: 20px; padding: 14px 16px; border-radius: var(--radius); background: var(--warn-soft); }
+  .notes p { font-size: 0.95rem; }
+
+  .device { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-top: 20px; }
+  label { display: grid; gap: 4px; font-size: 0.85rem; color: var(--muted); font-weight: 500; }
+  input, textarea {
+    font: inherit; color: var(--fg); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 100%;
+  }
+  textarea { min-height: 64px; resize: vertical; }
+  input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .progress {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+    margin: 20px -16px 0; padding: 10px 16px;
+    background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between;
+  }
+  .counts { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+  .counts b { font-weight: 600; }
+  .bar { flex-basis: 100%; height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; display: flex; }
+  .bar span { display: block; height: 100%; }
+  .bar .b-ok { background: var(--ok); } .bar .b-bad { background: var(--bad); } .bar .b-skip { background: var(--skip); }
+
+  section { margin-top: 32px; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .sec-head .tag { font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .sec-intro { color: var(--muted); font-size: 0.95rem; margin-top: 4px; }
+
+  ol.steps { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; }
+  .step {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 12px 14px; display: grid; gap: 8px; border-left-width: 4px;
+  }
+  .step[data-status="ok"] { border-left-color: var(--ok); }
+  .step[data-status="bad"] { border-left-color: var(--bad); }
+  .step[data-status="skip"] { border-left-color: var(--skip); }
+  .do { font-weight: 600; }
+  .expect { color: var(--muted); font-size: 0.95rem; }
+  .expect::before { content: "Verwacht: "; color: var(--fg); font-weight: 500; }
+  .ui { font-weight: 600; color: var(--accent); }
+
+  .choices { display: flex; flex-wrap: wrap; gap: 6px; }
+  .choices button {
+    font: inherit; font-size: 0.9rem; font-weight: 500; cursor: pointer;
+    min-height: 40px; padding: 0 14px; border-radius: 99px;
+    border: 1px solid var(--line); background: transparent; color: var(--fg);
+  }
+  .choices button[aria-pressed="true"][data-v="ok"] { background: var(--ok-soft); border-color: var(--ok); color: var(--ok); }
+  .choices button[aria-pressed="true"][data-v="bad"] { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
+  .choices button[aria-pressed="true"][data-v="skip"] { background: var(--skip-soft); border-color: var(--skip); color: var(--skip); }
+  .note-toggle { font: inherit; font-size: 0.85rem; background: none; border: none; color: var(--accent); padding: 0; cursor: pointer; justify-self: start; min-height: 32px; }
+
+  .report { margin-top: 40px; padding: 18px 16px; border-radius: var(--radius); background: var(--accent-soft); display: grid; gap: 12px; }
+  .report-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  .primary {
+    font: inherit; font-weight: 600; cursor: pointer; min-height: 44px; padding: 0 18px;
+    border-radius: 99px; border: none; background: var(--accent); color: #fff;
+  }
+  .secondary {
+    font: inherit; font-weight: 500; cursor: pointer; min-height: 44px; padding: 0 18px;
+    border-radius: 99px; border: 1px solid var(--accent); background: transparent; color: var(--accent);
+  }
+  #copy-status { font-size: 0.9rem; min-height: 1.5em; }
+  #report-text { min-height: 160px; font-size: 0.85rem; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+
+<div class="wrap">
+  <h1>Testlijst De Sociale Vlinder</h1>
+  <p class="lede">Test de app op je iPhone, stap voor stap. Tik per stap op <b>OK</b>, <b>Probleem</b> of <b>Overgeslagen</b>. Bij een probleem: schrijf kort wat er gebeurde. Op het einde kopieer je het verslag en stuur je het naar Britt.</p>
+
+  <div class="notes">
+    <p><b>Je gegevens blijven op jouw telefoon.</b> Wat je in de app invult, gaat nergens naartoe. Ook je vinkjes hier worden alleen op dit toestel onthouden.</p>
+    <p><b>LinkedIn is echt.</b> De app opent LinkedIn met jouw account. Tik daar alleen op <i>Connect</i> als je dat echt wil. Gebruik namen van mensen die je kent, bijvoorbeeld Britt.</p>
+    <p><b>Nog niet gebouwd:</b> de doorgeef-modus voor gasten en de tab Instellingen. Die hoef je niet te testen.</p>
+  </div>
+
+  <div class="device">
+    <label for="tester">Jouw naam <input id="tester" autocomplete="name"></label>
+    <label for="model">iPhone-model <input id="model" placeholder="bv. iPhone 15"></label>
+    <label for="ios">iOS-versie <input id="ios" placeholder="Instellingen → Algemeen → Info"></label>
+  </div>
+
+  <div class="progress" aria-live="polite">
+    <div class="counts" id="counts"></div>
+    <div class="bar" id="bar" aria-hidden="true"></div>
+  </div>
+
+  <div id="sections"></div>
+
+  <section aria-labelledby="general-title">
+    <h2 id="general-title">Algemene indruk</h2>
+    <p class="sec-intro">Was iets traag, onduidelijk of lelijk? Wat vond je leuk?</p>
+    <label for="general" style="margin-top:10px">Opmerkingen <textarea id="general"></textarea></label>
+  </section>
+
+  <div class="report">
+    <h2>Verslag naar Britt</h2>
+    <p>Kopieer het verslag en plak het in een bericht aan Britt.</p>
+    <div class="report-actions">
+      <button type="button" class="primary" id="copy">Kopieer verslag</button>
+      <button type="button" class="secondary" id="show">Toon verslag</button>
+    </div>
+    <p id="copy-status" role="status"></p>
+    <label for="report-text" id="report-wrap" hidden>Verslag (selecteer en kopieer) <textarea id="report-text" readonly></textarea></label>
+  </div>
+</div>
+
+<script>
+  // Each step: what to do, and what should happen. Texts in quotes are the exact app texts.
+  const SECTIONS = [
+    { id: 'install', title: 'Installeren', tag: 'Start', intro: 'Gebruik Safari op je iPhone.', steps: [
+      { do: 'Open socialbutterfly2.pages.dev in Safari.', expect: 'De app opent met een tip: “Tik op Deel en kies Zet op beginscherm”.' },
+      { do: 'Tik op Deel → Zet op beginscherm.', expect: 'Er staat een icoon “SB” op je beginscherm.' },
+      { do: 'Open de app via dat icoon.', expect: 'De app vult het hele scherm, zonder Safari-balk. De tip is weg.' },
+    ]},
+    { id: 'events', title: 'Dagkeuze en evenementen', tag: 'F1', intro: 'De eerste keer per dag vraagt de app waar je bent.', steps: [
+      { do: 'Open de app voor het eerst vandaag.', expect: '“Waar ben je vandaag?” met een lijst evenementen, “Nieuw evenement” en “Netwerken zonder evenement”.' },
+      { do: 'Tik “Nieuw evenement”. Naam: Testbeurs, van vandaag tot en met morgen. Tik “Opslaan en starten”.', expect: 'Op Toevoegen staat “Je bent op Testbeurs”.' },
+      { do: 'Maak nog een evenement met een einddatum vóór de startdatum.', expect: 'De melding “De einddatum kan niet vóór de startdatum liggen.” Niets bewaard.' },
+      { do: 'Maak een evenement dat volgende week begint.', expect: 'Het wordt bewaard maar niet actief: “… begint op … en staat klaar.”' },
+      { do: 'Tik “Wijzig evenement” en kies dat evenement van volgende week.', expect: 'Eerst een waarschuwing met “Toch kiezen” en “Annuleren”.' },
+      { do: 'Tik “Wijzig evenement” → “Netwerken zonder evenement”.', expect: 'Bovenaan staat “Netwerken zonder evenement”.' },
+      { do: 'Tik op EN bij Taal, en daarna weer op NL.', expect: 'Alle teksten wisselen meteen naar Engels en terug.' },
+      { do: 'Sluit de app helemaal (omhoog vegen) en open ze opnieuw.', expect: 'Alles is er nog. De dagkeuze komt niet opnieuw vandaag.' },
+    ]},
+    { id: 'byname', title: 'Toevoegen via naam', tag: 'F2', intro: 'Kies eerst weer Testbeurs via “Wijzig evenement”.', steps: [
+      { do: 'Tik “Toevoegen via naam”. Vul een naam en een bedrijf in. Tik “Zoek op LinkedIn”.', expect: 'LinkedIn opent met een zoekopdracht op naam + bedrijf.' },
+      { do: 'Ga terug naar de app.', expect: '“Notitie bij [naam]” met een notitieveld, “Opslaan”, “Overslaan” en “Ik heb geconnecteerd”.' },
+      { do: 'Typ een notitie en tik “Opslaan”.', expect: 'Je komt terug op Toevoegen.' },
+      { do: 'Voeg iemand toe zonder bedrijf en tik op het notitiescherm “Overslaan”.', expect: 'LinkedIn zoekt op de naam alleen. De persoon is bewaard, zonder notitie.' },
+      { do: 'Tik bij iemand op het notitiescherm “Ik heb geconnecteerd”.', expect: 'In Contacten staat die persoon als “Geconnecteerd”.' },
+      { do: 'Kies “Netwerken zonder evenement” en voeg een naam toe die al bestaat.', expect: 'Tijdens het typen: “Is dit dezelfde persoon?” Kies de persoon: een tweede ontmoeting bij dezelfde persoon.' },
+      { do: 'Doe hetzelfde, maar tik “Nee, nieuwe persoon”.', expect: 'Er is nu een tweede persoon met die naam.' },
+      { do: 'Voeg op dezelfde dag en in dezelfde context iemand toe die je net toevoegde.', expect: '“Je hebt [naam] vandaag al ontmoet.” LinkedIn opent niet; je ziet het notitiescherm.' },
+      { do: 'Tik “Zoek op LinkedIn”, sluit de app helemaal terwijl je in LinkedIn bent, en open ze opnieuw.', expect: 'Het notitiescherm van die persoon komt terug.' },
+    ]},
+    { id: 'link', title: 'Profiel-link plakken', tag: 'F4', intro: 'Op het notitiescherm of bij een persoon in Contacten.', steps: [
+      { do: 'Open in LinkedIn een profiel → Delen (of …) → Link kopiëren. Tik in de app “Plak LinkedIn-link” en dan “Plakken”.', expect: '“Profiel gekoppeld: linkedin.com/in/…”.' },
+      { do: 'Kopieer gewone tekst en plak die.', expect: '“Geen LinkedIn-profiel-link gevonden…”. Niets veranderd.' },
+      { do: 'Plak de link van persoon A bij persoon B.', expect: '“Dit profiel hoort bij A. Samenvoegen?” Annuleren verandert niets.' },
+      { do: 'Doe het opnieuw en tik “Samenvoegen”.', expect: 'Eén persoon met de ontmoetingen en notities van beide.' },
+    ]},
+    { id: 'scan', title: 'Toevoegen via QR', tag: 'F5', intro: 'Je hebt iemand nodig die zijn LinkedIn-QR toont: LinkedIn-app → zoekbalk → QR-icoon.', steps: [
+      { do: 'Tik “Scan QR”.', expect: 'iOS vraagt toegang tot de camera; na toestaan zie je het camerabeeld.' },
+      { do: 'Scan de LinkedIn-QR van iemand.', expect: '“Wie heb je gescand?” met een naam uit de link. Je kan de naam aanpassen en een bedrijf invullen.' },
+      { do: 'Tik “Bewaar en open LinkedIn”.', expect: 'Het profiel opent in LinkedIn. Terug in de app: het notitiescherm.' },
+      { do: 'Scan dezelfde persoon later opnieuw, in een andere context.', expect: '“Je kent [naam] al.” Er komt een ontmoeting bij, geen nieuwe persoon.' },
+      { do: 'Scan een QR die niet van LinkedIn is (bv. op een verpakking).', expect: '“Dit is geen LinkedIn-profielcode.” Niets bewaard.' },
+    ]},
+    { id: 'contacts', title: 'Contacten', tag: 'F7', intro: '', steps: [
+      { do: 'Open Contacten en wissel bij “Toon” tussen Testbeurs, “Zonder evenement” en “Alle contacten”.', expect: 'Telkens de juiste personen.' },
+      { do: 'Zoek op een deel van een naam, daarna op iets dat niet bestaat.', expect: 'De lijst filtert. Zonder resultaat: “Niemand gevonden voor …” met “Wis zoekopdracht”.' },
+      { do: 'Tik op een persoon.', expect: 'Detail met “Ontmoetingen”: datum, evenement en notitie per ontmoeting.' },
+      { do: 'Tik “Open in LinkedIn”.', expect: 'Het profiel opent, of een zoekopdracht als de profiel-link nog ontbreekt.' },
+      { do: 'Wissel de connectiestatus.', expect: 'De status verandert en blijft na terugkeren.' },
+      { do: 'Tik “Aanpassen”, wijzig naam, bedrijf en een notitie, en tik “Bewaar”.', expect: 'Alles is aangepast.' },
+      { do: 'Verwijder één ontmoeting van iemand met twee ontmoetingen.', expect: 'Eerst een bevestiging; daarna is die ontmoeting weg, de persoon blijft.' },
+      { do: 'Verwijder de laatste ontmoeting van iemand.', expect: '“Dit is de enige ontmoeting met … De hele persoon verwijderen?”' },
+      { do: 'Tik “Verwijder persoon” en bevestig.', expect: '“[naam] is verwijderd.”' },
+    ]},
+    { id: 'actions', title: 'Acties', tag: 'F8', intro: '', steps: [
+      { do: 'Kijk naar de tab Acties in de tabbalk.', expect: 'Een getal: het aantal open acties.' },
+      { do: 'Open Acties.', expect: 'Een kaart per persoon met “Notitie ontbreekt”, “Nog niet geconnecteerd” en/of “Profiel-link ontbreekt”.' },
+      { do: 'Tik “Schrijf notitie”, typ iets en bewaar.', expect: 'Die regel verdwijnt en het getal daalt.' },
+      { do: 'Tik “Ik heb geconnecteerd” en plak bij een andere kaart een profiel-link.', expect: 'Beide regels verdwijnen.' },
+      { do: 'Tik “Afwijzen” en daarna “Ongedaan maken”.', expect: 'De actie verdwijnt en komt terug.' },
+      { do: 'Wijs een actie af en voeg die persoon later opnieuw toe (nieuwe ontmoeting).', expect: 'De actie staat er weer.' },
+      { do: 'Tik op een naam op een kaart, en dan “Terug”.', expect: 'Het detail van die persoon, daarna terug op Acties.' },
+      { do: 'Los alles op of wijs alles af.', expect: '“Alles gedaan, tijd om verder te fladderen.” Geen getal meer op de tab.' },
+    ]},
+    { id: 'myqr', title: 'Mijn QR', tag: 'F9', intro: 'Je hebt een tweede telefoon nodig om te scannen.', steps: [
+      { do: 'Open Mijn QR.', expect: 'Uitleg en de knop “Plak LinkedIn-link”, nog geen QR.' },
+      { do: 'Kopieer in LinkedIn je eigen profiel-link en tik “Plak LinkedIn-link”.', expect: 'Een grote QR met een vlinder in het midden. Eronder “Scan mij om te connecteren” en “Scan me to connect”.' },
+      { do: 'Scan de QR 5 keer met de camera-app van een tweede telefoon.', expect: 'Elke keer opent jouw LinkedIn-profiel.' },
+      { do: 'Scan de QR 5 keer met de QR-scanner in de LinkedIn-app.', expect: 'Elke keer opent jouw profiel.' },
+      { do: 'Zet de iPhone in donkere modus.', expect: 'De QR blijft donker op wit.' },
+      { do: 'Kopieer gewone tekst en tik “Link aanpassen”.', expect: 'Een melding; de QR blijft dezelfde.' },
+      { do: 'Zet Auto-Lock op 30 seconden. Laat Mijn QR 2 minuten openstaan zonder aanraken.', expect: 'Het scherm blijft aan (vanaf iOS 18.4). Op een andere tab dimt het scherm gewoon. Zet Auto-Lock daarna terug.' },
+      { do: 'Zet vliegtuigmodus aan, sluit de app helemaal en open ze opnieuw.', expect: '“Geen internet…” met de knop “Toon mijn QR”. Die toont je QR, met “Terug”.' },
+      { do: 'Zet vliegtuigmodus uit terwijl je QR zichtbaar is.', expect: 'De app blijft op Mijn QR, nu met de tabbalk.' },
+    ]},
+    { id: 'general', title: 'Verbinding en rest', tag: 'Algemeen', intro: '', steps: [
+      { do: 'Zet wifi en mobiele data uit terwijl de app open is.', expect: 'Een balk: “Geen verbinding. Je gegevens blijven veilig op je telefoon.”' },
+      { do: 'Open de tab Instellingen.', expect: '“Binnenkort”.' },
+      { do: 'Houd op Toevoegen het versienummer onderaan lang ingedrukt.', expect: 'Een venster “Diagnose” met versie en aantallen. Noteer het versienummer in je verslag.' },
+    ]},
+  ]
+
+  const KEY = 'sociale-vlinder-testlijst-v1'
+  const LABELS = { ok: 'OK', bad: 'Probleem', skip: 'Overgeslagen' }
+  let state = { steps: {}, fields: {} }
+  try { state = Object.assign(state, JSON.parse(localStorage.getItem(KEY) || '{}')) } catch (e) {}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)) } catch (e) {} }
+
+  // Quoted app texts get the accent colour so the tester can spot them on screen.
+  function richText(text) {
+    const frag = document.createDocumentFragment()
+    text.split(/(“[^”]*”)/).forEach((part) => {
+      if (!part) return
+      if (part.startsWith('“')) { const s = document.createElement('span'); s.className = 'ui'; s.textContent = part; frag.append(s) }
+      else frag.append(part)
+    })
+    return frag
+  }
+
+  const host = document.getElementById('sections')
+  SECTIONS.forEach((sec) => {
+    const section = document.createElement('section')
+    section.setAttribute('aria-labelledby', 'h-' + sec.id)
+    const head = document.createElement('div'); head.className = 'sec-head'
+    const h2 = document.createElement('h2'); h2.id = 'h-' + sec.id; h2.textContent = sec.title
+    const tag = document.createElement('span'); tag.className = 'tag'; tag.textContent = sec.tag
+    head.append(h2, tag); section.append(head)
+    if (sec.intro) { const p = document.createElement('p'); p.className = 'sec-intro'; p.textContent = sec.intro; section.append(p) }
+    const ol = document.createElement('ol'); ol.className = 'steps'
+    sec.steps.forEach((step, i) => {
+      const id = sec.id + '-' + (i + 1)
+      const s = state.steps[id] || {}
+      const li = document.createElement('li'); li.className = 'step'; li.dataset.status = s.status || ''
+      const d = document.createElement('p'); d.className = 'do'; d.append(richText(step.do))
+      const e = document.createElement('p'); e.className = 'expect'; e.append(richText(step.expect))
+      const choices = document.createElement('div'); choices.className = 'choices'; choices.setAttribute('role', 'group')
+      choices.setAttribute('aria-label', 'Resultaat stap ' + (i + 1))
+      const noteLabel = document.createElement('label'); noteLabel.htmlFor = 'note-' + id; noteLabel.textContent = 'Wat ging er mis?'
+      const note = document.createElement('textarea'); note.id = 'note-' + id; note.value = s.note || ''
+      noteLabel.append(note); noteLabel.hidden = !(s.status === 'bad' || s.note)
+      const toggle = document.createElement('button'); toggle.type = 'button'; toggle.className = 'note-toggle'
+      toggle.textContent = 'Notitie toevoegen'; toggle.hidden = !noteLabel.hidden
+      toggle.addEventListener('click', () => { noteLabel.hidden = false; toggle.hidden = true; note.focus() })
+      Object.keys(LABELS).forEach((v) => {
+        const b = document.createElement('button'); b.type = 'button'; b.dataset.v = v; b.textContent = LABELS[v]
+        b.setAttribute('aria-pressed', String(s.status === v))
+        b.addEventListener('click', () => {
+          const cur = state.steps[id] || {}
+          cur.status = cur.status === v ? '' : v
+          state.steps[id] = cur; li.dataset.status = cur.status
+          choices.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.v === cur.status)))
+          if (cur.status === 'bad') { noteLabel.hidden = false; toggle.hidden = true }
+          save(); renderProgress()
+        })
+        choices.append(b)
+      })
+      note.addEventListener('input', () => { const cur = state.steps[id] || {}; cur.note = note.value; state.steps[id] = cur; save() })
+      li.append(d, e, choices, toggle, noteLabel); ol.append(li)
+    })
+    section.append(ol); host.append(section)
+  })
+
+  ;['tester', 'model', 'ios', 'general'].forEach((f) => {
+    const el = document.getElementById(f); el.value = state.fields[f] || ''
+    el.addEventListener('input', () => { state.fields[f] = el.value; save() })
+  })
+
+  const total = SECTIONS.reduce((n, s) => n + s.steps.length, 0)
+  function renderProgress() {
+    const c = { ok: 0, bad: 0, skip: 0 }
+    Object.values(state.steps).forEach((s) => { if (c[s.status] !== undefined) c[s.status]++ })
+    const done = c.ok + c.bad + c.skip
+    document.getElementById('counts').innerHTML =
+      '<span><b>' + done + '</b> van ' + total + ' getest</span>' +
+      '<span style="color:var(--ok)"><b>' + c.ok + '</b> OK</span>' +
+      '<span style="color:var(--bad)"><b>' + c.bad + '</b> problemen</span>' +
+      '<span style="color:var(--skip)"><b>' + c.skip + '</b> overgeslagen</span>'
+    const bar = document.getElementById('bar'); bar.innerHTML = ''
+    ;[['ok', 'b-ok'], ['bad', 'b-bad'], ['skip', 'b-skip']].forEach(([k, cls]) => {
+      const span = document.createElement('span'); span.className = cls; span.style.width = (c[k] / total * 100) + '%'; bar.append(span)
+    })
+  }
+  renderProgress()
+
+  function buildReport() {
+    const f = state.fields, lines = []
+    lines.push('Testverslag De Sociale Vlinder')
+    lines.push('Tester: ' + (f.tester || '-') + ' | iPhone: ' + (f.model || '-') + ' | iOS: ' + (f.ios || '-'))
+    lines.push('')
+    SECTIONS.forEach((sec) => {
+      lines.push('## ' + sec.title + ' (' + sec.tag + ')')
+      sec.steps.forEach((step, i) => {
+        const s = state.steps[sec.id + '-' + (i + 1)] || {}
+        const mark = s.status ? LABELS[s.status] : 'niet getest'
+        lines.push((i + 1) + '. [' + mark + '] ' + step.do)
+        if (s.note) lines.push('   → ' + s.note.trim())
+      })
+      lines.push('')
+    })
+    if (f.general) { lines.push('## Algemene indruk'); lines.push(f.general.trim()) }
+    return lines.join('\n')
+  }
+
+  const status = document.getElementById('copy-status')
+  const wrap = document.getElementById('report-wrap'), area = document.getElementById('report-text')
+  function showReport() { area.value = buildReport(); wrap.hidden = false; area.focus(); area.select() }
+  document.getElementById('show').addEventListener('click', showReport)
+  document.getElementById('copy').addEventListener('click', () => {
+    const text = buildReport()
+    if (!navigator.clipboard || !navigator.clipboard.writeText) { showReport(); status.textContent = 'Kopiëren lukt hier niet: selecteer de tekst hieronder.'; return }
+    navigator.clipboard.writeText(text).then(
+      () => { status.textContent = 'Gekopieerd. Plak het in een bericht aan Britt.' },
+      () => { showReport(); status.textContent = 'Kopiëren lukt hier niet: selecteer de tekst hieronder.' },
+    )
+  })
+</script>

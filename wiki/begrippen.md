@@ -19,5 +19,8 @@ Gebruik deze woorden consequent. De Engelse term is de naam in specs en code.
 | Snelle modus | `quickMode` | Britt vult zelf in; compact en snel. |
 | Mijn QR | `myQr` | Scherm met Britts eigen LinkedIn-QR (met vlinder). |
 | Eigen profiel-URL | `ownerProfileUrl` | Britts eigen genormaliseerde profiel-URL; alleen gebruikt voor Mijn QR. Geen persoon (B33). |
+| Back-up | `backup` | CSV-bestand met alle personen, ontmoetingen, evenementen en notities; één rij per ontmoeting (B35). Alleen exporteren (B36). |
+| Back-upherinnering | `backupReminder` | Melding op Toevoegen om een back-up te maken: de dag na een evenement of na netwerken zonder evenement, of na wijzigingen (T10, T11, B40). "Later" = niet meer vandaag. |
+| Alle data wissen | `deleteAllData` | Alles van het toestel verwijderen behalve de taal; pas na het typen van "WISSEN" (B41). |
 | Gast | `guest` | De persoon die de doorgeef-modus gebruikt. |
 | Eigenaar | `owner` | Britt. |

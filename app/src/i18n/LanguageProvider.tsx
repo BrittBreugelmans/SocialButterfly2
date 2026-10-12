@@ -16,7 +16,7 @@ interface LanguageContextValue {
 const LanguageContext = createContext<LanguageContextValue | null>(null)
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  // Dutch until Settings are loaded (open question #8).
+  // Dutch until Settings are loaded; Dutch is also the default (B37).
   const [language, setLanguageState] = useState<Language>('nl')
   const chosenThisSession = useRef(false)
 
