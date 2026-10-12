@@ -57,7 +57,7 @@ parallel: `logo-hold-button.test.tsx` (the hold on its own, without the database
 
 ## Phase 1: Setup
 
-- [ ] T001 Confirm the F11 logo is in place (`app/public/logo.svg`, `app/src/ui/Logo.tsx`) and committed. Then run `npm run typecheck && npm test` in `app/` and note the test count as the F3 baseline before changing anything.
+- [X] T001 Confirm the F11 logo is in place (`app/public/logo.svg`, `app/src/ui/Logo.tsx`) and committed. Then run `npm run typecheck && npm test` in `app/` and note the test count as the F3 baseline before changing anything. *(2026-10-12: logo committed in `56f9a7c` / `5edaee5`; working tree clean. Typecheck OK; 39 test files, 456 passed, 7 skipped.)*
 
 ---
 
@@ -67,15 +67,15 @@ parallel: `logo-hold-button.test.tsx` (the hold on its own, without the database
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T002 [P] Add to `Settings` in `app/src/data/types.ts`, after `ownerProfileUrl`: `/** Present while guest mode is on (F3, research R1). Absent = off. Device state; never synced. */ guestModeOn?: true`.
-- [ ] T003 [P] Add the text keys from [contracts/screens.md](contracts/screens.md) "New text keys" to `app/src/i18n/nl.ts` and `app/src/i18n/en.ts`, word for word, in a `// F3 — Guest mode` block: `start.handOver`, `guest.greeting`, `guest.name`, `guest.company`, `guest.privacy`, `guest.done`, `guest.thanks`, `guest.ownerHold` (8 keys). The greeting, privacy, button and thank-you texts must match `wiki/merk-en-stijl.md` exactly, including the 🦋.
-- [ ] T004 Add a case block "F3 setGuestMode" to `app/tests/settings-repository.test.ts`:
+- [X] T002 [P] Add to `Settings` in `app/src/data/types.ts`, after `ownerProfileUrl`: `/** Present while guest mode is on (F3, research R1). Absent = off. Device state; never synced. */ guestModeOn?: true`.
+- [X] T003 [P] Add the text keys from [contracts/screens.md](contracts/screens.md) "New text keys" to `app/src/i18n/nl.ts` and `app/src/i18n/en.ts`, word for word, in a `// F3 — Guest mode` block: `start.handOver`, `guest.greeting`, `guest.name`, `guest.company`, `guest.privacy`, `guest.done`, `guest.thanks`, `guest.ownerHold` (8 keys). The greeting, privacy, button and thank-you texts must match `wiki/merk-en-stijl.md` exactly, including the 🦋.
+- [X] T004 Add a case block "F3 setGuestMode" to `app/tests/settings-repository.test.ts`:
   - `setGuestMode(true)` → `getSettings().guestModeOn === true`;
   - `setGuestMode(false)` → `'guestModeOn' in settings` is false (the field is removed, not `false`);
   - the language, `activeEventId` and `contextChosenOn` stay the same;
   - no Person, Encounter or Event is created (`listPersons()`, `listEncounters()`, `listEvents()` stay empty);
   - `deleteAllData()` after `setGuestMode(true)` leaves no `guestModeOn`.
-- [ ] T005 Add `setGuestMode(on: boolean): Promise<Settings>` to `app/src/data/repository.ts` in the Settings section, per [contracts/storage-api.md](contracts/storage-api.md): `return updateSettings({ guestModeOn: on ? true : undefined })`. Doc comment: "Turns guest mode on or off on this device (F3 FR-018, research R1)." T004 passes.
+- [X] T005 Add `setGuestMode(on: boolean): Promise<Settings>` to `app/src/data/repository.ts` in the Settings section, per [contracts/storage-api.md](contracts/storage-api.md): `return updateSettings({ guestModeOn: on ? true : undefined })`. Doc comment: "Turns guest mode on or off on this device (F3 FR-018, research R1)." T004 passes.
 
 **Checkpoint**: typecheck and all earlier tests green; T004 green.
 
@@ -93,7 +93,7 @@ moment, and `listPersons()` is still empty.
 
 ### Tests for User Story 1
 
-- [ ] T006 [US1] Create `app/tests/guest-mode-ui.test.tsx` with a `describe('US1')` block:
+- [X] T006 [US1] Create `app/tests/guest-mode-ui.test.tsx` with a `describe('US1')` block:
   - the Add tab shows a button `nl['start.handOver']`; tapping it shows the heading `nl['guest.greeting']`, the labels `nl['guest.name']` and `nl['guest.company']`, and `nl['guest.privacy']`;
   - the name field has focus;
   - the name and company fields have `maxLength` 100;
@@ -108,20 +108,20 @@ moment, and `listPersons()` is still empty.
 
 ### Implementation for User Story 1
 
-- [ ] T007 [US1] Create `app/src/ui/GuestMode.tsx` per [contracts/screens.md](contracts/screens.md) "Guest form" and "Thank-you screen" and [contracts/storage-api.md](contracts/storage-api.md):
+- [X] T007 [US1] Create `app/src/ui/GuestMode.tsx` per [contracts/screens.md](contracts/screens.md) "Guest form" and "Thank-you screen" and [contracts/storage-api.md](contracts/storage-api.md):
   - props `{ onExit(input: { name: string; company: string }): void }` (used from US2);
   - state: `step: 'form' | 'thanks'`, `name`, `company` (React state only, research R2);
   - form: `<main className="guest-screen">`, a top row `<div className="guest-top">` (empty for now; US2 and US3 fill it), `<h1>{t('guest.greeting')}</h1>`, a `<form>` with labelled inputs for name (`autoFocus`, `maxLength={100}`, `autoComplete="off"`, `autoCapitalize="words"`, placeholder `add.namePlaceholder`) and company (`maxLength={100}`, same attributes, placeholder `add.companyPlaceholder`, `enterKeyHint="done"`), `<p className="guest-privacy">{t('guest.privacy')}</p>`, and a submit button `guest.done`, `disabled` while `name.trim() === ''`. `onSubmit`: `preventDefault`, then go to `thanks` when the name is not blank;
   - thanks: same top row, `<p className="guest-thanks">{t('guest.thanks')}</p>`, and a secondary button `add.back` back to `form`;
   - no import from `data/repository.ts`.
-- [ ] T008 [US1] Add `onHandOver(): void` to `StartScreenProps` in `app/src/ui/StartScreen.tsx` and a third button in `.start-actions`, after "Scan QR": `<button type="button" className="add-by-name" onClick={onHandOver}>{t('start.handOver')}</button>`.
-- [ ] T009 [US1] Wire guest mode into `app/src/App.tsx` per research R5 and [contracts/storage-api.md](contracts/storage-api.md) "App state":
+- [X] T008 [US1] Add `onHandOver(): void` to `StartScreenProps` in `app/src/ui/StartScreen.tsx` and a third button in `.start-actions`, after "Scan QR": `<button type="button" className="add-by-name" onClick={onHandOver}>{t('start.handOver')}</button>`.
+- [X] T009 [US1] Wire guest mode into `app/src/App.tsx` per research R5 and [contracts/storage-api.md](contracts/storage-api.md) "App state":
   - state `const [guestMode, setGuestModeState] = useState<boolean | 'loading'>('loading')`; on mount read `getSettings()` and set `settings.guestModeOn === true` (on a read error: `false`);
   - render order: if `guestMode === 'loading'` → `null`; if `guestMode === true` → only `<GuestMode onExit={…} />` (no `Banners`); **both checks come before the `offlineAtStart` branch**;
   - `onHandOver` on `StartScreen`: `setGuestModeState(true)` at once, then `setGuestMode(true).catch(ignoreStorageFull)` in the background (research R1). Define `ignoreStorageFull` as in `StartScreen.tsx` (rethrow anything else);
   - the F2 note-step check effect also waits for `guestMode === false` (add it to the guard and the deps);
   - for now `onExit` only does `setGuestModeState(false)`, `void setGuestMode(false).catch(ignoreStorageFull)` and `toStart()` (US2 adds the routing).
-- [ ] T010 [US1] Add guest screen styles to `app/src/styles.css` per research R7, using the M8 colour variables already in the file (light only, M6): `.guest-screen` one column with page padding; `.guest-top` a flex row, space-between, min-height 44px; `.guest-screen h1` about 1.6rem; guest inputs `font-size: 18px` (never under 16px, else iOS zooms) and `min-height: 52px`; the "Done" button full width, at least 52px tall; `.guest-privacy` muted text colour; `.guest-thanks` about 1.5rem, centred.
+- [X] T010 [US1] Add guest screen styles to `app/src/styles.css` per research R7, using the M8 colour variables already in the file (light only, M6): `.guest-screen` one column with page padding; `.guest-top` a flex row, space-between, min-height 44px; `.guest-screen h1` about 1.6rem; guest inputs `font-size: 18px` (never under 16px, else iOS zooms) and `min-height: 52px`; the "Done" button full width, at least 52px tall; `.guest-privacy` muted text colour; `.guest-thanks` about 1.5rem, centred.
 
 **Checkpoint**: T006 green; the guest can type and reach the thank-you screen; a reload reopens guest mode.
 
@@ -138,7 +138,7 @@ LinkedIn": the Person is stored.
 
 ### Tests for User Story 2
 
-- [ ] T011 [P] [US2] Create `app/tests/logo-hold-button.test.tsx` for `LogoHoldButton` alone (no App, no database), with fake timers per the ground rules:
+- [X] T011 [P] [US2] Create `app/tests/logo-hold-button.test.tsx` for `LogoHoldButton` alone (no App, no database), with fake timers per the ground rules:
   - renders a `button` with accessible name `nl['guest.ownerHold']` (inside `LanguageProvider`) that contains the logo `img`;
   - `click` alone does not call `onHold`;
   - pointer down, advance 1999 ms, pointer up → `onHold` not called; advance 5000 ms more → still not called;
@@ -147,21 +147,21 @@ LinkedIn": the Person is stored.
   - while held the button has the class `holding`; after release it does not;
   - `contextmenu` on the button is `defaultPrevented` (`fireEvent.contextMenu` returns `false`);
   - `holdMs={500}` → called at 500 ms.
-- [ ] T012 [US2] Add a `describe('US2')` block to `app/tests/guest-mode-ui.test.tsx` (after T006, same file), with fake timers:
+- [X] T012 [US2] Add a `describe('US2')` block to `app/tests/guest-mode-ui.test.tsx` (after T006, same file), with fake timers:
   - a short press on `nl['guest.ownerHold']` keeps the greeting on screen;
   - with "Jan Peeters" / "Elmos" typed (on the form, and again from the thank-you screen), a 2000 ms hold shows `nl['add.title']` with the name field "Jan Peeters", the company "Elmos", and the context bar; `getSettings()` has no `guestModeOn`;
   - with an empty name, a 2000 ms hold shows the Add tab (button `nl['start.handOver']` and the tab bar);
   - with a stored "Jan Peeters", after the hold, tapping `nl['add.search']` shows `nl['same.title']` (F2 unchanged, FR-014);
   - after the hold, `nl['add.back']` on the form shows the Add tab and saves nothing;
   - daily choice due (no `contextChosenOn` for today, `setGuestMode(true)` before render): type a name, hold 2 s → the daily choice shows first; choosing casual networking → the quick mode form, filled in.
-- [ ] T013 [P] [US2] Add cases to `app/tests/add-by-name-ui.test.tsx` that render `<AddByNameForm activeEvent={undefined} initialName="Jan Peeters" initialCompany="Elmos" onSaved={vi.fn()} onBack={vi.fn()} />` inside `LanguageProvider`:
+- [X] T013 [P] [US2] Add cases to `app/tests/add-by-name-ui.test.tsx` that render `<AddByNameForm activeEvent={undefined} initialName="Jan Peeters" initialCompany="Elmos" onSaved={vi.fn()} onBack={vi.fn()} />` inside `LanguageProvider`:
   - the fields start with those values;
   - the search link's `href` is `buildSearchUrl('Jan Peeters', 'Elmos')`;
   - with a stored "Jan Peeters", tapping `nl['add.search']` shows `nl['same.title']` without typing first (the check ran on mount).
 
 ### Implementation for User Story 2
 
-- [ ] T014 [P] [US2] Create `app/src/ui/LogoHoldButton.tsx` per research R4 and [contracts/screens.md](contracts/screens.md) "LogoHoldButton":
+- [X] T014 [P] [US2] Create `app/src/ui/LogoHoldButton.tsx` per research R4 and [contracts/screens.md](contracts/screens.md) "LogoHoldButton":
   - props `{ onHold(): void; holdMs?: number }`, default `holdMs` 2000;
   - a `<button type="button" className="logo-hold">` with `aria-label={t('guest.ownerHold')}` and `<Logo size={44} />` inside;
   - `onPointerDown`: `event.currentTarget.setPointerCapture?.(event.pointerId)`, set `holding` true, start `window.setTimeout(() => { setHolding(false); onHold() }, holdMs)` stored in a ref;
@@ -170,16 +170,16 @@ LinkedIn": the Person is stored.
   - clear the timer on unmount;
   - class `holding` while held (`className={holding ? 'logo-hold holding' : 'logo-hold'}`).
   T011 passes.
-- [ ] T015 [P] [US2] Add optional `initialName?: string` and `initialCompany?: string` to `AddByNameFormProps` in `app/src/ui/AddByNameForm.tsx` and use them as the initial `useState` values (`initialName ?? ''`, `initialCompany ?? ''`). Nothing else changes (research R6). T013 passes.
-- [ ] T016 [US2] In `app/src/ui/GuestMode.tsx`, put `<LogoHoldButton onHold={() => onExit({ name, company })} />` at the start of `.guest-top` on both steps.
-- [ ] T017 [US2] Add exit routing to `app/src/App.tsx` per research R5 and data-model "State transitions":
+- [X] T015 [P] [US2] Add optional `initialName?: string` and `initialCompany?: string` to `AddByNameFormProps` in `app/src/ui/AddByNameForm.tsx` and use them as the initial `useState` values (`initialName ?? ''`, `initialCompany ?? ''`). Nothing else changes (research R6). T013 passes.
+- [X] T016 [US2] In `app/src/ui/GuestMode.tsx`, put `<LogoHoldButton onHold={() => onExit({ name, company })} />` at the start of `.guest-top` on both steps.
+- [X] T017 [US2] Add exit routing to `app/src/App.tsx` per research R5 and data-model "State transitions":
   - state `const [guestInput, setGuestInput] = useState<{ name: string; company: string }>()`;
   - `onExit(input)`: `setGuestModeState(false)`; `setGuestMode(false).catch(ignoreStorageFull)`; if `normalizeName(input.name) !== ''` (from `people/nameMatch.ts`) `setGuestInput(input)`; then: if `status === 'choose'` → `setScreen('choice')`; else if a name was typed → `setScreen('addByName')`; else `toStart()`;
   - `contextChosen`: after `recheck()`, go to `'addByName'` when `guestInput` is set, else `toStart()`;
   - pass `initialName={guestInput?.name}` and `initialCompany={guestInput?.company}` to `AddByNameForm`, with `key={guestInput ? 'guest' : 'owner'}` so the initial values apply;
   - clear `guestInput` in the form's `onSaved` and `onBack`, and when "Add by name" or "Scan QR" is tapped on the start screen.
   T012 passes.
-- [ ] T018 [US2] Add hold styles to `app/src/styles.css`: `.logo-hold` without border or background, 44×44 touch area, `-webkit-touch-callout: none`, `-webkit-user-select: none`, `user-select: none`, `touch-action: none`, `position: relative`; a ring (`::after`, a circle around the logo in brand blue `#0d5fb8`) that is empty by default and fills in 2 s while `.logo-hold.holding` (e.g. a `conic-gradient` driven by an `@property --hold` animation, or a `scale` from 0 to 1, `animation: … 2s linear forwards`). Keep the ring under `prefers-reduced-motion` (it is progress feedback, research R4).
+- [X] T018 [US2] Add hold styles to `app/src/styles.css`: `.logo-hold` without border or background, 44×44 touch area, `-webkit-touch-callout: none`, `-webkit-user-select: none`, `user-select: none`, `touch-action: none`, `position: relative`; a ring (`::after`, a circle around the logo in brand blue `#0d5fb8`) that is empty by default and fills in 2 s while `.logo-hold.holding` (e.g. a `conic-gradient` driven by an `@property --hold` animation, or a `scale` from 0 to 1, `animation: … 2s linear forwards`). Keep the ring under `prefers-reduced-motion` (it is progress feedback, research R4).
 
 **Checkpoint**: T011–T013 green. Guest mode can be started and ended; F2 runs from the handed-over name. US1 + US2 is the MVP.
 
@@ -195,11 +195,11 @@ English and the name is still there. Hold 2 s: the quick mode form is in Dutch.
 
 ### Tests for User Story 3
 
-- [ ] T019 [P] [US3] Add cases to `app/tests/i18n.test.tsx`:
+- [X] T019 [P] [US3] Add cases to `app/tests/i18n.test.tsx`:
   - `translate('nl', 'guest.done') === nl['guest.done']`; `translate('en', 'same.lastMet', { date: 'x' }) === 'Last met: x'`;
   - inside `<LanguageProvider><GuestLanguageProvider>…</GuestLanguageProvider></LanguageProvider>`, a child using `useLanguage()` starts at the app language; its `setLanguage('en')` changes the child's texts, but a `useLanguage()` outside the guest provider stays `'nl'` and `getSettings().language` stays `'nl'`;
   - `document.documentElement.lang` is `'en'` while the guest provider is in English and returns to `'nl'` after it unmounts.
-- [ ] T020 [US3] Add a `describe('US3')` block to `app/tests/guest-mode-ui.test.tsx` (after T012, same file):
+- [X] T020 [US3] Add a `describe('US3')` block to `app/tests/guest-mode-ui.test.tsx` (after T012, same file):
   - guest mode opens in Dutch when the app is Dutch, and in English after `updateSettings({ language: 'en' })` before render (B37);
   - the switch is on both the form and the thank-you screen;
   - after typing "Jan Peeters" and tapping `nl['app.languageEn']`: `en['guest.greeting']`, `en['guest.privacy']` and `en['guest.done']` show, the name is still "Jan Peeters", and `getSettings().language` is still `'nl'`;
@@ -209,12 +209,12 @@ English and the name is still there. Hold 2 s: the quick mode form is in Dutch.
 
 ### Implementation for User Story 3
 
-- [ ] T021 [US3] In `app/src/i18n/LanguageProvider.tsx` per research R3 and [contracts/storage-api.md](contracts/storage-api.md) "i18n":
+- [X] T021 [US3] In `app/src/i18n/LanguageProvider.tsx` per research R3 and [contracts/storage-api.md](contracts/storage-api.md) "i18n":
   - export `translate(language, key, params?)`, the current lookup and `{param}` replacement as a pure function; `LanguageProvider`'s `t` calls it (no behaviour change);
   - export `GuestLanguageProvider({ children })`: reads the outer `useLanguage().language` once as its initial state; `setLanguage` only sets local state (returns a resolved promise, never calls `updateSettings`); `t` uses `translate` with the local language; it provides the value through the same `LanguageContext.Provider`;
   - in `GuestLanguageProvider`, set `document.documentElement.lang` to the local language in an effect, and on unmount set it back to the outer language.
   T019 passes.
-- [ ] T022 [US3] In `app/src/ui/GuestMode.tsx`, wrap everything in `<GuestLanguageProvider>` (the inner screens use `useLanguage()` from inside it, so split into an outer wrapper and an inner component), and put `<LanguageSwitch />` at the end of `.guest-top` on both steps. T020 passes.
+- [X] T022 [US3] In `app/src/ui/GuestMode.tsx`, wrap everything in `<GuestLanguageProvider>` (the inner screens use `useLanguage()` from inside it, so split into an outer wrapper and an inner component), and put `<LanguageSwitch />` at the end of `.guest-top` on both steps. T020 passes.
 
 **Checkpoint**: all three stories work on their own and together.
 
@@ -222,8 +222,8 @@ English and the name is still there. Hold 2 s: the quick mode form is in Dutch.
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T023 [P] Check accessibility of `app/src/ui/GuestMode.tsx` and `LogoHoldButton.tsx`: the greeting is the only `h1`; both inputs have a visible `label`; "Done" is a real submit button; the thank-you text is announced (`role="status"` on `.guest-thanks`); touch targets are at least 44 px; text contrast follows M8. Write the result next to this task.
-- [ ] T024 Run `npm run typecheck`, `npm test` and `npm run build` in `app/`. Note next to this task: the test count (baseline from T001) and the main JS bundle size before and after; `app/package.json` and `app/src/data/db.ts` are unchanged; `GuestMode.tsx` and `LogoHoldButton.tsx` import nothing from `data/repository.ts`; no `fetch` or external URL in the new files.
+- [X] T023 [P] Check accessibility of `app/src/ui/GuestMode.tsx` and `LogoHoldButton.tsx`: the greeting is the only `h1`; both inputs have a visible `label`; "Done" is a real submit button; the thank-you text is announced (`role="status"` on `.guest-thanks`); touch targets are at least 44 px; text contrast follows M8. Write the result next to this task. *(2026-10-12: all points hold. One `h1` (the greeting); both inputs have a visible label; "Done" is a submit button; `.guest-thanks` has `role="status"`; logo button 52 px, language buttons and "Done" ≥ 44 px; muted text `#5a6672` on white passes AA (M8). Accepted: the hold has no keyboard alternative and its `aria-label` names the trick (research R4).)*
+- [X] T024 Run `npm run typecheck`, `npm test` and `npm run build` in `app/`. Note next to this task: the test count (baseline from T001) and the main JS bundle size before and after; `app/package.json` and `app/src/data/db.ts` are unchanged; `GuestMode.tsx` and `LogoHoldButton.tsx` import nothing from `data/repository.ts`; no `fetch` or external URL in the new files. *(2026-10-12: typecheck and build OK; 494 tests green, 7 skipped (baseline 456, so +38). Main bundle 130.0 kB gzip, CSS 3.8 kB gzip; no F11 figure was noted, F10 was 128.6 kB. `package.json` and `db.ts` unchanged; `GuestMode.tsx` and `LogoHoldButton.tsx` import nothing from `data/repository.ts`; no `fetch` or external URL. Also changed: `tests/banners.test.tsx` now waits (`findBy`) for the offline screen and banners, which appear after the guest-mode check (research R5). The ring mask uses `black`, not a hex colour, for `tests/brand.test.ts`. `GuestLanguageProvider` follows the app language until the guest switches (not "read once" as T021 said), so a reload in English cannot open guest mode in Dutch.)*
 - [ ] T025 Commit and push to `main` (manual, Britt). Cloudflare deploys automatically.
 - [ ] T026 Validate on the iPhone with [quickstart.md](quickstart.md) section 4 (manual, Britt): holding the logo with a finger shows no image menu or loupe and survives a small move; the keyboard opens on the name field; swiping the app away in guest mode reopens guest mode; Guided Access; someone else types their name without help in under 30 s (SC-003).
 - [ ] T027 Tick the F3 items in `specs/features.md` and "Doorgeef-modus getest met iemand anders" if T026 did that, and add a line to `wiki/log.md`, per CLAUDE.md. If Britt changed `guest.name` / `guest.company`, add them to the fixed texts in `wiki/merk-en-stijl.md`.

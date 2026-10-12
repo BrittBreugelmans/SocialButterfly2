@@ -57,9 +57,11 @@ interface StartScreenProps {
   onChangeContext(): void
   onAddByName(): void
   onScanQr(): void
+  /** F3: opens guest mode. */
+  onHandOver(): void
 }
 
-export function StartScreen({ activeEvent, onChangeContext, onAddByName, onScanQr }: StartScreenProps) {
+export function StartScreen({ activeEvent, onChangeContext, onAddByName, onScanQr, onHandOver }: StartScreenProps) {
   const { t } = useLanguage()
 
   return (
@@ -76,6 +78,9 @@ export function StartScreen({ activeEvent, onChangeContext, onAddByName, onScanQ
         </button>
         <button type="button" className="add-by-name" onClick={onScanQr}>
           {t('start.scanQr')}
+        </button>
+        <button type="button" className="add-by-name" onClick={onHandOver}>
+          {t('start.handOver')}
         </button>
       </div>
     </main>

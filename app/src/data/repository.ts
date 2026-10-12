@@ -467,6 +467,11 @@ export async function updateSettings(
   )
 }
 
+/** Turns guest mode on or off on this device (F3 FR-018, research R1). Off removes the field. */
+export async function setGuestMode(on: boolean): Promise<Settings> {
+  return updateSettings({ guestModeOn: on ? true : undefined })
+}
+
 /**
  * Stores the owner's own profile link for My QR (F9, B33). It must already be normalized. The
  * owner is not a Person: Persons are never read or changed here (FR-001).

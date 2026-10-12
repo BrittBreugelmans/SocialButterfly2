@@ -40,7 +40,7 @@ describe('"Show my QR" on the offline screen (F9, B34)', () => {
     const user = userEvent.setup()
     renderApp()
 
-    await user.click(screen.getByRole('button', { name: nl['offline.showMyQr'] }))
+    await user.click(await screen.findByRole('button', { name: nl['offline.showMyQr'] }))
     expect(await screen.findByRole('img', { name: nl['myQr.alt'] })).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: nl['tab.contacts'] })).not.toBeInTheDocument()
 
@@ -53,7 +53,7 @@ describe('"Show my QR" on the offline screen (F9, B34)', () => {
     setOnline(false)
     const user = userEvent.setup()
     renderApp()
-    await user.click(screen.getByRole('button', { name: nl['offline.showMyQr'] }))
+    await user.click(await screen.findByRole('button', { name: nl['offline.showMyQr'] }))
     await screen.findByRole('img', { name: nl['myQr.alt'] })
 
     act(() => {
@@ -69,20 +69,21 @@ describe('"Show my QR" on the offline screen (F9, B34)', () => {
     setOnline(false)
     const user = userEvent.setup()
     renderApp()
-    await user.click(screen.getByRole('button', { name: nl['offline.showMyQr'] }))
+    await user.click(await screen.findByRole('button', { name: nl['offline.showMyQr'] }))
     expect(await screen.findByRole('heading', { name: nl['myQr.setupTitle'] })).toBeInTheDocument()
   })
 })
 
 describe('install hint (research R3)', () => {
-  it('shows in a Safari tab', () => {
+  it('shows in a Safari tab', async () => {
     renderApp()
-    expect(screen.getByText(nl['install.hint'])).toBeInTheDocument()
+    expect(await screen.findByText(nl['install.hint'])).toBeInTheDocument()
   })
 
-  it('is absent in the installed app', () => {
+  it('is absent in the installed app', async () => {
     vi.mocked(isStandalone).mockReturnValue(true)
     renderApp()
+    await screen.findByText(nl['app.title'])
     expect(screen.queryByText(nl['install.hint'])).not.toBeInTheDocument()
   })
 })
@@ -91,7 +92,8 @@ describe('no internet (FR-005)', () => {
   it('shows a full-screen message when the app starts offline, until the connection returns', async () => {
     setOnline(false)
     renderApp()
-    expect(screen.getByText(nl['offline.message'])).toBeInTheDocument()
+    // F3 (research R5): the offline screen waits for the guest-mode check, one database read.
+    expect(await screen.findByText(nl['offline.message'])).toBeInTheDocument()
     expect(screen.queryByText(nl['app.title'])).not.toBeInTheDocument()
 
     act(() => {
@@ -104,13 +106,14 @@ describe('no internet (FR-005)', () => {
 
   it('shows only a banner when the connection drops after start', async () => {
     renderApp()
+    await screen.findByText(nl['app.title'])
     act(() => {
       setOnline(false)
       window.dispatchEvent(new Event('offline'))
     })
     expect(screen.getByText(nl['offline.banner'])).toBeInTheDocument()
     expect(screen.queryByText(nl['offline.message'])).not.toBeInTheDocument()
-    expect(await screen.findByText(nl['app.title'])).toBeInTheDocument()
+    expect(screen.getByText(nl['app.title'])).toBeInTheDocument()
   })
 })
 

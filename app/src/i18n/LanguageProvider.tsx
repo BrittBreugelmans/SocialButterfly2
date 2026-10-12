@@ -15,6 +15,13 @@ interface LanguageContextValue {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null)
 
+/** Pure lookup with {param} replacement; used by both providers (F3 research R3). */
+export function translate(language: Language, key: TextKey, params?: Record<string, string | number>): string {
+  const text = dictionaries[language][key]
+  if (!params) return text
+  return text.replace(/\{(\w+)\}/g, (match, name: string) => (name in params ? String(params[name]) : match))
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   // Dutch until Settings are loaded; Dutch is also the default (B37).
   const [language, setLanguageState] = useState<Language>('nl')
@@ -50,13 +57,44 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const t = useCallback(
-    (key: TextKey, params?: Record<string, string | number>) => {
-      const text = dictionaries[language][key]
-      if (!params) return text
-      return text.replace(/\{(\w+)\}/g, (match, name: string) =>
-        name in params ? String(params[name]) : match,
-      )
+    (key: TextKey, params?: Record<string, string | number>) => translate(language, key, params),
+    [language],
+  )
+
+  const value = useMemo(() => ({ language, setLanguage, t }), [language, setLanguage, t])
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
+}
+
+/**
+ * The guest's own language (F3 FR-015, FR-016, research R3). It follows the app language until the
+ * guest switches; switching never writes Settings, so the next guest mode starts in the app
+ * language again. While mounted it sets the page language, and gives it back on unmount.
+ */
+export function GuestLanguageProvider({ children }: { children: ReactNode }) {
+  const outer = useLanguage()
+  const [chosen, setChosen] = useState<Language>()
+  const language = chosen ?? outer.language
+  // The app language at unmount, to give the page language back.
+  const outerLanguage = useRef(outer.language)
+
+  useEffect(() => {
+    outerLanguage.current = outer.language
+  }, [outer.language])
+
+  useEffect(() => {
+    document.documentElement.lang = language
+  }, [language])
+
+  useEffect(
+    () => () => {
+      document.documentElement.lang = outerLanguage.current
     },
+    [],
+  )
+
+  const setLanguage = useCallback(async (next: Language) => setChosen(next), [])
+  const t = useCallback(
+    (key: TextKey, params?: Record<string, string | number>) => translate(language, key, params),
     [language],
   )
 

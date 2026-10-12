@@ -2,6 +2,12 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-12** — implementatie F3 (`/speckit-implement`) — Doorgeef-modus gebouwd: knop "Geef
+  door", gastscherm met begroeting, naam, bedrijf, privacyzin en NL/EN, bedankscherm, logo 2
+  seconden vasthouden (B44), formulier van de snelle modus al ingevuld (B43). 494 tests groen
+  (+38). Nog te doen door Britt: pushen, testen op de iPhone (ook Begeleide toegang en met iemand
+  anders), dan F3 afvinken in features.md.
+
 - **2026-10-12** — gesprek met Britt (F11) — M11: vlinder-animatie voorlopig uit. Schakelaar
   `FLUTTER_ON = false` in `app/src/ui/Flutter.tsx`; de tests waarin de vlinder vliegt worden
   overgeslagen tot hij weer aan staat. Merk-en-stijl en features bijgewerkt.

@@ -21,6 +21,7 @@ import { formatDateRange } from '../src/events/formatDateRange'
 import { LanguageProvider } from '../src/i18n/LanguageProvider'
 import { nl } from '../src/i18n/nl'
 import { buildSearchUrl } from '../src/linkedin/links'
+import { AddByNameForm } from '../src/ui/AddByNameForm'
 import { NoteStep } from '../src/ui/NoteStep'
 
 // jsdom cannot follow links; stop it after React has handled the tap. Links only, so
@@ -404,5 +405,36 @@ describe('Note step and "I connected" (User Story 3)', () => {
     expect(screen.getByRole('switch', { name: nl['note.connected'] })).toBeChecked()
     expect(screen.getByRole('link', { name: nl['note.openLinkedIn'] })).toHaveClass('secondary')
     expect(open).not.toHaveBeenCalled()
+  })
+})
+
+describe('Initial values from guest mode (F3 US2, research R6)', () => {
+  function renderForm() {
+    return render(
+      <LanguageProvider>
+        <AddByNameForm
+          activeEvent={undefined}
+          initialName="Jan Peeters"
+          initialCompany="Elmos"
+          onSaved={vi.fn()}
+          onBack={vi.fn()}
+        />
+      </LanguageProvider>,
+    )
+  }
+
+  it('starts with the handed-over name and company', async () => {
+    renderForm()
+    expect(screen.getByLabelText(nl['add.name'])).toHaveValue('Jan Peeters')
+    expect(screen.getByLabelText(nl['add.company'])).toHaveValue('Elmos')
+    expect(await searchLink()).toHaveAttribute('href', buildSearchUrl('Jan Peeters', 'Elmos'))
+  })
+
+  it('asks "Is this the same person?" without typing first', async () => {
+    const user = userEvent.setup()
+    await createPerson({ name: 'Jan Peeters', searchUrl: buildSearchUrl('Jan Peeters', undefined) })
+    renderForm()
+    await user.click(await searchLink())
+    expect(await screen.findByText(nl['same.title'])).toBeInTheDocument()
   })
 })

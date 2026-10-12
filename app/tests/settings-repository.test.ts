@@ -11,12 +11,15 @@ import {
   deleteEvent,
   dismissAction,
   getSettings,
+  listEncounters,
   listEncountersByPerson,
   listEvents,
+  listPersons,
   onDataChanged,
   postponeBackupReminder,
   readBackupSnapshot,
   recordBackup,
+  setGuestMode,
   setOwnerProfileUrl,
   updateEvent,
   updateSettings,
@@ -161,5 +164,38 @@ describe('backup reminder "Later" (F10 US2, FR-011)', () => {
   it('stores today as the day of "Later", as one data change', async () => {
     expect(await changesDuring(() => postponeBackupReminder())).toBe(1)
     expect((await getSettings()).backupReminderLaterOn).toBe(todayLocal())
+  })
+})
+
+describe('F3 setGuestMode (FR-018, research R1)', () => {
+  it('turns guest mode on and off; off removes the field', async () => {
+    await setGuestMode(true)
+    expect((await getSettings()).guestModeOn).toBe(true)
+    await setGuestMode(false)
+    expect('guestModeOn' in (await getSettings())).toBe(false)
+  })
+
+  it('keeps the other settings', async () => {
+    const event = await createEvent({ name: 'Devoxx', startDate: todayLocal(), endDate: todayLocal() })
+    await updateSettings({ language: 'en', activeEventId: event.id, contextChosenOn: todayLocal() })
+    await setGuestMode(true)
+    const settings = await getSettings()
+    expect(settings.language).toBe('en')
+    expect(settings.activeEventId).toBe(event.id)
+    expect(settings.contextChosenOn).toBe(todayLocal())
+  })
+
+  it('creates no Person, Encounter or Event', async () => {
+    await setGuestMode(true)
+    await setGuestMode(false)
+    expect(await listPersons()).toEqual([])
+    expect(await listEncounters()).toEqual([])
+    expect(await listEvents()).toEqual([])
+  })
+
+  it('is cleared by deleting all data', async () => {
+    await setGuestMode(true)
+    await deleteAllData()
+    expect('guestModeOn' in (await getSettings())).toBe(false)
   })
 })

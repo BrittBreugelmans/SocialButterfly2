@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { getNoteStep, getSettings, listEvents } from './data/repository'
+import { StorageFullError } from './data/errors'
+import { getNoteStep, getSettings, listEvents, setGuestMode } from './data/repository'
 import type { Event } from './data/types'
 import { useDailyChoice } from './events/useDailyChoice'
+import { normalizeName } from './people/nameMatch'
 import { useOnline } from './platform/online'
 import { requestPersistentStorage, type StorageStatus } from './platform/persistence'
 import { useOpenActionCount } from './people/useOpenActionCount'
@@ -11,6 +13,7 @@ import { AddByQr } from './ui/AddByQr'
 import { Banners, OfflineScreen } from './ui/Banners'
 import { ContextChoice } from './ui/ContextChoice'
 import { Flutter, FLUTTER_ON } from './ui/Flutter'
+import { GuestMode, type GuestInput } from './ui/GuestMode'
 import { NewEventForm } from './ui/NewEventForm'
 import { NoteStep } from './ui/NoteStep'
 import { StartScreen } from './ui/StartScreen'
@@ -21,6 +24,11 @@ import { SettingsTab } from './ui/SettingsTab'
 import { TabBar, type Tab } from './ui/TabBar'
 
 type Screen = 'choice' | 'newEvent' | 'start' | 'addByName' | 'addByQr' | 'noteStep'
+
+/** Storage full: the F0 banner shows once guest mode is off; guest mode itself keeps working (F3 R1). */
+function ignoreStorageFull(error: unknown) {
+  if (!(error instanceof StorageFullError)) throw error
+}
 
 export function App() {
   const online = useOnline()
@@ -49,6 +57,24 @@ export function App() {
   const [flutter, setFlutter] = useState(0)
   // F1 follow-up (B24): an Event created for later, shown as a line on the choice.
   const [createdNotActive, setCreatedNotActive] = useState<Event>()
+  // F3: guest mode, read from Settings on start so a reload reopens it (FR-018, research R1, R5).
+  const [guestMode, setGuestModeState] = useState<boolean | 'loading'>('loading')
+  // F3: what the guest typed, for the quick mode form after the hand-back (research R6).
+  const [guestInput, setGuestInput] = useState<GuestInput>()
+
+  useEffect(() => {
+    let cancelled = false
+    getSettings()
+      .then((settings) => {
+        if (!cancelled) setGuestModeState(settings.guestModeOn === true)
+      })
+      .catch(() => {
+        if (!cancelled) setGuestModeState(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   useEffect(() => {
     if (online) setOfflineAtStart(false)
@@ -87,7 +113,8 @@ export function App() {
   // F2 (B18): once the daily choice is settled, bring back a note step that iOS interrupted
   // today. Until this check is done nothing is shown, so the start screen does not flash first.
   useEffect(() => {
-    if (status !== 'ready' || noteStepChecked) return
+    // F3: not while guest mode is on; the owner's screens wait until she ends it (FR-018).
+    if (status !== 'ready' || noteStepChecked || guestMode !== false) return
     let cancelled = false
     void getNoteStep().then((step) => {
       if (cancelled) return
@@ -100,7 +127,7 @@ export function App() {
     return () => {
       cancelled = true
     }
-  }, [status, noteStepChecked])
+  }, [status, noteStepChecked, guestMode])
 
   // Load the active Event whenever the start screen or the quick mode form is shown (FR-008, F2 FR-002).
   // Also on a tab change: Settings can rename or delete the active Event (F10 research R8).
@@ -123,10 +150,41 @@ export function App() {
   }, [])
 
   // After a choice: back to the start screen, and re-read Settings so the daily check is current.
+  // F3: with a guest's name waiting, the quick mode form opens instead (research R5).
   const contextChosen = useCallback(() => {
     recheck()
+    if (guestInput) setScreen('addByName')
+    else toStart()
+  }, [recheck, toStart, guestInput])
+
+  // F3: the owner held the logo (B44). Nothing is saved here (FR-013).
+  const endGuestMode = useCallback(
+    (input: GuestInput) => {
+      setGuestModeState(false)
+      setGuestMode(false).catch(ignoreStorageFull)
+      const named = normalizeName(input.name) !== ''
+      setGuestInput(named ? input : undefined)
+      if (status === 'choose') setScreen('choice')
+      else if (named) setScreen('addByName')
+      else toStart()
+    },
+    [status, toStart],
+  )
+
+  // F3: leaving the filled-in form drops the guest's input.
+  const leaveAddByName = useCallback(() => {
+    setGuestInput(undefined)
     toStart()
-  }, [recheck, toStart])
+  }, [toStart])
+
+  // F3: guest mode comes before everything else, the offline screen included (research R5).
+  // While it is on, nothing of the owner is rendered: no banners, tab bar or context (FR-008).
+  if (guestMode === 'loading') return null
+  if (guestMode) {
+    return (
+      <GuestMode onExit={endGuestMode} />
+    )
+  }
 
   if (offlineAtStart) {
     return qrWhileOffline ? (
@@ -175,12 +233,17 @@ export function App() {
         />
       ) : screen === 'addByName' ? (
         <AddByNameForm
+          // Remount for the guest's input, so the initial values apply.
+          key={guestInput ? 'guest' : 'owner'}
           activeEvent={activeEvent}
+          initialName={guestInput?.name}
+          initialCompany={guestInput?.company}
           onSaved={(result) => {
+            setGuestInput(undefined)
             setNoteStep(result)
             setScreen('noteStep')
           }}
-          onBack={toStart}
+          onBack={leaveAddByName}
         />
       ) : screen === 'noteStep' && noteStep ? (
         <NoteStep
@@ -206,8 +269,19 @@ export function App() {
               <StartScreen
                 activeEvent={activeEvent}
                 onChangeContext={() => setScreen('choice')}
-                onAddByName={() => setScreen('addByName')}
-                onScanQr={() => setScreen('addByQr')}
+                onAddByName={() => {
+                  setGuestInput(undefined)
+                  setScreen('addByName')
+                }}
+                onScanQr={() => {
+                  setGuestInput(undefined)
+                  setScreen('addByQr')
+                }}
+                onHandOver={() => {
+                  // Shown at once; the flag is written in the background (research R1).
+                  setGuestModeState(true)
+                  setGuestMode(true).catch(ignoreStorageFull)
+                }}
               />
               {flutter > 0 && <Flutter key={flutter} onDone={() => setFlutter(0)} />}
             </>

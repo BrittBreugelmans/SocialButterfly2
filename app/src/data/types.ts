@@ -59,6 +59,8 @@ export interface Settings {
   noteStepEncounterId?: string
   /** The owner's own normalized profile link, for My QR (F9, B33). Not a Person. */
   ownerProfileUrl?: string
+  /** Present while guest mode is on (F3, research R1). Absent = off. Device state; never synced. */
+  guestModeOn?: true
   updatedAt: string
 }
 

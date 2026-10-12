@@ -17,6 +17,9 @@ export interface SavedByName extends AddByNameResult {
 interface AddByNameFormProps {
   /** The active Event, undefined during casual networking, or 'loading' while it is read. */
   activeEvent: Event | undefined | 'loading'
+  /** F3: what the guest typed, handed over to the owner (research R6). */
+  initialName?: string
+  initialCompany?: string
   onSaved(result: SavedByName): void
   onBack(): void
 }
@@ -28,11 +31,11 @@ interface AddByNameFormProps {
  * is a real link: the tap opens LinkedIn itself, and the save starts in the same tap (B20).
  * The same-name check (B15) must be known before that tap, so it runs while the owner types.
  */
-export function AddByNameForm({ activeEvent, onSaved, onBack }: AddByNameFormProps) {
+export function AddByNameForm({ activeEvent, initialName, initialCompany, onSaved, onBack }: AddByNameFormProps) {
   const { t } = useLanguage()
   const id = useId()
-  const [name, setName] = useState('')
-  const [company, setCompany] = useState('')
+  const [name, setName] = useState(initialName ?? '')
+  const [company, setCompany] = useState(initialCompany ?? '')
   const [checked, setChecked] = useState<{ key: string; matches: SameNameMatch[] }>()
   const [question, setQuestion] = useState<SameNameMatch[]>()
   const [saving, setSaving] = useState(false)

@@ -201,4 +201,14 @@ export const en: Record<TextKey, string> = {
   'deleteAll.typeWord': 'Type {word} to confirm',
   'deleteAll.word': 'DELETE',
   'deleteAll.confirm': 'Delete everything',
+
+  // F3 — Guest mode
+  'start.handOver': 'Hand over',
+  'guest.greeting': "Hi! I'm Britt, the social butterfly 🦋 Who are you?",
+  'guest.name': 'Your name',
+  'guest.company': 'Your company (optional)',
+  'guest.privacy': "Your name is only stored on Britt's phone.",
+  'guest.done': 'Done',
+  'guest.thanks': 'Thanks! Hand the phone back to Britt 🦋',
+  'guest.ownerHold': 'Back to Britt (hold 2 seconds)',
 }

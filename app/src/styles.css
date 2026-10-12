@@ -1197,3 +1197,120 @@ button.compact {
     display: none;
   }
 }
+
+/* ---------- F3: guest mode (research R7) ---------- */
+
+.guest-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 100dvh;
+  padding: 16px 20px 40px;
+}
+
+.guest-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+}
+
+.guest-screen h1 {
+  margin-top: 8px;
+  font-size: 1.6rem;
+  line-height: 1.3;
+}
+
+.guest-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.guest-form label {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+/* 18px text: iOS zooms into fields under 16px. */
+.guest-form input {
+  min-height: 52px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font: inherit;
+  font-size: 18px;
+  background: var(--bg);
+}
+
+.guest-privacy {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
+.guest-done {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 16px;
+  font-size: 1.1rem;
+}
+
+.guest-thanks {
+  margin: 15vh 0 16px;
+  color: var(--blue);
+  font-size: 1.5rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* The logo that ends guest mode after a 2-second hold (B44, research R4). No image menu, no
+   loupe, no text selection on iOS. The ring fills while held; it stays under reduced motion,
+   because it is progress feedback, not decoration. */
+.logo-hold {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  min-height: 52px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
+}
+
+.logo-hold img {
+  pointer-events: none;
+}
+
+@property --hold {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+.logo-hold::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(var(--blue) var(--hold), transparent 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), black calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), black calc(100% - 2px));
+  pointer-events: none;
+}
+
+.logo-hold.holding::after {
+  animation: hold-fill 2s linear forwards;
+}
+
+@keyframes hold-fill {
+  to {
+    --hold: 100%;
+  }
+}
