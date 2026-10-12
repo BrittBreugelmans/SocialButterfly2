@@ -89,6 +89,7 @@ Formaat: **beslissing** — reden — verworpen alternatieven. Bindend tenzij Br
 | M9 | 2026-10-12 | **Voorlopig logo: voorstel B** ("Netwerkvleugels") van de [keuzepagina](../specs/010-brand-delight/logo-proposals.html). Britt levert nog een **eigen logo**; dat vervangt B via het ene logobestand (M5). | Het meest "tech"; F11 kan verder zonder te wachten op het eigen logo. | Voorstel A (Twee knooppunten), voorstel C (Verfijnd) |
 | M10 | 2026-10-12 | **Witte icoonachtergrond**: blauwe vlinder op wit, voor het app-icoon en het opstartscherm (open vraag #16). | Past bij de lichte app (M6); één logobestand volstaat, geen apart icoonbestand. | Blauwe achtergrond met lichte vlinder |
 | M11 | 2026-10-12 | **Vlinder-animatie voorlopig uit** (M7 staat on hold). De code blijft klaar: één schakelaar (`FLUTTER_ON` in `app/src/ui/Flutter.tsx`) zet hem terug aan. | Keuze van Britt na de test van F11. | Animatie helemaal verwijderen; aan laten |
+| M12 | 2026-10-12 | **Geen 🦋-emoji in de doorgeef-modus**: begroeting en bedanktekst eindigen op een punt ("…de sociale vlinder. Wie ben jij?", "…terug aan Britt."). De back-upherinnering houdt haar 🦋. | Keuze van Britt na F3; het logo staat al op het scherm. | Emoji houden |
 
 ## Werkwijze
 | # | Datum | Beslissing | Reden | Verworpen |

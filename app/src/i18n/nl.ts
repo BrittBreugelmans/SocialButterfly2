@@ -206,12 +206,12 @@ export const nl = {
 
   // F3 — Guest mode
   'start.handOver': 'Geef door',
-  'guest.greeting': 'Hoi! Ik ben Britt, de sociale vlinder 🦋 Wie ben jij?',
+  'guest.greeting': 'Hoi! Ik ben Britt, de sociale vlinder. Wie ben jij?',
   'guest.name': 'Je naam',
   'guest.company': 'Je bedrijf (optioneel)',
   'guest.privacy': 'Je naam wordt alleen op Britts telefoon bewaard.',
   'guest.done': 'Klaar',
-  'guest.thanks': 'Dank je! Geef de gsm terug aan Britt 🦋',
+  'guest.thanks': 'Dank je! Geef de gsm terug aan Britt.',
   'guest.ownerHold': 'Terug naar Britt (2 seconden vasthouden)',
 } as const
 

@@ -8,7 +8,7 @@
 
 A "Hand over" button on the Add tab opens guest mode: a big, friendly screen with the greeting,
 name and optional company, the privacy line and an NL/EN switch. The guest taps "Done" and sees
-"Thanks! Hand the phone back to Britt 🦋". Guest mode saves nothing. Britt holds the small logo
+"Thanks! Hand the phone back to Britt.". Guest mode saves nothing. Britt holds the small logo
 for 2 seconds and lands on F2's quick mode form, filled in. From there F2 runs unchanged (B43,
 B44).
 

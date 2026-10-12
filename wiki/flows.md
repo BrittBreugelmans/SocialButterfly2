@@ -52,7 +52,7 @@ tijdens de dagkeuze, het toevoegen, het notitiescherm en de doorgeef-modus.
 
 ## Doorgeef-modus — eisen
 - Groot, vriendelijk formulier; geen lijst of notities zichtbaar.
-- Begroeting: "Hoi! Ik ben Britt, de sociale vlinder 🦋 Wie ben jij?" / "Hi! I'm Britt, the social butterfly 🦋 Who are you?"
+- Begroeting: "Hoi! Ik ben Britt, de sociale vlinder. Wie ben jij?" / "Hi! I'm Britt, the social butterfly. Who are you?"
 - Privacy: "Je naam wordt alleen op Britts telefoon bewaard." / "Your name is only stored on Britt's phone."
 - Na "Klaar": "Geef de gsm terug aan Britt". De doorgeef-modus bewaart niets; Britt zoekt zelf op LinkedIn
   ([B43](beslissingen.md)). Zo ziet de gast nooit "Is dit dezelfde persoon?".

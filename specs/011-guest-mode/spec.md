@@ -34,7 +34,7 @@ note step) and F7 (`specs/006-contacts`: tab bar hidden during add flows and gue
 
 The owner meets someone at a fair and says "I built an app for this, want to type your name?".
 She taps "Hand over" on the start screen and gives her phone to the guest. The guest sees a big,
-friendly screen: "Hi! I'm Britt, the social butterfly 🦋 Who are you?", a name field, an optional
+friendly screen: "Hi! I'm Britt, the social butterfly. Who are you?", a name field, an optional
 company field and the line "Your name is only stored on Britt's phone." The guest types their name
 and taps "Done". The screen thanks them and asks to hand the phone back to Britt.
 
@@ -152,8 +152,8 @@ owner: her screens are Dutch again.
 
 #### The guest screen
 
-- **FR-003**: The guest screen MUST show the greeting "Hoi! Ik ben Britt, de sociale vlinder 🦋
-  Wie ben jij?" / "Hi! I'm Britt, the social butterfly 🦋 Who are you?" (wiki fixed text).
+- **FR-003**: The guest screen MUST show the greeting "Hoi! Ik ben Britt, de sociale vlinder.
+  Wie ben jij?" / "Hi! I'm Britt, the social butterfly. Who are you?" (wiki fixed text).
 - **FR-004**: The guest screen MUST have a name field (required) and a company field (optional,
   B17), with the same limits as F2.
 - **FR-005**: The guest screen MUST show "Je naam wordt alleen op Britts telefoon bewaard." /
@@ -230,8 +230,8 @@ flow after the hand-back.
 - **Entry point**: a "Hand over" button on the start screen (Add tab), next to "Add by name" and
   "Scan QR". Label "Geef door" / "Hand over" (approved by Britt).
 - **Name only**: the guest types name and company, nothing else. No QR scan in guest mode (F5).
-- **Thank-you text**: "Dank je! Geef de gsm terug aan Britt 🦋" / "Thanks! Hand the phone back to
-  Britt 🦋" (approved by Britt, wiki fixed texts).
+- **Thank-you text**: "Dank je! Geef de gsm terug aan Britt." / "Thanks! Hand the phone back to
+  Britt." (approved by Britt, wiki fixed texts).
 - **Logo**: the hold button uses the one logo file from F11 (M5, M9). When Britt's own logo
   replaces it, guest mode follows without changes.
 - **Hold time**: 2 seconds, as chosen (B44). A guest who knows the trick can still use it; iOS

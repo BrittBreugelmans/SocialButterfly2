@@ -2,6 +2,9 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-12** — gesprek met Britt (F3) — M12: 🦋 weg uit de begroeting en de bedanktekst van de
+  doorgeef-modus. Teksten in app, merk-en-stijl, flows, features en spec F3 bijgewerkt.
+
 - **2026-10-12** — implementatie F3 (`/speckit-implement`) — Doorgeef-modus gebouwd: knop "Geef
   door", gastscherm met begroeting, naam, bedrijf, privacyzin en NL/EN, bedankscherm, logo 2
   seconden vasthouden (B44), formulier van de snelle modus al ingevuld (B43). 494 tests groen

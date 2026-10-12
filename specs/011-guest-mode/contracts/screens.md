@@ -74,12 +74,12 @@ touch targets at least 44 px.
 | Key | NL | EN |
 |---|---|---|
 | `start.handOver` | Geef door | Hand over |
-| `guest.greeting` | Hoi! Ik ben Britt, de sociale vlinder 🦋 Wie ben jij? | Hi! I'm Britt, the social butterfly 🦋 Who are you? |
+| `guest.greeting` | Hoi! Ik ben Britt, de sociale vlinder. Wie ben jij? | Hi! I'm Britt, the social butterfly. Who are you? |
 | `guest.name` | Je naam | Your name |
 | `guest.company` | Je bedrijf (optioneel) | Your company (optional) |
 | `guest.privacy` | Je naam wordt alleen op Britts telefoon bewaard. | Your name is only stored on Britt's phone. |
 | `guest.done` | Klaar | Done |
-| `guest.thanks` | Dank je! Geef de gsm terug aan Britt 🦋 | Thanks! Hand the phone back to Britt 🦋 |
+| `guest.thanks` | Dank je! Geef de gsm terug aan Britt. | Thanks! Hand the phone back to Britt. |
 | `guest.ownerHold` | Terug naar Britt (2 seconden vasthouden) | Back to Britt (hold 2 seconds) |
 
 Reused: `add.namePlaceholder`, `add.companyPlaceholder`, `add.back`, `app.languageSwitch`,
