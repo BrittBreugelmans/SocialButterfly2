@@ -9,7 +9,10 @@ tijdens de dagkeuze, het toevoegen, het notitiescherm en de doorgeef-modus.
    ([B27, B29](beslissingen.md)),
    ontmoeting of persoon verwijderen ([B25](beslissingen.md)).
 3. **Acties**: openstaande [acties](begrippen.md), elk afwijsbaar.
-4. **Mijn QR**: Britts LinkedIn-QR, groot, met vlinder.
+4. **Mijn QR**: Britts LinkedIn-QR, groot, met vlinder; lokaal gemaakt ([B32](beslissingen.md)).
+   De eerste keer plakt Britt haar eigen profiel-link; aanpassen kan daar ([B33](beslissingen.md)).
+   Het scherm blijft aan zolang de QR getoond wordt. Ook bereikbaar vanaf het offline-scherm
+   ("Toon mijn QR", [B34](beslissingen.md)).
 5. **Instellingen**: evenementen beheren, taal, CSV-export.
 
 ## Flow A — Toevoegen via naam

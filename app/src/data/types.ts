@@ -55,6 +55,8 @@ export interface Settings {
   contextChosenOn?: string
   /** The Encounter whose note step is open (F2, B18). Ignored when the Encounter is gone or not dated today. */
   noteStepEncounterId?: string
+  /** The owner's own normalized profile link, for My QR (F9, B33). Not a Person. */
+  ownerProfileUrl?: string
   updatedAt: string
 }
 

@@ -57,27 +57,28 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - Notities nooit zichtbaar in doorgeef-modus: geldt voor F3 en F7.
 
 ## F7 — Contacten
-- [ ] Tabbalk: Toevoegen, Contacten, Acties, Mijn QR, Instellingen; nog niet gebouwd = "binnenkort" (B26)
-- [ ] Lijst per evenement (en alle contacten)
-- [ ] Zoeken/filteren op naam
-- [ ] Persoon-detail met tijdlijn van ontmoetingen + notities
-- [ ] "Open in LinkedIn" (profiel-URL, anders zoek-link)
-- [ ] Connectiestatus aanpassen
-- [ ] Aanpasmodus: naam, bedrijf en notitie per ontmoeting aanpassen (B27, B29)
-- [ ] Persoon verwijderen
-- [ ] Eén ontmoeting verwijderen; laatste ontmoeting = persoon verwijderen (B25)
+- [X] Tabbalk: Toevoegen, Contacten, Acties, Mijn QR, Instellingen; nog niet gebouwd = "binnenkort" (B26)
+- [X] Lijst per evenement (en alle contacten)
+- [X] Zoeken/filteren op naam
+- [X] Persoon-detail met tijdlijn van ontmoetingen + notities
+- [X] "Open in LinkedIn" (profiel-URL, anders zoek-link)
+- [X] Connectiestatus aanpassen
+- [X] Aanpasmodus: naam, bedrijf en notitie per ontmoeting aanpassen (B27, B29)
+- [X] Persoon verwijderen
+- [X] Eén ontmoeting verwijderen; laatste ontmoeting = persoon verwijderen (B25)
 
 ## F8 — Acties-tab
-- [ ] Toont per persoon: notitie ontbreekt (B31), nog niet geconnecteerd, profiel-link ontbreekt
-- [ ] Actie oplossen vanuit de tab
-- [ ] Actie afwijzen; komt terug bij een nieuwe ontmoeting (B30)
-- [ ] Teller/badge op de tab
-- [ ] Lege staat: "Alles gedaan, tijd om verder te fladderen."
+- [X] Toont per persoon: notitie ontbreekt (B31), nog niet geconnecteerd, profiel-link ontbreekt
+- [X] Actie oplossen vanuit de tab
+- [X] Actie afwijzen; komt terug bij een nieuwe ontmoeting (B30)
+- [X] Teller/badge op de tab
+- [X] Lege staat: "Alles gedaan, tijd om verder te fladderen."
 
 ## F9 — Mijn QR
-- [ ] Britts LinkedIn-QR groot op het scherm ⚠️ #12
+- [ ] Britts LinkedIn-QR groot op het scherm, lokaal gemaakt (B32); eigen link eenmalig plakken (B33)
 - [ ] Vlinder in het midden, QR blijft scanbaar
 - [ ] Scherm blijft helder (geen dimmen tijdens tonen, waar mogelijk)
+- [ ] Bereikbaar vanaf het offline-scherm: "Toon mijn QR" (B34)
 
 ## F10 — Instellingen & data
 - [ ] Evenementen beheren

@@ -3,8 +3,8 @@ import { StorageFullError } from '../data/errors'
 import { linkProfileUrl } from '../data/repository'
 import type { Person } from '../data/types'
 import { useLanguage } from '../i18n/LanguageProvider'
-import { normalizeProfileUrl, shortProfileUrl } from '../linkedin/profileUrl'
-import { readClipboardText } from '../platform/clipboard'
+import { pasteProfileUrl } from '../linkedin/pasteProfileUrl'
+import { shortProfileUrl } from '../linkedin/profileUrl'
 import { MergeQuestion } from './MergeQuestion'
 
 interface ProfileLinkControlProps {
@@ -38,21 +38,16 @@ export function ProfileLinkControl({
 
   /** The clipboard is read first, in the tap handler itself, so iOS shows its "Paste" bubble (F4 R1). */
   function paste() {
-    const reading = readClipboardText()
+    const reading = pasteProfileUrl()
     void (async () => {
-      const text = await reading
-      if (text === 'dismissed') return // the owner tapped next to the iOS bubble
-      if (text === 'unsupported') {
-        setMessage(t('link.unsupported'))
-        return
-      }
-      const normalized = normalizeProfileUrl(text)
-      if (!normalized.ok) {
-        setMessage(t(normalized.reason === 'shortLink' ? 'link.shortLink' : 'link.invalid'))
+      const pasted = await reading
+      if (pasted === 'dismissed') return // the owner tapped next to the iOS bubble
+      if (!pasted.ok) {
+        setMessage(t(pasted.messageKey))
         return
       }
       try {
-        const result = await linkProfileUrl(person.id, normalized.url)
+        const result = await linkProfileUrl(person.id, pasted.url)
         setMessage('')
         if (result.status === 'conflict') setOther(result.other)
         else onLinked(result.person)

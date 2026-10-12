@@ -1,7 +1,7 @@
 import { useLanguage } from '../i18n/LanguageProvider'
 
 interface ComingSoonProps {
-  textKey: 'soon.myQr' | 'soon.settings'
+  textKey: 'soon.settings'
 }
 
 /** A tab that is not built yet (B26): F9 and F10 replace it. */

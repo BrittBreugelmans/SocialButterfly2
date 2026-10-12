@@ -2,6 +2,45 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-12** — implementatie F9 (`/speckit-implement`) — Mijn QR-tab:
+  - de eerste keer "Plak LinkedIn-link" (regels van F4, gedeelde functie `pasteProfileUrl`);
+  - daarna de QR, lokaal gemaakt met uqr, foutcorrectie H, donkerblauw op wit, met de vlinder in
+    het midden, en eronder "Scan mij om te connecteren" / "Scan me to connect";
+  - "Link aanpassen";
+  - het scherm blijft aan via de Screen Wake Lock-API;
+  - het offline-scherm heeft "Toon mijn QR" (B34); komt de verbinding terug, dan blijft de app op
+    Mijn QR.
+
+  Een test leest de QR terug met jsQR voor vier soorten links. Eigen link als `ownerProfileUrl`
+  in de instellingen, geen schemawijziging. 344 tests groen (was 290), build OK, bundel +6,4 kB
+  gecomprimeerd. 29 van 32 taken klaar; open: push (T030), controle op de iPhone (T031) en
+  afvinken in features.md (T032).
+
+- **2026-10-12** — taken F9 (`/speckit-tasks`) ([tasks](../specs/008-my-qr/tasks.md)) — 32 taken
+  in 7 fases: setup (uqr installeren), fundament (eigen link opslaan, gedeelde plakfunctie, teksten,
+  lege Mijn QR-tab), dan per user story (QR tonen + offline-knop, link instellen, link aanpassen,
+  scherm aan), daarna afwerking. MVP = QR tonen + link instellen.
+
+- **2026-10-12** — plan F9 (`/speckit-plan`) met Britt ([plan](../specs/008-my-qr/plan.md)) — B34:
+  start de app zonder internet, dan heeft het offline-scherm een knop "Toon mijn QR" (spec FR-010b).
+  Eigen link als optioneel veld `ownerProfileUrl` in de instellingen; geen schemawijziging. Nieuwe
+  bibliotheek **uqr 0.1.3** (gratis, open source) om de QR te maken. Foutcorrectie H, vlinder in
+  het midden; een test leest de QR terug met jsQR. Donkerblauw op wit. Scherm blijft aan via de
+  Screen Wake Lock-API; in een beginscherm-app werkt die pas vanaf iOS 18.4, anders gebeurt er
+  niets. Plakregels van F4 in één gedeelde functie. Na te kijken op de iPhone: iOS-versie, scannen
+  met camera en LinkedIn-app.
+
+- **2026-10-12** — clarify F9 (`/speckit-clarify`) met Britt ([spec](../specs/008-my-qr/spec.md)) —
+  Onder de QR één zin in beide talen tegelijk: "Scan mij om te connecteren" / "Scan me to connect";
+  geen naam, geen taalknop (vaste tekst in merk-en-stijl). De tabbalk blijft zichtbaar; geen aparte
+  volledig-scherm-stand.
+
+- **2026-10-12** — spec F9 (`/speckit-specify`) met Britt ([spec](../specs/008-my-qr/spec.md)) —
+  `specs/008-my-qr` aangemaakt. Open vraag #12 beslist: B32 (QR lokaal maken uit de profiel-URL).
+  B33: eigen profiel-URL eenmalig plakken op Mijn QR, aanpasbaar daar. Nieuw begrip "Eigen
+  profiel-URL" (`ownerProfileUrl`). Flows (tab Mijn QR), open-vragen en features.md bijgewerkt.
+  Of de eigen link in de CSV-export komt, blijft bij open vraag #6.
+
 - **2026-10-12** — implementatie F8 (`/speckit-implement`) — Acties-tab: één kaart per persoon met
   open acties (notitie ontbreekt volgens B31, nog niet geconnecteerd, profiel-link ontbreekt),
   nieuwste eerst; oplossen op de kaart (notitie bij de laatste ontmoeting, LinkedIn + "Ik heb

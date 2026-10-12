@@ -16,6 +16,7 @@ import { StartScreen } from './ui/StartScreen'
 import { ActionsTab } from './ui/ActionsTab'
 import { ComingSoon } from './ui/ComingSoon'
 import { ContactsTab } from './ui/ContactsTab'
+import { MyQrTab } from './ui/MyQrTab'
 import { TabBar, type Tab } from './ui/TabBar'
 
 type Screen = 'choice' | 'newEvent' | 'start' | 'addByName' | 'addByQr' | 'noteStep'
@@ -24,6 +25,8 @@ export function App() {
   const online = useOnline()
   // FR-005: full screen only when the app starts offline; a later drop shows a banner.
   const [offlineAtStart, setOfflineAtStart] = useState(() => !navigator.onLine)
+  // F9 (B34): My QR opened from the offline screen; the rest of the app stays blocked.
+  const [qrWhileOffline, setQrWhileOffline] = useState(false)
   const [standalone] = useState(isStandalone)
   const [storageStatus, setStorageStatus] = useState<StorageStatus | 'checking'>('checking')
 
@@ -45,6 +48,14 @@ export function App() {
   useEffect(() => {
     if (online) setOfflineAtStart(false)
   }, [online])
+
+  // Back online while the QR is shown: stay on it, now as the My QR tab (F9 research R7).
+  useEffect(() => {
+    if (online && qrWhileOffline) {
+      setTab('myQr')
+      setQrWhileOffline(false)
+    }
+  }, [online, qrWhileOffline])
 
   // Ask iOS to keep the data on every start (FR-007).
   useEffect(() => {
@@ -106,7 +117,13 @@ export function App() {
     toStart()
   }, [recheck, toStart])
 
-  if (offlineAtStart) return <OfflineScreen />
+  if (offlineAtStart) {
+    return qrWhileOffline ? (
+      <MyQrTab onBack={() => setQrWhileOffline(false)} />
+    ) : (
+      <OfflineScreen onShowMyQr={() => setQrWhileOffline(true)} />
+    )
+  }
 
   //Banners -> meldingen komen bovenaan
   //StartScreen -> titel, taalknop en versienummer
@@ -185,7 +202,7 @@ export function App() {
           ) : tab === 'actions' ? (
             <ActionsTab />
           ) : tab === 'myQr' ? (
-            <ComingSoon textKey="soon.myQr" />
+            <MyQrTab />
           ) : (
             <ComingSoon textKey="soon.settings" />
           )}

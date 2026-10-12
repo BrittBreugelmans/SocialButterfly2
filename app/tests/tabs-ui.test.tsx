@@ -42,20 +42,21 @@ describe('Tab bar (F7 FR-001–FR-001c)', () => {
     expect(tabButton('tab.contacts')).not.toHaveAttribute('aria-current')
   })
 
-  it('shows "coming soon" on My QR and Settings, and the built tabs otherwise', async () => {
+  it('shows "coming soon" on Settings only, and the built tabs otherwise', async () => {
     const user = userEvent.setup()
     renderApp()
     await screen.findByRole('button', { name: nl['start.addByName'] })
 
-    for (const [tab, text] of [
-      ['tab.myQr', 'soon.myQr'],
-      ['tab.settings', 'soon.settings'],
-    ] as const) {
-      await user.click(tabButton(tab))
-      expect(screen.getByRole('heading', { name: nl['soon.title'] })).toBeInTheDocument()
-      expect(screen.getByText(nl[text])).toBeInTheDocument()
-      expect(tabButton(tab)).toHaveAttribute('aria-current', 'page')
-    }
+    await user.click(tabButton('tab.settings'))
+    expect(screen.getByRole('heading', { name: nl['soon.title'] })).toBeInTheDocument()
+    expect(screen.getByText(nl['soon.settings'])).toBeInTheDocument()
+    expect(tabButton('tab.settings')).toHaveAttribute('aria-current', 'page')
+
+    // F9: My QR is built; without an own link it shows the setup.
+    await user.click(tabButton('tab.myQr'))
+    expect(await screen.findByRole('heading', { name: nl['myQr.setupTitle'] })).toBeInTheDocument()
+    expect(screen.queryByText(nl['soon.title'])).not.toBeInTheDocument()
+    expect(tabButton('tab.myQr')).toHaveAttribute('aria-current', 'page')
 
     await user.click(tabButton('tab.contacts'))
     expect(await screen.findByRole('heading', { name: nl['contacts.title'] })).toBeInTheDocument()

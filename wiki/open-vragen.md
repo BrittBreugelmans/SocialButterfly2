@@ -20,7 +20,7 @@ Nog niet beslist. Een agent vult deze **nooit** zelf in. Na een beslissing: verp
 ## Techniek (voor de plan-fase)
 10. ~~Stack en hosting (gratis, bv. GitHub Pages of Netlify).~~ → beslist: T7, T8.
 11. ~~Opslagtechniek en het risico dat iOS lokale data wist; wanneer herinneren aan een back-up?~~ → beslist: T9, T10.
-12. Mijn QR: lokaal genereren uit Britts profiel-URL, of LinkedIns eigen QR als afbeelding gebruiken?
+12. ~~Mijn QR: lokaal genereren uit Britts profiel-URL, of LinkedIns eigen QR als afbeelding gebruiken?~~ → beslist: B32.
 
 ## Toekomst
 13. Online sync: wanneer, en met welke dienst (gratis)?

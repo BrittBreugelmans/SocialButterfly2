@@ -11,6 +11,7 @@ import {
   ValidationError,
 } from './errors'
 import { buildSearchUrl } from '../linkedin/links'
+import { normalizeProfileUrl } from '../linkedin/profileUrl'
 import { ACTION_TYPES } from '../people/actions'
 import { normalizeName } from '../people/nameMatch'
 import type { ActionType, ConnectionStatus, Dismissal, Encounter, Event, Language, Person, Settings } from './types'
@@ -456,6 +457,19 @@ export async function updateSettings(
       return updated
     }),
   )
+}
+
+/**
+ * Stores the owner's own profile link for My QR (F9, B33). It must already be normalized. The
+ * owner is not a Person: Persons are never read or changed here (FR-001).
+ */
+export async function setOwnerProfileUrl(url: string): Promise<Settings> {
+  // Stricter than isNormalizedProfileUrl: exactly what F4's normalization makes (data-model).
+  const normalized = normalizeProfileUrl(url)
+  if (!normalized.ok || normalized.url !== url) {
+    throw new ValidationError('ownerProfileUrl', 'Not a normalized profile link')
+  }
+  return updateSettings({ ownerProfileUrl: url })
 }
 
 // ---------------------------------------------------------------------------

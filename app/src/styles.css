@@ -947,3 +947,76 @@ button.compact {
   line-height: 18px;
   text-align: center;
 }
+
+/* ---------- F9: my QR ---------- */
+
+.my-qr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 16px;
+  text-align: center;
+}
+
+/* For screen readers only: the QR screen's heading. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Large and square, fully visible above the caption, "Change link" and the tab bar (FR-008). */
+.my-qr-panel {
+  width: min(86vw, calc(100dvh - 260px), 480px);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--radius);
+  /* Fixed white, whatever the theme: scanners need dark on light (FR-010). */
+  background: #ffffff;
+  box-shadow: 0 2px 12px rgb(0 65 130 / 0.15);
+}
+
+.my-qr-panel svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.my-qr-caption {
+  display: flex;
+  flex-direction: column;
+  margin: 4px 0 0;
+}
+
+.my-qr-caption span:first-child {
+  font-weight: 600;
+}
+
+.my-qr-link {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+
+/* Setup without a link: the same calm look as "coming soon" (FR-002). */
+.my-qr-setup {
+  gap: 16px;
+  padding: 48px 24px;
+}
+
+.my-qr-setup .subtitle {
+  max-width: 32em;
+}
+
+.my-qr .back-button {
+  align-self: flex-start;
+}
+
+.offline-screen button {
+  margin-top: 16px;
+}

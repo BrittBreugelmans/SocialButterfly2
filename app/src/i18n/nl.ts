@@ -116,7 +116,6 @@ export const nl = {
   'tab.myQr': 'Mijn QR',
   'tab.settings': 'Instellingen',
   'soon.title': 'Binnenkort',
-  'soon.myQr': 'Hier komt straks jouw LinkedIn-QR, met vlinder.',
   'soon.settings': 'Hier kan je straks evenementen beheren, de taal kiezen en een back-up maken.',
 
   'contacts.title': 'Contacten',
@@ -165,6 +164,16 @@ export const nl = {
   'actions.dismissed': '"{action}" afgewezen voor {name}.',
   'actions.undo': 'Ongedaan maken',
   'actions.empty': 'Alles gedaan, tijd om verder te fladderen.',
+
+  // F9 — My QR
+  'myQr.setupTitle': 'Jouw LinkedIn-QR',
+  'myQr.setupHint': 'In LinkedIn: tik op je profiel → Delen → Link kopiëren. Kom dan terug en plak hier.',
+  'myQr.scanMe': 'Scan mij om te connecteren',
+  'myQr.change': 'Link aanpassen',
+  'myQr.changed': 'Nieuwe link bewaard.',
+  'myQr.alt': 'QR-code naar mijn LinkedIn-profiel',
+  'myQr.back': 'Terug',
+  'offline.showMyQr': 'Toon mijn QR',
 } as const
 
 export type TextKey = keyof typeof nl

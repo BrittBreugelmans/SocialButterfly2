@@ -25,3 +25,4 @@
 | Begroeting doorgeef-modus | Hoi! Ik ben Britt, de sociale vlinder 🦋 Wie ben jij? | Hi! I'm Britt, the social butterfly 🦋 Who are you? |
 | Privacy | Je naam wordt alleen op Britts telefoon bewaard. | Your name is only stored on Britt's phone. |
 | Acties leeg | Alles gedaan, tijd om verder te fladderen. | All done — time to flutter on. |
+| Onder Mijn QR (beide talen tegelijk) | Scan mij om te connecteren | Scan me to connect |

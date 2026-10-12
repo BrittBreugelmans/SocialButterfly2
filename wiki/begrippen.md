@@ -18,5 +18,6 @@ Gebruik deze woorden consequent. De Engelse term is de naam in specs en code.
 | Doorgeef-modus | `guestMode` | Scherm voor de gast: groot, vriendelijk, tweetalig, zonder Britts lijst of notities. |
 | Snelle modus | `quickMode` | Britt vult zelf in; compact en snel. |
 | Mijn QR | `myQr` | Scherm met Britts eigen LinkedIn-QR (met vlinder). |
+| Eigen profiel-URL | `ownerProfileUrl` | Britts eigen genormaliseerde profiel-URL; alleen gebruikt voor Mijn QR. Geen persoon (B33). |
 | Gast | `guest` | De persoon die de doorgeef-modus gebruikt. |
 | Eigenaar | `owner` | Britt. |

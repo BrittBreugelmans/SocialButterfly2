@@ -115,7 +115,6 @@ export const en: Record<TextKey, string> = {
   'tab.myQr': 'My QR',
   'tab.settings': 'Settings',
   'soon.title': 'Coming soon',
-  'soon.myQr': 'Your LinkedIn QR code, with butterfly, is coming here soon.',
   'soon.settings': 'Soon you can manage events, choose the language and make a backup here.',
 
   'contacts.title': 'Contacts',
@@ -163,4 +162,14 @@ export const en: Record<TextKey, string> = {
   'actions.dismissed': '"{action}" dismissed for {name}.',
   'actions.undo': 'Undo',
   'actions.empty': 'All done — time to flutter on.',
+
+  // F9 — My QR
+  'myQr.setupTitle': 'Your LinkedIn QR',
+  'myQr.setupHint': 'In LinkedIn: tap your profile → Share → Copy link. Then come back and paste it here.',
+  'myQr.scanMe': 'Scan me to connect',
+  'myQr.change': 'Change link',
+  'myQr.changed': 'New link saved.',
+  'myQr.alt': 'QR code to my LinkedIn profile',
+  'myQr.back': 'Back',
+  'offline.showMyQr': 'Show my QR',
 }

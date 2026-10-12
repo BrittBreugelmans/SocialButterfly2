@@ -1,8 +1,9 @@
 import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { App } from '../src/App'
 import { todayLocal } from '../src/data/dates'
-import { updateSettings } from '../src/data/repository'
+import { setOwnerProfileUrl, updateSettings } from '../src/data/repository'
 import { LanguageProvider } from '../src/i18n/LanguageProvider'
 import { nl } from '../src/i18n/nl'
 import { isStandalone } from '../src/platform/standalone'
@@ -30,6 +31,47 @@ beforeEach(async () => {
 
 afterEach(() => {
   setOnline(true)
+})
+
+describe('"Show my QR" on the offline screen (F9, B34)', () => {
+  it('opens My QR without tab bar, and Back returns to the offline screen', async () => {
+    await setOwnerProfileUrl('https://www.linkedin.com/in/britt-breugelmans')
+    setOnline(false)
+    const user = userEvent.setup()
+    renderApp()
+
+    await user.click(screen.getByRole('button', { name: nl['offline.showMyQr'] }))
+    expect(await screen.findByRole('img', { name: nl['myQr.alt'] })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: nl['tab.contacts'] })).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: nl['myQr.back'] }))
+    expect(screen.getByText(nl['offline.message'])).toBeInTheDocument()
+  })
+
+  it('stays on My QR, now with the tab bar, when the connection comes back', async () => {
+    await setOwnerProfileUrl('https://www.linkedin.com/in/britt-breugelmans')
+    setOnline(false)
+    const user = userEvent.setup()
+    renderApp()
+    await user.click(screen.getByRole('button', { name: nl['offline.showMyQr'] }))
+    await screen.findByRole('img', { name: nl['myQr.alt'] })
+
+    act(() => {
+      setOnline(true)
+      window.dispatchEvent(new Event('online'))
+    })
+    expect(await screen.findByRole('img', { name: nl['myQr.alt'] })).toBeInTheDocument()
+    expect(await screen.findByRole('button', { name: nl['tab.contacts'] })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: nl['tab.myQr'] })).toHaveAttribute('aria-current', 'page')
+  })
+
+  it('shows the setup when no own link is stored yet', async () => {
+    setOnline(false)
+    const user = userEvent.setup()
+    renderApp()
+    await user.click(screen.getByRole('button', { name: nl['offline.showMyQr'] }))
+    expect(await screen.findByRole('heading', { name: nl['myQr.setupTitle'] })).toBeInTheDocument()
+  })
 })
 
 describe('install hint (research R3)', () => {
