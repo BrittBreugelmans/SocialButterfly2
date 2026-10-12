@@ -10,7 +10,7 @@ import { AddByNameForm, type SavedByName } from './ui/AddByNameForm'
 import { AddByQr } from './ui/AddByQr'
 import { Banners, OfflineScreen } from './ui/Banners'
 import { ContextChoice } from './ui/ContextChoice'
-import { Flutter } from './ui/Flutter'
+import { Flutter, FLUTTER_ON } from './ui/Flutter'
 import { NewEventForm } from './ui/NewEventForm'
 import { NoteStep } from './ui/NoteStep'
 import { StartScreen } from './ui/StartScreen'
@@ -192,7 +192,7 @@ export function App() {
           opened={noteStep.opened}
           initialMessage={noteStep.message}
           onDone={() => {
-            if (!noteStep.alreadyMetToday) setFlutter((n) => n + 1)
+            if (FLUTTER_ON && !noteStep.alreadyMetToday) setFlutter((n) => n + 1)
             setNoteStep(undefined)
             toStart()
           }}

@@ -5,6 +5,12 @@ interface FlutterProps {
   onDone(): void
 }
 
+/**
+ * Switched off for now at Britt's request (wiki M11). Set to true to bring the butterfly back;
+ * component, styles and tests stay ready.
+ */
+export const FLUTTER_ON = false
+
 /** Longest the butterfly may stay (FR-015); the CSS animation itself takes 1.2 s. */
 const MAX_MS = 1500
 

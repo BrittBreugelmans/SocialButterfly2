@@ -2,6 +2,16 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-12** — gesprek met Britt (F11) — M11: vlinder-animatie voorlopig uit. Schakelaar
+  `FLUTTER_ON = false` in `app/src/ui/Flutter.tsx`; de tests waarin de vlinder vliegt worden
+  overgeslagen tot hij weer aan staat. Merk-en-stijl en features bijgewerkt.
+
+- **2026-10-12** — taken F3 (`/speckit-tasks`) — `specs/011-guest-mode/tasks.md`: 27 taken
+  (US1 5, US2 8, US3 4). MVP = US1 + US2. T001 wacht op het logo van F11.
+
+- **2026-10-12** — test F11 door Britt op de iPhone — "Alles werkt". F11 afgevinkt in
+  [features.md](../specs/features.md); commit `56f9a7c`. Alle taken van F11 klaar.
+
 - **2026-10-12** — implementatie F11 (`/speckit-implement`) ([tasks](../specs/010-brand-delight/tasks.md)) —
   Logo B als `app/public/logo.svg` (één bron), nieuwe iconen en 22 opstartbeelden (iPhones op iOS
   17+, niet in de precache), palet M8 overal (geen losse kleuren meer), vlinder na het

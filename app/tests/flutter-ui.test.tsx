@@ -15,6 +15,7 @@ import {
 import { LanguageProvider } from '../src/i18n/LanguageProvider'
 import { nl } from '../src/i18n/nl'
 import { buildSearchUrl } from '../src/linkedin/links'
+import { FLUTTER_ON } from '../src/ui/Flutter'
 
 // jsdom cannot follow links; stop it after React has handled the tap. Links only.
 const stopNavigation = (event: MouseEvent) => {
@@ -72,7 +73,18 @@ async function addJan(user: User) {
 const flutter = () => document.querySelector('.flutter')
 
 describe('The butterfly after adding a contact (User Story 3, M7)', () => {
-  it('flutters over the start screen after saving the note', async () => {
+  // Switched off for now (M11): the cases where it flies are skipped until FLUTTER_ON is true.
+  it.skipIf(FLUTTER_ON)('does not fly while switched off (M11)', async () => {
+    const user = userEvent.setup()
+    renderApp()
+    await addJan(user)
+    await user.click(screen.getByRole('button', { name: nl['note.skip'] }))
+
+    await screen.findByRole('button', { name: nl['start.addByName'] })
+    expect(flutter()).toBeNull()
+  })
+
+  it.skipIf(!FLUTTER_ON)('flutters over the start screen after saving the note', async () => {
     const user = userEvent.setup()
     renderApp()
     await addJan(user)
@@ -86,7 +98,7 @@ describe('The butterfly after adding a contact (User Story 3, M7)', () => {
     expect(layer!.querySelector('img[src="/logo.svg"]')).not.toBeNull()
   })
 
-  it('also flutters after skipping the note', async () => {
+  it.skipIf(!FLUTTER_ON)('also flutters after skipping the note', async () => {
     const user = userEvent.setup()
     renderApp()
     await addJan(user)
@@ -96,7 +108,7 @@ describe('The butterfly after adding a contact (User Story 3, M7)', () => {
     expect(flutter()).not.toBeNull()
   })
 
-  it('is removed completely when its animation ends', async () => {
+  it.skipIf(!FLUTTER_ON)('is removed completely when its animation ends', async () => {
     const user = userEvent.setup()
     renderApp()
     await addJan(user)
@@ -107,7 +119,7 @@ describe('The butterfly after adding a contact (User Story 3, M7)', () => {
     expect(flutter()).toBeNull()
   })
 
-  it('is gone within 1.5 seconds, even without an animation end (FR-015)', async () => {
+  it.skipIf(!FLUTTER_ON)('is gone within 1.5 seconds, even without an animation end (FR-015)', async () => {
     const user = userEvent.setup()
     renderApp()
     await addJan(user)
@@ -118,7 +130,7 @@ describe('The butterfly after adding a contact (User Story 3, M7)', () => {
     await vi.waitFor(() => expect(flutter()).toBeNull(), { timeout: 1700, interval: 50 })
   })
 
-  it('stops when the app goes to the background, and does not come back', async () => {
+  it.skipIf(!FLUTTER_ON)('stops when the app goes to the background, and does not come back', async () => {
     const user = userEvent.setup()
     renderApp()
     await addJan(user)
@@ -138,7 +150,7 @@ describe('The butterfly after adding a contact (User Story 3, M7)', () => {
     expect(flutter()).toBeNull()
   })
 
-  it('never blocks a tap: "Add by name" opens the form at once (FR-014)', async () => {
+  it.skipIf(!FLUTTER_ON)('never blocks a tap: "Add by name" opens the form at once (FR-014)', async () => {
     const user = userEvent.setup()
     renderApp()
     await addJan(user)
@@ -188,7 +200,7 @@ describe('The butterfly after adding a contact (User Story 3, M7)', () => {
     expect(flutter()).toBeNull()
   })
 
-  it('flutters when "Reduce Motion" is off', async () => {
+  it.skipIf(!FLUTTER_ON)('flutters when "Reduce Motion" is off', async () => {
     mockReducedMotion(false)
     const user = userEvent.setup()
     renderApp()

@@ -88,11 +88,10 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [X] Herinnering om een back-up te maken (T10, T11)
 
 ## F11 — Merk & plezier
-- [ ] Logo: vlinder met netwerkknooppunten
-- [ ] Kleuren: LinkedIn-achtig blauw, geen LinkedIn-logo
-- [ ] Vlinder-animatie bij opslaan
-- [ ] App-icoon en opstartscherm
-- [ ] Animaties vertragen de kernflows niet (snelheid > plezier)
+- [X] Logo: vlinder met netwerkknooppunten
+- [X] Kleuren: LinkedIn-achtig blauw, geen LinkedIn-logo
+- [-] Vlinder-animatie bij opslaan: gebouwd, voorlopig uit (M11)
+- [X] App-icoon en opstartscherm
 
 ---
 

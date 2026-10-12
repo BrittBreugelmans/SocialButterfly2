@@ -88,6 +88,7 @@ Formaat: **beslissing** — reden — verworpen alternatieven. Bindend tenzij Br
 | M8 | 2026-10-12 | **Kleurenpalet** van F11 goedgekeurd: merkblauw `#0d5fb8`, donkerblauw `#0a3d73`, lichtblauw `#e8f1fb`, vleugelblauw `#5aa2ec` (alleen decoratie), tekst `#1b2430`, grijs `#5a6672`, wit, vlak `#f3f6f9`, rand `#c9d1d8`, waarschuwing `#fff4d6`, fout `#fde8e8`, gevaar `#c62828`. | LinkedIn-achtig maar eigen blauw (M2); alle tekst haalt WCAG AA. | LinkedIns eigen blauw `#0a66c2` behouden |
 | M9 | 2026-10-12 | **Voorlopig logo: voorstel B** ("Netwerkvleugels") van de [keuzepagina](../specs/010-brand-delight/logo-proposals.html). Britt levert nog een **eigen logo**; dat vervangt B via het ene logobestand (M5). | Het meest "tech"; F11 kan verder zonder te wachten op het eigen logo. | Voorstel A (Twee knooppunten), voorstel C (Verfijnd) |
 | M10 | 2026-10-12 | **Witte icoonachtergrond**: blauwe vlinder op wit, voor het app-icoon en het opstartscherm (open vraag #16). | Past bij de lichte app (M6); één logobestand volstaat, geen apart icoonbestand. | Blauwe achtergrond met lichte vlinder |
+| M11 | 2026-10-12 | **Vlinder-animatie voorlopig uit** (M7 staat on hold). De code blijft klaar: één schakelaar (`FLUTTER_ON` in `app/src/ui/Flutter.tsx`) zet hem terug aan. | Keuze van Britt na de test van F11. | Animatie helemaal verwijderen; aan laten |
 
 ## Werkwijze
 | # | Datum | Beslissing | Reden | Verworpen |

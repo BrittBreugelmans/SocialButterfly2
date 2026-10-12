@@ -16,7 +16,7 @@
 ## Momenten van plezier
 | Moment | Detail |
 |---|---|
-| Contact opgeslagen | Vlinder fladdert kort over het startscherm, bij het afsluiten van het notitiescherm ([M7](beslissingen.md)) |
+| Contact opgeslagen | Vlinder fladdert kort over het startscherm, bij het afsluiten van het notitiescherm ([M7](beslissingen.md)). **Voorlopig uit** ([M11](beslissingen.md)). |
 | Acties-tab leeg | "Alles gedaan, tijd om verder te fladderen." |
 | Mijn QR | Vlinder in het midden van de QR |
 

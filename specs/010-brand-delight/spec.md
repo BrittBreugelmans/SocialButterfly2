@@ -25,6 +25,8 @@ placeholders from F0 (app icon, colours) and F9 (butterfly in the middle of My Q
   gets a few proposals and picks and approves one. If she likes none of them, she makes one herself
   and F11 puts it in place (wiki M5).
 - Q: Dark mode? → A: No. The app stays light, also when the iPhone is in dark mode (wiki M6).
+- After the test (2026-10-12): the butterfly animation (User Story 3) is switched off for now
+  (wiki M11). It is built and tested; `FLUTTER_ON` in `app/src/ui/Flutter.tsx` turns it back on.
 
 ## User Scenarios & Testing *(mandatory)*
 
