@@ -2,6 +2,33 @@
 
 Nieuwste bovenaan. Formaat: `datum — bron — wat veranderde`.
 
+- **2026-10-12** — implementatie F11 (`/speckit-implement`) ([tasks](../specs/010-brand-delight/tasks.md)) —
+  Logo B als `app/public/logo.svg` (één bron), nieuwe iconen en 22 opstartbeelden (iPhones op iOS
+  17+, niet in de precache), palet M8 overal (geen losse kleuren meer), vlinder na het
+  notitiescherm (M7). 462 tests groen. Nog te doen door Britt: committen en pushen, testen op de
+  iPhone (app opnieuw op het beginscherm zetten), daarna F11 afvinken. Eigen logo later: vervang
+  `logo.svg` en draai `npm run generate-pwa-assets` (let op de `-light-`-fout in de links, zie
+  research R5).
+
+- **2026-10-12** — plan F3 (`/speckit-plan`) — plan, research (R1–R8), data-model, contracts en
+  quickstart in `specs/011-guest-mode`. Eén nieuw veld in Settings (`guestModeOn`), geen nieuwe
+  schemaversie. Start pas na het logo van F11. Geen nieuwe beslissingen of begrippen.
+
+- **2026-10-12** — gesprek met Britt (F3, `/speckit-specify`) — Spec F3 doorgeef-modus in
+  `specs/011-guest-mode`. B43: de gast tikt "Klaar" en geeft terug; Britt zoekt zelf op LinkedIn.
+  B44: terug naar Britts modus door het logo 2 seconden in te drukken (eerst "vlinderknop"; Britt:
+  het is het logo uit F11). Flows bijgewerkt. Knoptekst "Geef door" en bedanktekst goedgekeurd →
+  merk-en-stijl.
+
+- **2026-10-12** — gesprek met Britt (F10) — Tekst van de back-upherinnering goedgekeurd (stond
+  al zo in de app). B42: annuleren in Bestanden telt niet als back-up. Research R2 en quickstart
+  3.6 bijgewerkt. Nog na te kijken op de iPhone of iOS dat ook zo meldt.
+
+- **2026-10-12** — Britt test F10 op de iPhone: alles werkt. Gepusht als `a69e913`. F10
+  afgevinkt in features.md, plus "Persoon verwijderen (F7) en CSV-export (F10) werken" onder
+  "Klaar voor de eerste beurs". Alle 51 taken van F10 klaar. Nog open: de tekst van de
+  herinnering keuren (merk-en-stijl); wat "Annuleren" in Bestanden doet is niet gemeld.
+
 - **2026-10-12** — implementatie F10 (`/speckit-implement`) — Instellingen-tab:
   - CSV-back-up via het deelmenu van de iPhone (puntkomma, BOM, `'` vóór formules);
   - laatste back-up = moment van de momentopname;

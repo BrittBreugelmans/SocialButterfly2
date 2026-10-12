@@ -12,6 +12,7 @@ import type { ActionType, Dismissal, Encounter, Event, Person } from '../data/ty
 import { useLanguage } from '../i18n/LanguageProvider'
 import { buildActionCards } from '../people/actions'
 import { ACTION_LABELS, ActionCard } from './ActionCard'
+import { Logo } from './Logo'
 import { PersonDetail } from './PersonDetail'
 
 interface ActionsData {
@@ -145,9 +146,7 @@ export function ActionsTab() {
       )}
       {cards.length === 0 ? (
         <div className="actions-empty">
-          <p className="butterfly" aria-hidden="true">
-            🦋
-          </p>
+          <Logo size={72} />
           <p>{t('actions.empty')}</p>
         </div>
       ) : (

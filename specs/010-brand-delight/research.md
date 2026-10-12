@@ -46,9 +46,11 @@ Starting point (checked in the code on 2026-10-12):
     colours only from the palette (R3).
   - **In the app**: a small `Logo` component renders `<img src="/logo.svg" alt="">` with
     `aria-hidden`. It replaces the 🦋 emoji on the start screen, the offline screen, "coming soon",
-    the My QR setup and the empty Actions tab.
+    the My QR setup and the empty Actions tab. *(Built: F10 had already removed "coming soon".)*
   - **In the QR** (`MyQrTab`): the hand-copied `Butterfly` is removed; the cleared centre shows
-    `<image href="/logo.svg">` inside the QR's SVG, on the white badge as before.
+    `<image href="/logo.svg">` inside the QR's SVG, on the white badge as before. *(Built: the
+    image sits in a nested `<svg viewBox="36 36 440 440">`, which crops the logo's empty margin so
+    the butterfly fills the badge, as the old placeholder did.)*
   - **Icons**: `pwa-assets.config.ts` takes `public/logo.svg` as input instead of `icon.svg`, and
     adds the background itself (R4). `icon.svg` is deleted; `index.html` links `/logo.svg` as the
     SVG favicon.
@@ -149,6 +151,12 @@ Starting point (checked in the code on 2026-10-12):
   the repo, and the quickstart notes it instead); generating at build time with
   `vite-plugin-pwa`'s `pwaAssets` option (runs the image tool on Cloudflare's build machine, a new
   risk for T13).
+- **Built (2026-10-12)**: the 32 iPhone models share **11 screen sizes**, so the generator wrote
+  **22 files** (portrait + landscape), 276 kB in total, named `apple-splash-{portrait|landscape}-WxH.png`.
+  **Generator bug**: the printed `<link>` tags say `apple-splash-portrait-light-…`, but the files
+  have no `-light-`. The links in `index.html` were corrected by hand, and a test in
+  `tests/brand.test.ts` checks that every link points to a real file. Repeat the fix after each
+  regeneration (comment in `index.html`).
 - **Limitation**: iOS caches the icon and launch image when the app is added. To see the new ones,
   Britt removes the app from the home screen and adds it again. Data stays (same address, T12).
   The quickstart says so.
@@ -195,6 +203,9 @@ Starting point (checked in the code on 2026-10-12):
     as a second guard.
   - Nothing is awaited: saving, the note step and the switch to the start screen happen exactly as
     before; the layer only appears afterwards (FR-016).
+  - *(Built: `animationend` is a native listener on the image, since React's `onAnimationEnd`
+    depends on browser detection. `App` resets the counter whenever the start screen is left, so
+    the butterfly never replays on return.)*
   - No sound, no vibration.
 - **Rationale**: compositor-only CSS is the cheapest way to animate on iOS; `pointer-events: none`
   makes "never blocks input" true by construction.
@@ -206,6 +217,9 @@ Starting point (checked in the code on 2026-10-12):
 
 - **Unit (Vitest)**: palette ↔ CSS in sync, no stray hex colours in CSS, WCAG contrast of every
   text pair, `logo.svg` uses only palette colours and contains no "linkedin" text.
+  *(Built: the files are read with Vite `?raw` imports, as the tests have no Node types. Vitest
+  turns CSS into an empty string by default, so `vite.config.ts` sets
+  `test.css.include: [/styles\.css/]`, and a test checks that the stylesheet really was read.)*
 - **UI (Testing Library)**:
   - Closing the note step (save and skip) shows the flutter layer; it has `aria-hidden` and the
     class with `pointer-events: none`.

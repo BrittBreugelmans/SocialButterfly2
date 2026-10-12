@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { palette } from '../brand/palette'
 import { StorageFullError } from '../data/errors'
 import { getSettings, setOwnerProfileUrl } from '../data/repository'
 import type { Settings } from '../data/types'
@@ -9,6 +10,7 @@ import { pasteProfileUrl } from '../linkedin/pasteProfileUrl'
 import { shortProfileUrl } from '../linkedin/profileUrl'
 import { makeQr, QUIET_ZONE } from '../myQr/qr'
 import { useWakeLock } from '../platform/wakeLock'
+import { Logo } from './Logo'
 
 interface MyQrTabProps {
   /** Only from the offline screen (B34): shows Back, and the app shows no tab bar. */
@@ -79,9 +81,7 @@ export function MyQrTab({ onBack }: MyQrTabProps) {
         </>
       ) : (
         <>
-          <p className="butterfly" aria-hidden="true">
-            🦋
-          </p>
+          <Logo />
           <h1>{t('myQr.setupTitle')}</h1>
           <p className="subtitle">{t('myQr.setupHint')}</p>
           <button type="button" className="secondary" onClick={pasteLink}>
@@ -96,7 +96,7 @@ export function MyQrTab({ onBack }: MyQrTabProps) {
   )
 }
 
-/** The QR as one SVG: dark brand blue on fixed white, the butterfly in the cleared centre (research R3). */
+/** The QR as one SVG: dark brand blue on fixed white, the logo in the cleared centre (research R3, F11). */
 function QrImage({ url, label }: { url: string; label: string }) {
   const qr = useMemo(() => makeQr(url), [url])
   const n = qr.size + 2 * QUIET_ZONE
@@ -114,34 +114,22 @@ function QrImage({ url, label }: { url: string; label: string }) {
   return (
     <div className="my-qr-panel">
       <svg role="img" aria-label={label} viewBox={`0 0 ${n} ${n}`} shapeRendering="crispEdges">
-        <rect width={n} height={n} fill="#ffffff" />
-        <path d={modules} fill="#004182" />
-        <rect x={x + QUIET_ZONE} y={y + QUIET_ZONE} width={side} height={side} rx={1} fill="#ffffff" />
-        <Butterfly x={x + QUIET_ZONE + 0.5} y={y + QUIET_ZONE + 0.5} size={side - 1} />
+        <rect width={n} height={n} fill={palette.bg} />
+        <path d={modules} fill={palette.blueDark} />
+        <rect x={x + QUIET_ZONE} y={y + QUIET_ZONE} width={side} height={side} rx={1} fill={palette.bg} />
+        {/* The logo file (F11), cropped to the butterfly so it fills the badge. Only over the cleared area. */}
+        <svg
+          x={x + QUIET_ZONE + 0.5}
+          y={y + QUIET_ZONE + 0.5}
+          width={side - 1}
+          height={side - 1}
+          viewBox="36 36 440 440"
+          shapeRendering="auto"
+          aria-hidden="true"
+        >
+          <image href="/logo.svg" width={512} height={512} />
+        </svg>
       </svg>
     </div>
-  )
-}
-
-/** The butterfly from public/icon.svg (F11 makes the final logo), without its white background. */
-function Butterfly({ x, y, size }: { x: number; y: number; size: number }) {
-  return (
-    <svg x={x} y={y} width={size} height={size} viewBox="56 56 400 400" shapeRendering="auto" aria-hidden="true">
-      <g fill="#0a66c2">
-        <ellipse cx="176" cy="196" rx="96" ry="76" transform="rotate(-30 176 196)" />
-        <ellipse cx="336" cy="196" rx="96" ry="76" transform="rotate(30 336 196)" />
-        <ellipse cx="196" cy="326" rx="62" ry="50" transform="rotate(30 196 326)" opacity="0.8" />
-        <ellipse cx="316" cy="326" rx="62" ry="50" transform="rotate(-30 316 326)" opacity="0.8" />
-        <rect x="244" y="150" width="24" height="230" rx="12" fill="#004182" />
-      </g>
-      <g stroke="#004182" strokeWidth="10" strokeLinecap="round" fill="none">
-        <path d="M250 150 L214 96" />
-        <path d="M262 150 L298 96" />
-      </g>
-      <g fill="#004182">
-        <circle cx="214" cy="96" r="16" />
-        <circle cx="298" cy="96" r="16" />
-      </g>
-    </svg>
   )
 }

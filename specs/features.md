@@ -81,11 +81,11 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [?] Bereikbaar vanaf het offline-scherm: "Toon mijn QR" (B34)
 
 ## F10 — Instellingen & data
-- [ ] Evenementen beheren; ontmoetingen blijven bij verwijderen (B38)
-- [ ] Taal van de app kiezen; standaard NL (B37)
-- [ ] CSV-export: één rij per ontmoeting, geen import (B35, B36)
-- [ ] Alle data wissen (met bevestiging)
-- [ ] Herinnering om een back-up te maken (T10, T11)
+- [X] Evenementen beheren; ontmoetingen blijven bij verwijderen (B38)
+- [X] Taal van de app kiezen; standaard NL (B37)
+- [X] CSV-export: één rij per ontmoeting, geen import (B35, B36)
+- [X] Alle data wissen (met bevestiging)
+- [X] Herinnering om een back-up te maken (T10, T11)
 
 ## F11 — Merk & plezier
 - [ ] Logo: vlinder met netwerkknooppunten
@@ -101,7 +101,7 @@ Volgorde = voorgestelde bouwvolgorde. Na F0–F2 heb je al een bruikbare app.
 - [ ] Volledige flow A (naam) en B (QR) zonder haperen
 - [ ] Doorgeef-modus getest met iemand anders
 - [ ] Back-up (CSV) gemaakt vóór vertrek
-- [ ] Persoon verwijderen (F7) en CSV-export (F10) werken (constitution VI)
+- [X] Persoon verwijderen (F7) en CSV-export (F10) werken (constitution VI)
 - [ ] iOS Begeleide toegang ingesteld voor de doorgeef-modus
 
 ## Later (niet v1)

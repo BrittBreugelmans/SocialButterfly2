@@ -2,15 +2,14 @@ import { useEffect, useState } from 'react'
 import { onStorageFull } from '../data/repository'
 import { useLanguage } from '../i18n/LanguageProvider'
 import type { StorageStatus } from '../platform/persistence'
+import { Logo } from './Logo'
 
 /** Full-screen message when the app starts without internet (FR-005). My QR still works (F9, B34). */
 export function OfflineScreen({ onShowMyQr }: { onShowMyQr: () => void }) {
   const { t } = useLanguage()
   return (
     <main className="offline-screen" role="alert">
-      <p className="offline-butterfly" aria-hidden="true">
-        🦋
-      </p>
+      <Logo />
       <p>{t('offline.message')}</p>
       <button type="button" className="secondary" onClick={onShowMyQr}>
         {t('offline.showMyQr')}

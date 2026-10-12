@@ -44,8 +44,8 @@ is replaced by "keeps its Encounters without an Event" (B38).
    are split right away (B39), and nothing shows `#NAME?`.
 6. **Cancel checks** (research R2):
    - Open the share sheet and close it with ✕: the last backup time does not change.
-   - Choose "Bewaar in Bestanden", then Cancel in the Files picker: write down whether the time
-     changed. Both outcomes are acceptable; note it in the log.
+   - Choose "Bewaar in Bestanden", then Cancel in the Files picker (and close the share sheet if
+     it comes back): the last backup time does **not** change (B42).
 7. With an empty app (after section 6): the backup still works and holds only the header row.
 
 ## 4. Backup reminder (User Story 2)

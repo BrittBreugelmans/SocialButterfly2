@@ -10,6 +10,7 @@ import { AddByNameForm, type SavedByName } from './ui/AddByNameForm'
 import { AddByQr } from './ui/AddByQr'
 import { Banners, OfflineScreen } from './ui/Banners'
 import { ContextChoice } from './ui/ContextChoice'
+import { Flutter } from './ui/Flutter'
 import { NewEventForm } from './ui/NewEventForm'
 import { NoteStep } from './ui/NoteStep'
 import { StartScreen } from './ui/StartScreen'
@@ -42,12 +43,21 @@ export function App() {
   // F2: the open note step, and whether an unfinished one was looked for on start (B18).
   const [noteStep, setNoteStep] = useState<SavedByName & { message?: string }>()
   const [noteStepChecked, setNoteStepChecked] = useState(false)
+  // F11 (M7): the butterfly after the note step of a new Encounter; a counter, so each one is new.
+  // A note step restored after iOS closed the app (B18) cannot tell B19, so it may fly once there
+  // (accepted, research R6).
+  const [flutter, setFlutter] = useState(0)
   // F1 follow-up (B24): an Event created for later, shown as a line on the choice.
   const [createdNotActive, setCreatedNotActive] = useState<Event>()
 
   useEffect(() => {
     if (online) setOfflineAtStart(false)
   }, [online])
+
+  // F11: leaving the start screen stops the butterfly for good; it never replays on return.
+  useEffect(() => {
+    if (screen !== 'start' || tab !== 'add') setFlutter(0)
+  }, [screen, tab])
 
   // Back online while the QR is shown: stay on it, now as the My QR tab (F9 research R7).
   useEffect(() => {
@@ -182,6 +192,7 @@ export function App() {
           opened={noteStep.opened}
           initialMessage={noteStep.message}
           onDone={() => {
+            if (!noteStep.alreadyMetToday) setFlutter((n) => n + 1)
             setNoteStep(undefined)
             toStart()
           }}
@@ -191,12 +202,15 @@ export function App() {
         // F7: the tabs. Only here is the tab bar shown, never in a flow (FR-001c).
         <div className="has-tab-bar">
           {tab === 'add' ? (
-            <StartScreen
-              activeEvent={activeEvent}
-              onChangeContext={() => setScreen('choice')}
-              onAddByName={() => setScreen('addByName')}
-              onScanQr={() => setScreen('addByQr')}
-            />
+            <>
+              <StartScreen
+                activeEvent={activeEvent}
+                onChangeContext={() => setScreen('choice')}
+                onAddByName={() => setScreen('addByName')}
+                onScanQr={() => setScreen('addByQr')}
+              />
+              {flutter > 0 && <Flutter key={flutter} onDone={() => setFlutter(0)} />}
+            </>
           ) : tab === 'contacts' ? (
             <ContactsTab onAddSomeone={() => setTab('add')} />
           ) : tab === 'actions' ? (

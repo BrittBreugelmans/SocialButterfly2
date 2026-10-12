@@ -29,6 +29,8 @@
 |---|---|---|
 | Begroeting doorgeef-modus | Hoi! Ik ben Britt, de sociale vlinder 🦋 Wie ben jij? | Hi! I'm Britt, the social butterfly 🦋 Who are you? |
 | Privacy | Je naam wordt alleen op Britts telefoon bewaard. | Your name is only stored on Britt's phone. |
+| Knop doorgeef-modus (F3, goedgekeurd) | Geef door | Hand over |
+| Bedankt doorgeef-modus (F3, goedgekeurd) | Dank je! Geef de gsm terug aan Britt 🦋 | Thanks! Hand the phone back to Britt 🦋 |
 | Acties leeg | Alles gedaan, tijd om verder te fladderen. | All done — time to flutter on. |
 | Onder Mijn QR (beide talen tegelijk) | Scan mij om te connecteren | Scan me to connect |
-| Back-upherinnering (voorstel F10, nog te keuren) | Je ontmoette nieuwe mensen 🦋 Maak nu een back-up, zo ben je niemand kwijt. | You met new people 🦋 Make a backup now, so you never lose anyone. |
+| Back-upherinnering (F10, goedgekeurd) | Je ontmoette nieuwe mensen 🦋 Maak nu een back-up, zo ben je niemand kwijt. | You met new people 🦋 Make a backup now, so you never lose anyone. |

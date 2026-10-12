@@ -22,7 +22,7 @@ Replaces the 🦋 emoji `<p className="butterfly">` on:
 |---|---|---|
 | Start screen (Add tab) | `StartScreen.tsx` | 96 |
 | Offline screen | `Banners.tsx` (`OfflineScreen`) | 96 |
-| "Coming soon" | `ComingSoon.tsx` | 96 |
+| "Coming soon" | `ComingSoon.tsx` (removed by F10 before F11 was built) | — |
 | My QR, setup (no link yet) | `MyQrTab.tsx` | 96 |
 | Actions, empty state | `ActionsTab.tsx` | 72 |
 
@@ -31,8 +31,9 @@ The 🦋 inside the guest greeting text (wiki fixed text) stays: it is text, not
 ## My QR centre (changed, `MyQrTab.tsx`)
 
 - The inline `Butterfly` component is removed.
-- In the QR's SVG, after the white badge: `<image href="/logo.svg" x y width height>` covering
-  the badge minus 0.5 module on each side (same box as today).
+- In the QR's SVG, after the white badge: a nested `<svg x y width height viewBox="36 36 440 440">`
+  covering the badge minus 0.5 module on each side (same box as before), holding
+  `<image href="/logo.svg" width="512" height="512">`. The viewBox crops the logo's empty margin.
 - QR modules use `palette.blueDark`, the background and badge `palette.bg` (no inline hex).
 - `makeQr` and the cleared badge area do not change, so `qr.test.ts` stays valid.
 
@@ -51,8 +52,8 @@ export function Flutter(props: FlutterProps): JSX.Element | null
 - CSS: `.flutter { position: fixed; inset: 0; pointer-events: none; z-index: above content,
   below dialogs }`; the image runs `@keyframes flutter` (1.2 s, `transform`/`opacity` only).
   `@media (prefers-reduced-motion: reduce) { .flutter { display: none } }`.
-- Calls `onDone` once: on `animationend`, or after 1500 ms, or on `visibilitychange` to hidden,
-  whichever comes first.
+- Calls `onDone` once: on `animationend` (a native listener on the image), or after 1500 ms, or on
+  `visibilitychange` to hidden, whichever comes first.
 
 ## `App` (changed)
 
@@ -61,8 +62,9 @@ export function Flutter(props: FlutterProps): JSX.Element | null
   before (`setNoteStep(undefined)`, `toStart()`).
 - In the tabs branch, only while `tab === 'add'`: `{flutter > 0 && <Flutter key={flutter}
   onDone={() => setFlutter(0)} />}`.
-- Any other screen or tab change unmounts it. `flutter` is reset to 0 by `onDone`, so it never
-  shows again on a later return to the start screen.
+- Any other screen or tab change unmounts it, and an effect resets `flutter` to 0 whenever
+  `screen !== 'start' || tab !== 'add'`. `onDone` also resets it. So it never shows again on a
+  later return to the start screen.
 
 ## Unchanged behaviour (regression guard)
 

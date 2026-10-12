@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- De Sociale Vlinder logo (F11, wiki M9: proposal B "Netwerkvleugels"). Single source: icons, launch images, app and My QR. -->
+  <!-- Left wings (mirror of the right wings) -->
+  <polygon points="240,214 194,96 80,92 50,190 160,262" fill="#0d5fb8" stroke="#0d5fb8" stroke-width="16" stroke-linejoin="round"/>
+  <polygon points="240,282 132,272 94,350 168,416 226,364" fill="#5aa2ec" stroke="#5aa2ec" stroke-width="16" stroke-linejoin="round"/>
+  <g stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M182 140 L98 132 L92 196 L162 218 Z M182 140 L92 196"/>
+    <path d="M182 320 L128 330 L164 378 Z"/>
+  </g>
+  <g fill="#ffffff">
+    <circle cx="182" cy="140" r="11"/><circle cx="98" cy="132" r="11"/>
+    <circle cx="92" cy="196" r="11"/><circle cx="162" cy="218" r="11"/>
+    <circle cx="182" cy="320" r="9"/><circle cx="128" cy="330" r="9"/><circle cx="164" cy="378" r="9"/>
+  </g>
+  <!-- Right wings -->
+  <polygon points="272,214 318,96 432,92 462,190 352,262" fill="#0d5fb8" stroke="#0d5fb8" stroke-width="16" stroke-linejoin="round"/>
+  <polygon points="272,282 380,272 418,350 344,416 286,364" fill="#5aa2ec" stroke="#5aa2ec" stroke-width="16" stroke-linejoin="round"/>
+  <g stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M330 140 L414 132 L420 196 L350 218 Z M330 140 L420 196"/>
+    <path d="M330 320 L384 330 L348 378 Z"/>
+  </g>
+  <g fill="#ffffff">
+    <circle cx="330" cy="140" r="11"/><circle cx="414" cy="132" r="11"/>
+    <circle cx="420" cy="196" r="11"/><circle cx="350" cy="218" r="11"/>
+    <circle cx="330" cy="320" r="9"/><circle cx="384" cy="330" r="9"/><circle cx="348" cy="378" r="9"/>
+  </g>
+  <!-- Body and antennae -->
+  <rect x="243" y="180" width="26" height="230" rx="13" fill="#0a3d73"/>
+  <g stroke="#0a3d73" stroke-width="10" stroke-linecap="round" fill="none">
+    <path d="M249 194 L216 110"/>
+    <path d="M263 194 L296 110"/>
+  </g>
+  <circle cx="216" cy="110" r="13" fill="#0a3d73"/>
+  <circle cx="296" cy="110" r="13" fill="#0a3d73"/>
+</svg>

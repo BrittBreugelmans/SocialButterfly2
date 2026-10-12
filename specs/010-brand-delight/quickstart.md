@@ -34,6 +34,10 @@ npm test                      # earlier tests + palette sync, contrast, logo rul
 npm run build
 ```
 
+After `generate-pwa-assets`, the printed `apple-touch-startup-image` links say `…-light-…`,
+but the files have no `-light-`. Paste them into `index.html` without it (research R5); the
+brand test fails if a link points to a missing file.
+
 Expected: everything passes. `qr.test.ts` is unchanged and green. The build output has no
 `apple-splash-*` entries in the precache manifest (`dist/sw.js`).
 

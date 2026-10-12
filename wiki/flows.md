@@ -21,7 +21,9 @@ tijdens de dagkeuze, het toevoegen, het notitiescherm en de doorgeef-modus.
 
 ## Flow A — Toevoegen via naam
 1. Britt kiest **doorgeef-modus** (geeft gsm door) of **snelle modus** (tikt zelf).
-2. Naam + bedrijf ingeven; bedrijf is optioneel (B17). In doorgeef-modus: begroeting + privacygeruststelling, NL/EN-knop.
+2. Naam + bedrijf ingeven; bedrijf is optioneel (B17). In doorgeef-modus: begroeting + privacygeruststelling, NL/EN-knop;
+   de gast tikt "Klaar" en geeft de gsm terug. Britt houdt het logo 2 seconden ingedrukt en ziet het formulier
+   al ingevuld ([B43, B44](beslissingen.md)).
 3. "Zoek op LinkedIn". Bestaat er al een persoon met dezelfde naam? → **"Is dit dezelfde persoon?"** (B15, zie Flow D).
 4. Ontmoeting wordt opgeslagen onder het actieve evenement; daarna opent de zoek-link in LinkedIn.
 5. Gast wijst zichzelf aan; Britt tikt **Connect**.
@@ -52,4 +54,8 @@ tijdens de dagkeuze, het toevoegen, het notitiescherm en de doorgeef-modus.
 - Groot, vriendelijk formulier; geen lijst of notities zichtbaar.
 - Begroeting: "Hoi! Ik ben Britt, de sociale vlinder 🦋 Wie ben jij?" / "Hi! I'm Britt, the social butterfly 🦋 Who are you?"
 - Privacy: "Je naam wordt alleen op Britts telefoon bewaard." / "Your name is only stored on Britt's phone."
-- Tip: iOS **Begeleide toegang** voorkomt dat de gast uit de app tikt.
+- Na "Klaar": "Geef de gsm terug aan Britt". De doorgeef-modus bewaart niets; Britt zoekt zelf op LinkedIn
+  ([B43](beslissingen.md)). Zo ziet de gast nooit "Is dit dezelfde persoon?".
+- Terug naar Britts modus: het logo (klein, in de hoek) 2 seconden ingedrukt houden ([B44](beslissingen.md)).
+- Tip: iOS **Begeleide toegang** voorkomt dat de gast uit de app tikt. Britt zet het uit vóór "Zoek op LinkedIn",
+  anders opent LinkedIn niet.

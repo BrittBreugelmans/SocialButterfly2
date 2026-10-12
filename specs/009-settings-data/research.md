@@ -69,9 +69,12 @@ before it. A new helper `platform/shareFile.ts` returns one of four results:
 - Two steps ("Prepare" → "Save"): an extra tap, and still the same file.
 - `mailto:` or a server upload: against constitution IV and T1.
 
-**To check on the iPhone** ([quickstart.md](quickstart.md) section 3): does "Save to Files" →
-"Cancel" inside the Files picker resolve or reject the share? If it resolves, a cancel there
-still counts as a backup. That is acceptable (the owner chose to save), but should be known.
+**Cancel inside the Files picker** (wiki B42, 2026-10-12): it must **not** count as a backup;
+the last backup time stays as it was. The app only learns what iOS reports. If iOS rejects the
+share (or returns to the share sheet, which the owner then closes), the result is `'cancelled'`
+and this already holds. If iOS resolves the share after a cancel in Files, the web app cannot
+tell it apart from a real save. That would need a new decision. Check on the iPhone with
+[quickstart.md](quickstart.md) section 3.6.
 
 ## R3 — The snapshot and the last-backup time
 

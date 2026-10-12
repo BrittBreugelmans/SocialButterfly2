@@ -5,6 +5,7 @@ import { postponeBackupReminder } from '../data/repository'
 import type { Event } from '../data/types'
 import { useLanguage } from '../i18n/LanguageProvider'
 import { ContextBar } from './ContextBar'
+import { Logo } from './Logo'
 
 /** The backup reminder (F10 FR-009–FR-011): a banner, never a blocking screen (constitution VIII). */
 function BackupReminder() {
@@ -66,9 +67,7 @@ export function StartScreen({ activeEvent, onChangeContext, onAddByName, onScanQ
       <ContextBar event={activeEvent} onChange={onChangeContext} />
       <BackupReminder />
 
-      <p className="butterfly" aria-hidden="true">
-        🦋
-      </p>
+      <Logo />
       <h1>{t('app.title')}</h1>
 
       <div className="start-actions">

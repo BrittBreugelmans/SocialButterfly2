@@ -55,9 +55,8 @@ export const TEXT_PAIRS: ReadonlyArray<readonly [fg: PaletteToken, bg: PaletteTo
 
 ## `app/pwa-assets.config.ts`
 
-- Input: `public/logo.svg` with a white icon background. With a blue icon background:
-  `public/icon.svg`, the same shapes in the "on blue" colours on a full-bleed `blue` square
-  (research R4).
+- Input: `public/logo.svg` with a white icon background (chosen: wiki M10, so there is no
+  `icon.svg`). Only with a blue icon background would `public/icon.svg` be needed (research R4).
 - `transparent`: sizes 64, 192, 512 + `favicon.ico` 48 (as F0), padding 0.05.
 - `maskable`: 512, padding 0.3, background `palette.bg` (or the background Britt picks, R4).
 - `apple`: 180, padding 0.15, same background.

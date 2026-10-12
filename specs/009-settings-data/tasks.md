@@ -366,8 +366,8 @@ My QR asks for the link, and the language is unchanged.
   - `app/src/data/db.ts` is unchanged;
   - no `fetch` or external URL in `backup/`, `settings/`, `shareFile.ts`, `SettingsTab.tsx` or `EditEventForm.tsx`;
   - `EventInUseError` and `ComingSoon` appear nowhere in `app/src` or `app/tests`. *(2026-10-12: 419 tests green (was 344), build OK. Main bundle 128.6 kB gzip (F9: 125.3 kB), so +3.3 kB. `package.json` and `db.ts` unchanged. No `fetch` or external URL in the new files. `EventInUseError`, `ComingSoon` and `soon.*` appear nowhere.)*
-- [ ] T049 Commit and push to `main` (manual, Britt). Cloudflare deploys automatically.
-- [ ] T050 Validate on the iPhone with [quickstart.md](quickstart.md) sections 2–6 (manual, Britt):
+- [X] T049 Commit and push to `main` (manual, Britt). Cloudflare deploys automatically.
+- [X] T050 Validate on the iPhone with [quickstart.md](quickstart.md) sections 2–6 (manual, Britt):
   - the share sheet opens at once, also with 500 test contacts from Diagnostics (SC-001);
   - Numbers shows all columns;
   - Excel with Belgian settings splits the columns;
@@ -375,7 +375,7 @@ My QR asks for the link, and the language is unchanged.
   - the reminder by changing the iPhone date;
   - deleting an Event with Encounters;
   - delete all data with test data only.
-- [ ] T051 Tick the F10 items in `specs/features.md` and add a line to `wiki/log.md`, per CLAUDE.md. Include what the Files-picker cancel did (research R2). If Britt changed the reminder text, also update `wiki/merk-en-stijl.md` (remove "nog te keuren") and the `reminder.text` keys. *(2026-10-12: implementation line added to `wiki/log.md`; ticking `features.md` waits for T050.)*
+- [X] T051 Tick the F10 items in `specs/features.md` and add a line to `wiki/log.md`, per CLAUDE.md. Include what the Files-picker cancel did (research R2). If Britt changed the reminder text, also update `wiki/merk-en-stijl.md` (remove "nog te keuren") and the `reminder.text` keys. *(2026-10-12: implementation line added to `wiki/log.md`; F10 items and "Persoon verwijderen (F7) en CSV-export (F10) werken" ticked in `features.md` after Britt confirmed on the iPhone. Files-picker cancel: not reported.)*
 
 ---
 
